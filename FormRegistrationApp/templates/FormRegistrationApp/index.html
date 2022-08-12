@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>Course Register</h1>
+  {% block content %}
+  <form action="" method="POST">
+    {% csrf_token %}
+    <p>Email: </p>
+    {{ form.email }}
+    <p>Nama Lengkap: </p>
+    {{ form.nama_lengkap }}
+    <p>Nomer Telefon: </p>
+    {{ form.nomor_telefon }}
+    <p>Program Studi: </p>
+    <input type="radio" onclick="RadioButton()" name="program_studi" id=1 value="S1 Teknik Kimia" required><label
+      for="1">S1 Teknik Kimia</label><br>
+    <input type="radio" onclick="RadioButton()" name="program_studi" id=2 value="S1 Teknologi Bioproses"><label for="2">S1 Teknologi
+      Bioproses</label><br>
+    <input type="radio" onclick="RadioButton()" name="program_studi" id=3 value="S2 Teknik Kimia"><label for="3">S2 Teknik Kimia</label><br>
+    <input type="radio" onclick="RadioButton()" name="program_studi" id=4 value="S3 Teknik Kimia"><label for="4">S3 Teknik Kimia</label><br>
+    <input type="radio" onclick="RadioButton()" name="program_studi" id=5 value="Other" ><label for="5">Yang Lain: </label><input type="text" id="a"
+      name="program_studi_other" /><br>
+    <p>Universitas: </p>
+    <input type="radio" onclick="RadioButton2()" name="universitas" id=6 value="Universitas Indonesia" required><label for="6">Universitas
+      Indonesia</label><br>
+    <input type="radio" onclick="RadioButton2()" name="universitas" id=7 value="Universitas Muhammadiyah Surakarta"><label for="7">Universitas
+      Muhammadiyah Surakarta</label><br>
+    <input type="radio" onclick="RadioButton2()" name="universitas" id=8 value="Universitas Sriwijaya"><label for="8">Universitas
+      Indonesia</label><br>
+    <input type="radio" onclick="RadioButton2()" name="universitas" id=9 value="Institut Teknologi Bandung"><label for="9">Institut Teknologi
+      Bandung</label><br>
+    <input type="radio" onclick="RadioButton2()" name="universitas" id=10 value="Institut Teknologi Sepuluh Nopember"><label for="10">Institut
+      Teknologi Sepuluh Nopember</label><br>
+    <input type="radio" onclick="RadioButton2()" name="universitas" id=11 value="Other"><label for="11">Yang Lain: </label><input type="text" id="b"
+      name="universitas_other" /><br>
+    <p>Metode Pembelajaran: </p>
+    {{ form.metode_pembelajaran }}
+    <p>Mata Kuliah: </p>
+    {{ form.mata_kuliah }}
+    <br><input type="submit" />
+  </form>
+  {% endblock %}
+  <script>
+    function RadioButton() {
+      if (document.getElementById('1').checked) {
+        document.getElementById('a').disabled = true;
+      }
+      else if (document.getElementById('2').checked) {
+        document.getElementById('a').disabled = true;
+      }
+      else if (document.getElementById('3').checked) {
+        document.getElementById('a').disabled = true;
+      }
+      else if (document.getElementById('4').checked) {
+        document.getElementById('a').disabled = true;
+      }
+      else if (document.getElementById('5').checked) {
+        document.getElementById('a').disabled = false;
+      }
+    }
+
+    function RadioButton2() {
+      if (document.getElementById('6').checked) {
+        document.getElementById('b').disabled = true;
+      }
+      else if (document.getElementById('7').checked) {
+        document.getElementById('b').disabled = true;
+      }
+      else if (document.getElementById('8').checked) {
+        document.getElementById('b').disabled = true;
+      }
+      else if (document.getElementById('9').checked) {
+        document.getElementById('b').disabled = true;
+      }
+      else if (document.getElementById('10').checked) {
+        document.getElementById('b').disabled = true;
+      }
+      else if (document.getElementById('11').checked) {
+        document.getElementById('b').disabled = false;
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Data</h1>
+  {% block content %}
+  {% for i in my_data %}
+    <h3>Invoice: {{ i.invoice }}<br>
+      Email: {{ i.email }} <br>
+      Nama Lengkap: {{ i.nama_lengkap }} <br>
+      Nomor Telefon: {{ i.nomor_telefon }} <br>
+      Program Studi: {{ i.program_studi }} <br>
+      Universitas: {{ i.universitas }} <br>
+      Metode Pembelajaran: {{ i.metode_pembelajaran }} <br>
+      Mata Kuliah: {{ i.mata_kuliah }} <br>
+      Kelas: {{ i.materi }} <br>
+      Aplikasi Simulasi: {{ i.aplikasi_simulasi }} <br>
+      Jumlah sesi yang ingin diikuti: {{ i.jumlah_sesi_yang_ingin_diikuti }} <br>
+      Jumlah Peserta: {{ i.jumlah_peserta }} <br>
+      Nama Anggota Kelompok (bagi yang berkelompok): {{ i.nama_anggota_kelompok_bagi_yang_kelompok }} <br>
+      Alamat Email Anggota Kelompok: {{ i.alamat_email_anggota_kelompok }} <br>
+      Sesi dan Jadwal: {{ i.sesi_dan_jadwal }} <br>
+      Notes for Tutor: {{ i.notes_for_tutor }} <br>
+      Referral Code: {{ i.referral_code }}
+    </h3>
+  {% endfor %}
+  {% endblock %}
+</body>
+</html>
