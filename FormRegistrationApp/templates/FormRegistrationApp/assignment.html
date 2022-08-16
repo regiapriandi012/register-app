@@ -260,7 +260,7 @@
                 opacity: 1
             }
         }
-        
+
         @media screen {
             #sidebar {
                 background-color: #2f3236;
@@ -1269,7 +1269,7 @@
                     var a = this.pages, b = a.length; if (!(2 > b)) {
                         for (var c = this.container, e = c.scrollTop, c = e + c.clientHeight, h = -1, d = b, f = d - h; 1 < f;) { var g = h + Math.floor(f / 2), f = a[g].page; f.offsetTop + f.clientTop + f.clientHeight >= e ? d = g : h = g; f = d - h } this.first_page_idx = d; for (var g = h = this.cur_page_idx, k = 0; d < b; ++d) {
                             var f = a[d].page, l = f.offsetTop + f.clientTop,
-                            f = f.clientHeight; if (l > c) break; f = (Math.min(c, l + f) - Math.max(e, l)) / f; if (d === h && Math.abs(f - 1) <= EPS) { g = h; break } f > k && (k = f, g = d)
+                                f = f.clientHeight; if (l > c) break; f = (Math.min(c, l + f) - Math.max(e, l)) / f; if (d === h && Math.abs(f - 1) <= EPS) { g = h; break } f > k && (k = f, g = d)
                         } this.cur_page_idx = g
                     }
                 }, schedule_render: function (a) { if (void 0 !== this.render_timer) { if (!a) return; clearTimeout(this.render_timer) } var b = this; this.render_timer = setTimeout(function () { delete b.render_timer; b.render() }, this.config.render_timeout) }, register_key_handler: function () {
@@ -1356,9 +1356,9 @@
                     <div class="t m0 x4 h7 yb ff2 fs3 fc0 sc0 ls2 ws2">: {{ i.tanggal }}</div>
                     <div class="t m0 x4 h7 yc ff2 fs3 fc0 sc0 ls2 ws2">: {{ i.mata_kuliah }}</div>
                     <div class="t m0 x4 h7 yd ff2 fs3 fc0 sc0 ls2 ws2">: {{ i.metode_pembelajaran }}</div>
-                    <div class="t m0 x4 h7 ye ff2 fs3 fc0 sc0 ls2 ws2">: {{ i.sesi_dan_jadwal }}</div>
-                    <div class="t m0 x4 h7 yf ff2 fs3 fc0 sc0 ls1">:<span class="ff3 ls2 ws2">{{ i.nama_lengkap }}<span class="_"> </span><span
-                                class="ff2">- {{ i.nomor_telefon }}</span></span></div>
+                    <div class="t m0 x4 h7 ye ff2 fs3 fc0 sc0 ls2 ws2">: {% for a in sesi_tanggal %}{{ a }}{% endfor %} - {% for b in sesi_jam %}{{ b }}{% endfor %}</div>
+                    <div class="t m0 x4 h7 yf ff2 fs3 fc0 sc0 ls1">:<span class="ff3 ls2 ws2">{{ i.nama_lengkap }}<span
+                                class="_"> </span><span class="ff2">- {{ i.nomor_telefon }}</span></span></div>
                     <div class="t m0 x4 h7 y10 ff2 fs3 fc0 sc0 ls2 ws2">: {{ i.email }}</div>
                 </div>
                 <div class="c x1 y11 w5 h8">
@@ -1373,8 +1373,10 @@
                 <div class="c xb y11 w7 h8">
                     <div class="t m0 xc h9 y12 ff1 fs3 fc2 sc0 ls2 ws2">Harga Kelas</div>
                 </div>
-                <div class="c x1 y13 w5 ha">    
-                    <div class="t m0 x4 h9 y14 ff2 fs3 fc1 sc0 ls2 ws2">{{ i.materi }}</div>
+                <div class="c x1 y15 w5 hb">
+                    <div class="t m0 xd h9 y16 ff3 fs3">{% for j in sesi_materi|slice:"0:1" %}{{ j }}{% endfor %}</div>
+                    <div class="t m0 xd h9 y17 ff3 fs3">{% for j in sesi_materi|slice:"1:2" %}{{ j }}{% endfor %}</div>
+                    <div class="t m0 xd h9 y18 ff3 fs3">{% for j in sesi_materi|slice:"2:3" %}{{ j }}{% endfor %}</div> 
                 </div>
                 <div class="c x7 y15 w6 hb">
                     <div class="t m0 xd h9 y16 ff4 fs3 fc0 sc0 ls2 ws2">{{ i.jumlah_sesi_yang_ingin_diikuti }}</div>
@@ -1386,7 +1388,7 @@
                     <div class="t m0 x11 h9 y14 ff4 fs3 fc0 sc0 ls2 ws1"></div>
                 </div>
                 <div class="c x12 y1b w8 hd">
-                    <div class="t m0 xd he y1c ff3 fs3 fc3 sc0 ls2 ws2">T<span class="_ _1"></span>otal Honor:</div>
+                    <div class="t m0 xd he y1c ff3 fs3 fc3 sc0 ls2 ws2">Total Honor:</div>
                 </div>
                 <div class="c x13 y1b w9 hd">
                     <div class="t m0 x14 he y1c ff3 fs3 fc3 sc0 ls2 ws2">Rp. {{Honor}}</div>

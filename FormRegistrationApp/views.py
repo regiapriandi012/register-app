@@ -404,7 +404,7 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             elif metode_pembelajaran == "Konsultasi Perlombaan":
                 invoice += "C/"
                 metode_pembelajaran_invoice = "C"
-            elif metode_pembelajaran == "Konsultasi Skripsi/Tesis":
+            elif metode_pembelajaran == "Konsultasi Skripsi atau Tesis":
                 invoice += "C/"
                 metode_pembelajaran_invoice = "C"
 
@@ -535,8 +535,21 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             new_data.jumlah_peserta = form.cleaned_data['jumlah_peserta']
             new_data.nama_anggota_kelompok_bagi_yang_kelompok = form.cleaned_data['nama_anggota_kelompok_bagi_yang_kelompok']
             new_data.alamat_email_anggota_kelompok = form.cleaned_data['alamat_email_anggota_kelompok']
-            new_data.sesi_dan_jadwal = form.cleaned_data['sesi_dan_jadwal']
+            sesi_dan_jadwal = form.cleaned_data['sesi_dan_jadwal']
             new_data.notes_for_tutor = form.cleaned_data['notes_for_tutor']
+
+            sesi_materi = []
+            sesi_tanggal = []
+            sesi_jam = []
+            
+            for i in range(len(sesi_dan_jadwal.split("],"))):
+                sesi_materi.append(sesi_dan_jadwal.split("],")[i].split("[")[0].replace(" ", ""))
+                sesi_tanggal.append(sesi_dan_jadwal.split("],")[i].split("[")[1].split(",")[0])
+                sesi_jam.append(sesi_dan_jadwal.split("],")[i].split(",")[1].replace(" ", "").replace("]", ""))
+
+            new_data.sesi_materi = sesi_materi
+            new_data.sesi_tanggal = sesi_tanggal
+            new_data.sesi_jam = sesi_jam
 
             referral_code = form.cleaned_data['referral_code']
             data_referral_code = ReferralCode.objects.all()
@@ -577,14 +590,14 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
 
             new_data.save()
 
-            if month_number >= 1 and month_number <= 3:
-                return redirect("invoice_assignment_q1", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
-            elif month_number >= 4 and month_number <= 6:
-                return redirect("invoice_assignment_q2", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
-            elif month_number >= 7 and month_number <= 9:
-                return redirect("invoice_assignment_q3", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
-            elif month_number >= 10 and month_number <= 12:
-                return redirect("invoice_assignment_q4", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
+        if month_number >= 1 and month_number <= 3:
+                return redirect("invoice_q1", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
+        elif month_number >= 4 and month_number <= 6:
+            return redirect("invoice_q2", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+        elif month_number >= 7 and month_number <= 9:
+            return redirect("invoice_q3", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+        elif month_number >= 10 and month_number <= 12:
+            return redirect("invoice_q4", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     else:
         form = JumlahPeserta(request.POST)
     return render(request, "FormRegistrationApp/jumlah_peserta.html", context)
@@ -635,7 +648,7 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             elif metode_pembelajaran == "Konsultasi Perlombaan":
                 invoice += "C/"
                 metode_pembelajaran_invoice = "C"
-            elif metode_pembelajaran == "Konsultasi Skripsi/Tesis":
+            elif metode_pembelajaran == "Konsultasi Skripsi atau Tesis":
                 invoice += "C/"
                 metode_pembelajaran_invoice = "C"
 
@@ -767,8 +780,21 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             new_data.jumlah_peserta = form.cleaned_data['jumlah_peserta']
             new_data.nama_anggota_kelompok_bagi_yang_kelompok = form.cleaned_data['nama_anggota_kelompok_bagi_yang_kelompok']
             new_data.alamat_email_anggota_kelompok = form.cleaned_data['alamat_email_anggota_kelompok']
-            new_data.sesi_dan_jadwal = form.cleaned_data['sesi_dan_jadwal']
+            sesi_dan_jadwal = form.cleaned_data['sesi_dan_jadwal']
             new_data.notes_for_tutor = form.cleaned_data['notes_for_tutor']
+
+            sesi_materi = []
+            sesi_tanggal = []
+            sesi_jam = []
+            
+            for i in range(len(sesi_dan_jadwal.split("],"))):
+                sesi_materi.append(sesi_dan_jadwal.split("],")[i].split("[")[0].replace(" ", ""))
+                sesi_tanggal.append(sesi_dan_jadwal.split("],")[i].split("[")[1].split(",")[0])
+                sesi_jam.append(sesi_dan_jadwal.split("],")[i].split(",")[1].replace(" ", "").replace("]", ""))
+
+            new_data.sesi_materi = sesi_materi
+            new_data.sesi_tanggal = sesi_tanggal
+            new_data.sesi_jam = sesi_jam
 
             referral_code = form.cleaned_data['referral_code']
             data_referral_code = ReferralCode.objects.all()
@@ -810,13 +836,13 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             new_data.save()
 
             if month_number >= 1 and month_number <= 3:
-                return redirect("invoice_assignment_q1", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
+                return redirect("invoice_q1", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
             elif month_number >= 4 and month_number <= 6:
-                return redirect("invoice_assignment_q2", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+                return redirect("invoice_q2", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
             elif month_number >= 7 and month_number <= 9:
-                return redirect("invoice_assignment_q3", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+                return redirect("invoice_q3", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
             elif month_number >= 10 and month_number <= 12:
-                return redirect("invoice_assignment_q4", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
+                return redirect("invoice_q4", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     else:
         form = JumlahPeserta(request.POST)
     return render(request, "FormRegistrationApp/jumlah_peserta.html", context)
@@ -826,36 +852,93 @@ def get_data(request):
     context={
       'my_data':data,
     }
-    """data_email = []
-    for i in data:
-        data_email.append(i.email)
-    print(data_email)"""
     return render(request, 'FormRegistrationApp/get_data.html', context)
 
 def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
+    sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
         'i': data,
+        'sesi_materi': sesi_materi,
+        'sesi_tanggal': sesi_tanggal,
+        'sesi_jam': sesi_jam
     }
     return render(request, 'FormRegistrationApp/assignment.html', context)
 
 def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
+    sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
         'i': data,
+        'sesi_materi': sesi_materi,
+        'sesi_tanggal': sesi_tanggal,
+        'sesi_jam': sesi_jam
     }
     return render(request, 'FormRegistrationApp/assignment.html', context)
 
 def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
+    sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
         'i': data,
+        'sesi_materi': sesi_materi,
+        'sesi_tanggal': sesi_tanggal,
+        'sesi_jam': sesi_jam
     }
     return render(request, 'FormRegistrationApp/assignment.html', context)
 
 def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
+    sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
         'i': data,
+        'sesi_materi': sesi_materi,
+        'sesi_tanggal': sesi_tanggal,
+        'sesi_jam': sesi_jam
     }
     return render(request, 'FormRegistrationApp/assignment.html', context)
+
+def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    return render(request, 'FormRegistrationApp/invoice.html', context)
+
+def invoice_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    return render(request, 'FormRegistrationApp/invoice.html', context)
+
+def invoice_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    return render(request, 'FormRegistrationApp/invoice.html', context)
+
+def invoice_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
+    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    return render(request, 'FormRegistrationApp/invoice.html', context)
+

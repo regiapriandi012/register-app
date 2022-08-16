@@ -50,7 +50,7 @@ class CourseRegistrationForm(forms.Form):
         ("Kelas Materi", "Kelas Materi"),
         ("Persiapan Ujian", "Persiapan Ujian"),
         ("Konsultasi Perlombaan", "Konsultasi Perlombaan"),
-        ("Konsultasi Skripsi/Tesis", "Konsultasi Skripsi/Tesis"),
+        ("Konsultasi Skripsi atau Tesis", "Konsultasi Skripsi atau Tesis"),
     )
 
     email = forms.EmailField(max_length=254)

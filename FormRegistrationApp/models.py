@@ -16,7 +16,9 @@ class RegistrationData(models.Model):
     jumlah_peserta = models.CharField(max_length=10)
     nama_anggota_kelompok_bagi_yang_kelompok = models.CharField(max_length=1000)
     alamat_email_anggota_kelompok = models.CharField(max_length=1000)
-    sesi_dan_jadwal = models.CharField(max_length=254)
+    sesi_materi = models.CharField(max_length=254)
+    sesi_tanggal = models.CharField(max_length=254)
+    sesi_jam = models.CharField(max_length=254)
     notes_for_tutor = models.CharField(max_length=2000)
     referral_code = models.CharField(max_length=254)
 

@@ -51,24 +51,15 @@ urlpatterns = [
     path("session_ppd/jumlah_peserta/<nama_lengkap>/<email>/<nomor_telefon>/<program_studi>/<universitas>/<metode_pembelajaran>/<mata_kuliah>/<materi>/", views.jumlah_peserta, name="jumlah_peserta_session_ppd"),
     path("session_tph/jumlah_peserta/<nama_lengkap>/<email>/<nomor_telefon>/<program_studi>/<universitas>/<metode_pembelajaran>/<mata_kuliah>/<materi>/", views.jumlah_peserta, name="jumlah_peserta_session_tph"),
 
+    path("invoice_assignment_q1/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q1_invoice>/<quartal_invoice>/", views.invoice_assignment_q1, name="invoice_assignment_q1"),
+    path("invoice_assignment_q2/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q2_invoice>/<quartal_invoice>/", views.invoice_assignment_q2, name="invoice_assignment_q2"),
+    path("invoice_assignment_q3/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q3_invoice>/<quartal_invoice>/", views.invoice_assignment_q3, name="invoice_assignment_q3"),
+    path("invoice_assignment_q4/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q4_invoice>/<quartal_invoice>/", views.invoice_assignment_q4, name="invoice_assignment_q4"),
+
+    path("invoice_q1/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q1_invoice>/<quartal_invoice>/", views.invoice_q1, name="invoice_q1"),
+    path("invoice_q2/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q2_invoice>/<quartal_invoice>/", views.invoice_q2, name="invoice_q2"),
+    path("invoice_q3/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q3_invoice>/<quartal_invoice>/", views.invoice_q3, name="invoice_q3"),
+    path("invoice_q4/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q4_invoice>/<quartal_invoice>/", views.invoice_q4, name="invoice_q4"),
+
     path('get_data/', views.get_data, name='get_data'),
 ]
-
-month_number = datetime.datetime.now().month
-
-if month_number >= 1 and month_number <= 3:
-    urlpatterns += [
-        path("invoice_assignment_q1/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q1_invoice>/<quartal_invoice>/", views.invoice_assignment_q1, name="invoice_assignment_q1")
-    ]
-elif month_number >= 4 and month_number <= 6:
-        urlpatterns += [
-        path("invoice_assignment_q2/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q2_invoice>/<quartal_invoice>/", views.invoice_assignment_q2, name="invoice_assignment_q2")
-    ]
-elif month_number >= 7 and month_number <= 9:
-        urlpatterns += [
-        path("invoice_assignment_q3/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q3_invoice>/<quartal_invoice>/", views.invoice_assignment_q3, name="invoice_assignment_q3")
-    ]
-elif month_number >= 10 and month_number <= 12:
-        urlpatterns += [
-        path("invoice_assignment_q4/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q4_invoice>/<quartal_invoice>/", views.invoice_assignment_q4, name="invoice_assignment_q4")
-    ]
