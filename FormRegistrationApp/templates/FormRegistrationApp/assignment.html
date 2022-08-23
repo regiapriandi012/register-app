@@ -485,6 +485,11 @@
             font-size: 67.999998px;
         }
 
+        .fs100 {
+            font-size: 10.5px;
+            margin: 5px;
+        }
+
         .fs2 {
             font-size: 79.999998px;
         }
@@ -872,6 +877,11 @@
 
             .fs2 {
                 font-size: 106.666664pt;
+            }
+
+            .fs100 {
+                font-size: 18px;
+                margin: 5px;
             }
 
             .y0 {
@@ -1374,9 +1384,10 @@
                     <div class="t m0 xc h9 y12 ff1 fs3 fc2 sc0 ls2 ws2">Harga Kelas</div>
                 </div>
                 <div class="c x1 y15 w5 hb">
-                    <div class="t m0 xd h9 y16 ff3 fs3">{% for j in sesi_materi|slice:"0:1" %}{{ j }}{% endfor %}</div>
-                    <div class="t m0 xd h9 y17 ff3 fs3">{% for j in sesi_materi|slice:"1:2" %}{{ j }}{% endfor %}</div>
-                    <div class="t m0 xd h9 y18 ff3 fs3">{% for j in sesi_materi|slice:"2:3" %}{{ j }}{% endfor %}</div> 
+                    <div class="ff2 fs100 fc0 sc0 ls0 ws5">{{ sesi_materi }}</div>
+                    <!--<div class="t m0 xd h9 y16 ff2 fs3 fc1 sc0 ls2 ws2">{% for j in sesi_materi|slice:"0:1" %}{{ j }}{% endfor %}</div>
+                    <div class="t m0 xd h9 y17 ff2 fs3 fc1 sc0 ls2 ws2">{% for j in sesi_materi|slice:"1:2" %}{{ j }}{% endfor %}</div>
+                    <div class="t m0 xd h9 y18 ff2 fs3 fc1 sc0 ls2 ws2">{% for j in sesi_materi|slice:"2:3" %}{{ j }}{% endfor %}</div> -->
                 </div>
                 <div class="c x7 y15 w6 hb">
                     <div class="t m0 xd h9 y16 ff4 fs3 fc0 sc0 ls2 ws2">{{ i.jumlah_sesi_yang_ingin_diikuti }}</div>

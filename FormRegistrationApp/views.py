@@ -5,6 +5,18 @@ from django.http import HttpResponseRedirect
 from .models import RegistrationData, ReferralCode
 from django.views import generic
 import datetime
+from PIL import Image
+from io import BytesIO
+from django.conf import settings
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, A4
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.views import View
+from xhtml2pdf import pisa
+from django.template.loader import render_to_string
+
 
 NAMA_MATA_KULIAH = (
         ("Cell Culture for Engineers", "Cell Culture for Engineers"),
@@ -383,7 +395,12 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             mata_kuliah_invoice = ""
             quartal_invoice = ""
 
-            jumlah_peserta = form.cleaned_data['jumlah_peserta']
+            jumlah_peserta = request.POST.get('jumlah_peserta')
+            if jumlah_peserta == "Other":
+                jumlah_peserta = request.POST.get('jumlah_peserta_lain')
+            else:
+                jumlah_peserta = request.POST.get('jumlah_peserta')
+
             if jumlah_peserta <= "3":
                 invoice += "P/"
                 jumlah_peserta_invoice = "P"
@@ -510,17 +527,21 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
                     registration_number_q4_invoice = str(registration_number_q4)
 
             if month_number >= 1 and month_number <= 3:
-                invoice += "1-22"
-                quartal_invoice = "1-22"
+                invoice += "1-"
+                quartal_invoice = "1-"
             elif month_number >= 4 and month_number <= 6:
-                invoice += "2-22"
-                quartal_invoice = "2-22"
+                invoice += "2-"
+                quartal_invoice = "2-"
             elif month_number >= 7 and month_number <= 9:
-                invoice += "3-22"
-                quartal_invoice = "3-22"
+                invoice += "3-"
+                quartal_invoice = "3-"
             elif month_number >= 10 and month_number <= 12:
-                invoice += "4-22"
-                quartal_invoice = "4-22"
+                invoice += "4-"
+                quartal_invoice = "4-"
+
+            year_number = datetime.datetime.now().year
+            invoice += "{}".format(str(year_number)[-2:])
+            quartal_invoice += "{}".format(str(year_number)[-2:])
 
             new_data.invoice = invoice
             new_data.nama_lengkap = nama_lengkap
@@ -532,7 +553,14 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             new_data.mata_kuliah = mata_kuliah
             new_data.materi = materi
             new_data.jumlah_sesi_yang_ingin_diikuti = form.cleaned_data['jumlah_sesi_yang_ingin_diikuti']
-            new_data.jumlah_peserta = form.cleaned_data['jumlah_peserta']
+            
+            jumlah_peserta = request.POST.get('jumlah_peserta')
+            if jumlah_peserta == "Other":
+                jumlah_peserta = request.POST.get('jumlah_peserta_lain')
+            else:
+                jumlah_peserta = request.POST.get('jumlah_peserta')
+            
+            new_data.jumlah_peserta = jumlah_peserta
             new_data.nama_anggota_kelompok_bagi_yang_kelompok = form.cleaned_data['nama_anggota_kelompok_bagi_yang_kelompok']
             new_data.alamat_email_anggota_kelompok = form.cleaned_data['alamat_email_anggota_kelompok']
             sesi_dan_jadwal = form.cleaned_data['sesi_dan_jadwal']
@@ -541,15 +569,26 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             sesi_materi = []
             sesi_tanggal = []
             sesi_jam = []
-            
+
             for i in range(len(sesi_dan_jadwal.split("],"))):
-                sesi_materi.append(sesi_dan_jadwal.split("],")[i].split("[")[0].replace(" ", ""))
+                sesi_materi.append(sesi_dan_jadwal.split("],")[i].split("[")[0].strip())
                 sesi_tanggal.append(sesi_dan_jadwal.split("],")[i].split("[")[1].split(",")[0])
                 sesi_jam.append(sesi_dan_jadwal.split("],")[i].split(",")[1].replace(" ", "").replace("]", ""))
 
             new_data.sesi_materi = sesi_materi
             new_data.sesi_tanggal = sesi_tanggal
             new_data.sesi_jam = sesi_jam
+
+            biaya = 0
+            if int(jumlah_peserta) <= 3:
+                biaya += (175000 * len(sesi_materi))
+            elif int(jumlah_peserta) == 4:
+                biaya += (200000 * len(sesi_materi))
+            elif int(jumlah_peserta) == 5:
+                biaya += (250000 * len(sesi_materi))
+            elif int(jumlah_peserta) >= 6:
+                biaya += ((250000 + ((int(jumlah_peserta) - 5) * 40000)) * len(sesi_materi))
+            new_data.biaya = "{:0,.0f}".format(biaya)
 
             referral_code = form.cleaned_data['referral_code']
             data_referral_code = ReferralCode.objects.all()
@@ -588,16 +627,19 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             tanggal = str(datetime.datetime.now().day) + " " + bulan + " " + str(datetime.datetime.now().year)
             new_data.tanggal = tanggal
 
-            new_data.save()
+            try:
+                new_data.save()
+            except:
+                return redirect("pendaftaran_gagal")
 
         if month_number >= 1 and month_number <= 3:
-                return redirect("invoice_q1", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
+            return redirect("send_email_q1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
         elif month_number >= 4 and month_number <= 6:
-            return redirect("invoice_q2", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+            return redirect("send_email_q2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
         elif month_number >= 7 and month_number <= 9:
-            return redirect("invoice_q3", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+            return redirect("send_email_q3", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
         elif month_number >= 10 and month_number <= 12:
-            return redirect("invoice_q4", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
+            return redirect("send_email_q4", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     else:
         form = JumlahPeserta(request.POST)
     return render(request, "FormRegistrationApp/jumlah_peserta.html", context)
@@ -627,7 +669,12 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             mata_kuliah_invoice = ""
             quartal_invoice = ""
 
-            jumlah_peserta = form.cleaned_data['jumlah_peserta']
+            jumlah_peserta = request.POST.get('jumlah_peserta')
+            if jumlah_peserta == "Other":
+                jumlah_peserta = request.POST.get('jumlah_peserta_lain')
+            else:
+                jumlah_peserta = request.POST.get('jumlah_peserta')
+
             if jumlah_peserta <= "3":
                 invoice += "P/"
                 jumlah_peserta_invoice = "P"
@@ -754,17 +801,21 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
                     registration_number_q4_invoice = str(registration_number_q4)
 
             if month_number >= 1 and month_number <= 3:
-                invoice += "1-22"
-                quartal_invoice = "1-22"
+                invoice += "1-"
+                quartal_invoice = "1-"
             elif month_number >= 4 and month_number <= 6:
-                invoice += "2-22"
-                quartal_invoice = "2-22"
+                invoice += "2-"
+                quartal_invoice = "2-"
             elif month_number >= 7 and month_number <= 9:
-                invoice += "3-22"
-                quartal_invoice = "3-22"
+                invoice += "3-"
+                quartal_invoice = "3-"
             elif month_number >= 10 and month_number <= 12:
-                invoice += "4-22"
-                quartal_invoice = "4-22"
+                invoice += "4-"
+                quartal_invoice = "4-"
+
+            year_number = datetime.datetime.now().year
+            invoice += "{}".format(str(year_number)[-2:])
+            quartal_invoice += "{}".format(str(year_number)[-2:])
 
             new_data.invoice = invoice
             new_data.nama_lengkap = nama_lengkap
@@ -777,7 +828,14 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             new_data.materi = materi
             new_data.aplikasi_simulasi = simulasi
             new_data.jumlah_sesi_yang_ingin_diikuti = form.cleaned_data['jumlah_sesi_yang_ingin_diikuti']
-            new_data.jumlah_peserta = form.cleaned_data['jumlah_peserta']
+            
+            jumlah_peserta = request.POST.get('jumlah_peserta')
+            if jumlah_peserta == "Other":
+                jumlah_peserta = request.POST.get('jumlah_peserta_lain')
+            else:
+                jumlah_peserta = request.POST.get('jumlah_peserta')
+                
+            new_data.jumlah_peserta = jumlah_peserta
             new_data.nama_anggota_kelompok_bagi_yang_kelompok = form.cleaned_data['nama_anggota_kelompok_bagi_yang_kelompok']
             new_data.alamat_email_anggota_kelompok = form.cleaned_data['alamat_email_anggota_kelompok']
             sesi_dan_jadwal = form.cleaned_data['sesi_dan_jadwal']
@@ -786,15 +844,26 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             sesi_materi = []
             sesi_tanggal = []
             sesi_jam = []
-            
+
             for i in range(len(sesi_dan_jadwal.split("],"))):
-                sesi_materi.append(sesi_dan_jadwal.split("],")[i].split("[")[0].replace(" ", ""))
+                sesi_materi.append(sesi_dan_jadwal.split("],")[i].split("[")[0].strip())
                 sesi_tanggal.append(sesi_dan_jadwal.split("],")[i].split("[")[1].split(",")[0])
                 sesi_jam.append(sesi_dan_jadwal.split("],")[i].split(",")[1].replace(" ", "").replace("]", ""))
 
             new_data.sesi_materi = sesi_materi
             new_data.sesi_tanggal = sesi_tanggal
             new_data.sesi_jam = sesi_jam
+
+            biaya = 0
+            if int(jumlah_peserta) <= 3:
+                biaya += (175000 * len(sesi_materi))
+            elif int(jumlah_peserta) == 4:
+                biaya += (200000 * len(sesi_materi))
+            elif int(jumlah_peserta) == 5:
+                biaya += (250000 * len(sesi_materi))
+            elif int(jumlah_peserta) >= 6:
+                biaya += ((250000 + ((int(jumlah_peserta) - 5) * 40000)) * len(sesi_materi))
+            new_data.biaya = "{:0,.0f}".format(biaya)
 
             referral_code = form.cleaned_data['referral_code']
             data_referral_code = ReferralCode.objects.all()
@@ -833,16 +902,19 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             tanggal = str(datetime.datetime.now().day) + " " + bulan + " " + str(datetime.datetime.now().year)
             new_data.tanggal = tanggal
 
-            new_data.save()
+            try:
+                new_data.save()
+            except:
+                return redirect("pendaftaran_gagal")
 
             if month_number >= 1 and month_number <= 3:
-                return redirect("invoice_q1", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
+                return redirect("send_email_q1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
             elif month_number >= 4 and month_number <= 6:
-                return redirect("invoice_q2", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+                return redirect("send_email_q2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
             elif month_number >= 7 and month_number <= 9:
-                return redirect("invoice_q3", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+                return redirect("send_email_q3", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
             elif month_number >= 10 and month_number <= 12:
-                return redirect("invoice_q4", jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
+                return redirect("send_email_q4", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     else:
         form = JumlahPeserta(request.POST)
     return render(request, "FormRegistrationApp/jumlah_peserta.html", context)
@@ -856,7 +928,8 @@ def get_data(request):
 
 def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
     sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
@@ -869,7 +942,8 @@ def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_i
 
 def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
     sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
@@ -882,7 +956,8 @@ def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_i
 
 def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
     sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
@@ -895,7 +970,8 @@ def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_i
 
 def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     sesi_tanggal = list(data.sesi_tanggal.replace("[", "").replace("]", "").replace("'", ""))
     sesi_jam = list(data.sesi_jam.replace("[", "").replace("]", "").replace("'", ""))
     context={
@@ -906,9 +982,10 @@ def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_i
     }
     return render(request, 'FormRegistrationApp/assignment.html', context)
 
-def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
+"""def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     context={
         'i': data,
         'sesi_materi': sesi_materi,
@@ -917,7 +994,8 @@ def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mat
 
 def invoice_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     context={
         'i': data,
         'sesi_materi': sesi_materi,
@@ -926,19 +1004,103 @@ def invoice_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mat
 
 def invoice_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     context={
         'i': data,
         'sesi_materi': sesi_materi,
     }
+    print(data.sesi_materi)
     return render(request, 'FormRegistrationApp/invoice.html', context)
 
 def invoice_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
-    sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
     context={
         'i': data,
         'sesi_materi': sesi_materi,
     }
-    return render(request, 'FormRegistrationApp/invoice.html', context)
+    return render(request, 'FormRegistrationApp/invoice.html', context)"""
 
+def create_pdf(context):
+    html = render_to_string('FormRegistrationApp/template_pdf.html', context)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return result.getvalue()
+    return None
+
+def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    subject = "Torche Class Registration Form"
+    message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
+    emails = [email]
+    pdf = create_pdf(context)
+    mail = EmailMessage(subject, message, settings.EMAIL_HOST_USER, emails)
+    mail.attach("Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice), pdf, 'application/pdf')
+    mail.send(fail_silently = False)
+    return redirect("pendaftaran_berhasil")
+
+def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    subject = "Torche Class Registration Form"
+    message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
+    emails = [email]
+    pdf = create_pdf(context)
+    mail = EmailMessage(subject, message, settings.EMAIL_HOST_USER, emails)
+    mail.attach("Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice), pdf, 'application/pdf')
+    mail.send(fail_silently = False)
+    return redirect("pendaftaran_berhasil")
+
+def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    subject = "Torche Class Registration Form"
+    message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
+    emails = [email]
+    pdf = create_pdf(context)
+    mail = EmailMessage(subject, message, settings.EMAIL_HOST_USER, emails)
+    mail.attach("Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice), pdf, 'application/pdf')
+    mail.send(fail_silently = False)
+    return redirect("pendaftaran_berhasil")
+
+def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
+    data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
+    sesi_materi = data.sesi_materi.replace("[", "").replace("]", "").replace("'", "")
+    #sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    context={
+        'i': data,
+        'sesi_materi': sesi_materi,
+    }
+    subject = "Torche Class Registration Form"
+    message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
+    emails = [email]
+    pdf = create_pdf(context)
+    mail = EmailMessage(subject, message, settings.EMAIL_HOST_USER, emails)
+    mail.attach("Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice), pdf, 'application/pdf')
+    mail.send(fail_silently = False)
+    return redirect("pendaftaran_berhasil")
+
+def pendaftaran_berhasil(request):
+    return render(request, 'FormRegistrationApp/pendaftaran_berhasil.html')
+    
+def pendaftaran_gagal(request):
+    return render(request, 'FormRegistrationApp/pendaftaran_gagal.html')

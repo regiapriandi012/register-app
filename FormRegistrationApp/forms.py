@@ -463,9 +463,9 @@ class JumlahPeserta(forms.Form):
     )
 
     jumlah_sesi_yang_ingin_diikuti = forms.CharField(max_length=254)
-    jumlah_peserta = forms.ChoiceField(choices=JUMLAH_PESERTA)
+    #jumlah_peserta = forms.ChoiceField(choices=JUMLAH_PESERTA)
     nama_anggota_kelompok_bagi_yang_kelompok = forms.CharField(max_length=1000)
     alamat_email_anggota_kelompok = forms.CharField(max_length=1000)
-    sesi_dan_jadwal = forms.CharField(max_length=254)
+    sesi_dan_jadwal = forms.CharField(widget=forms.Textarea())
     notes_for_tutor = forms.CharField(max_length=2000, required=False)
     referral_code = forms.CharField(max_length=254, required=False)

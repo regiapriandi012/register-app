@@ -5,9 +5,80 @@
   {% block content %}
   <form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" />
+    <p>Jumlah sesi yang ingin diikuti: </p>
+    {{ form.jumlah_sesi_yang_ingin_diikuti }}
+    <p>Jumlah Peserta: </p>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=1 value="1" required><label
+      for="1">1</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=2 value="2" required><label
+      for="2">2</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=3 value="3" required><label
+      for="3">3</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=4 value="4" required><label
+      for="4">4</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=5 value="5" required><label
+      for="5">5</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=6 value="6" required><label
+      for="6">6</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=7 value="7" required><label
+      for="7">7</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=8 value="8" required><label
+      for="8">8</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=9 value="9" required><label
+      for="9">9</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=10 value="10" required><label
+      for="10">10</label><br>
+      <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=11 value="Other"><label for="11">Lebih dari 10: </label><input type="text" id="lain"
+      name="jumlah_peserta_lain" /><br>
+    <p>Nama anggota kelompok bagi yang berkelompok: </p>
+    {{ form.nama_anggota_kelompok_bagi_yang_kelompok }}
+    <p>Alamat email anggota kelompok: </p>
+    {{ form.alamat_email_anggota_kelompok }}
+    <p>Sesi dan Jadwal: </p>
+    {{ form.sesi_dan_jadwal }}
+    <p>Notes for Tutor: </p>
+    {{ form.notes_for_tutor }}
+    <p>Referral Code: </p>
+    {{ form.referral_code }}
+    <br><br><input type="submit" />
   </form>
   {% endblock %}
+  <script>
+    function RadioButton() {
+      if (document.getElementById('1').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('2').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('3').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('4').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('5').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('6').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('7').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('8').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('9').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('10').checked) {
+        document.getElementById('lain').disabled = true;
+      }
+      else if (document.getElementById('11').checked) {
+        document.getElementById('lain').disabled = false;
+      }
+    }
+  </script>
 </body>
 </html>

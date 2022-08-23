@@ -56,10 +56,18 @@ urlpatterns = [
     path("invoice_assignment_q3/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q3_invoice>/<quartal_invoice>/", views.invoice_assignment_q3, name="invoice_assignment_q3"),
     path("invoice_assignment_q4/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q4_invoice>/<quartal_invoice>/", views.invoice_assignment_q4, name="invoice_assignment_q4"),
 
-    path("invoice_q1/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q1_invoice>/<quartal_invoice>/", views.invoice_q1, name="invoice_q1"),
-    path("invoice_q2/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q2_invoice>/<quartal_invoice>/", views.invoice_q2, name="invoice_q2"),
-    path("invoice_q3/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q3_invoice>/<quartal_invoice>/", views.invoice_q3, name="invoice_q3"),
-    path("invoice_q4/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q4_invoice>/<quartal_invoice>/", views.invoice_q4, name="invoice_q4"),
+    #path("invoice_q1/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q1_invoice>/<quartal_invoice>/", views.invoice_q1, name="invoice_q1"),
+    #path("invoice_q2/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q2_invoice>/<quartal_invoice>/", views.invoice_q2, name="invoice_q2"),
+    #path("invoice_q3/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q3_invoice>/<quartal_invoice>/", views.invoice_q3, name="invoice_q3"),
+    #path("invoice_q4/Inv/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q4_invoice>/<quartal_invoice>/", views.invoice_q4, name="invoice_q4"),
+    #path('get_data/', views.get_data, name='get_data'),
 
-    path('get_data/', views.get_data, name='get_data'),
+    path('pendaftaran_berhasil/<nama_lengkap>/<email>/<nomor_telefon>/<program_studi>/<universitas>/<metode_pembelajaran>/<mata_kuliah>/<materi>/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q1_invoice>/<quartal_invoice>/', views.send_email_q1, name='send_email_q1'),
+    path('pendaftaran_berhasil/<nama_lengkap>/<email>/<nomor_telefon>/<program_studi>/<universitas>/<metode_pembelajaran>/<mata_kuliah>/<materi>/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q2_invoice>/<quartal_invoice>/', views.send_email_q2, name='send_email_q2'),
+    path('pendaftaran_berhasil/<nama_lengkap>/<email>/<nomor_telefon>/<program_studi>/<universitas>/<metode_pembelajaran>/<mata_kuliah>/<materi>/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q3_invoice>/<quartal_invoice>/', views.send_email_q3, name='send_email_q3'),
+    path('pendaftaran_berhasil/<nama_lengkap>/<email>/<nomor_telefon>/<program_studi>/<universitas>/<metode_pembelajaran>/<mata_kuliah>/<materi>/<jumlah_peserta_invoice>/<metode_pembelajaran_invoice>/<mata_kuliah_invoice>/<registration_number_q4_invoice>/<quartal_invoice>/', views.send_email_q4, name='send_email_q4'),
+
+    path('pendaftaran_berhasil/', views.pendaftaran_berhasil, name='pendaftaran_berhasil'), 
+    path('pendaftaran_gagal/', views.pendaftaran_gagal, name='pendaftaran_gagal'),
+
 ]

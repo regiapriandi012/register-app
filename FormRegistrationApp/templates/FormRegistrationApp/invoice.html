@@ -566,6 +566,11 @@
             font-size: 68.001000px;
         }
 
+        .fs100 {
+            font-size: 10.5px;
+            margin: 5px;
+        }
+
         .y0 {
             bottom: -0.500000px;
         }
@@ -1069,6 +1074,11 @@
 
             .fs2 {
                 font-size: 58.668000pt;
+            }
+
+            .fs100 {
+                font-size: 18px;
+                margin: 5px;
             }
 
             .fs3 {
@@ -1696,9 +1706,10 @@
                     <div class="t m0 x11 he y1a ff1 fs2 fc2 sc0 ls0">Price</div>
                 </div>
                 <div class="c x1 y1b w6 hf">
-                    <div class="t m0 x7 he y1c ff2 fs2 fc0 sc0 ls0">{% for j in sesi_materi|slice:"0:1" %}{{ j }}{%endfor %}</div>
+                    <div class="ff2 fs100 fc0 sc0 ls0 ws5">{{ sesi_materi }}</div>
+                    <!--<div class="t m0 x7 he y1c ff2 fs2 fc0 sc0 ls0">{% for j in sesi_materi|slice:"0:1" %}{{ j }}{%endfor %}</div>
                     <div class="t m0 x7 he y1d ff2 fs2 fc0 sc0 ls0">{% for j in sesi_materi|slice:"1:2" %}{{ j }}{%endfor %}</div>
-                    <div class="t m0 x7 he y1e ff2 fs2 fc0 sc0 ls0">{% for j in sesi_materi|slice:"2:3" %}{{ j }}{%endfor %}</div>
+                    <div class="t m0 x7 he y1e ff2 fs2 fc0 sc0 ls0">{% for j in sesi_materi|slice:"2:3" %}{{ j }}{%endfor %}</div>-->
                 </div>
                 <div class="c xc y1b w7 hf">
                     <div class="t m0 x12 he y1c ff6 fs2 fc0 sc0 ls0 ws5">{{ i.jumlah_sesi_yang_ingin_diikuti }}</div>
@@ -1706,20 +1717,20 @@
                 <div class="c xe y1f w7 h10">
                     <div class="t m0 x14 he y20 ff6 fs2 fc0 sc0 ls0 ws1">{{ i.jumlah_peserta }}</div>
                 </div>
-                <div class="c x10 y22 w8 hd">
-                    <div class="t m0 x15 he y1a ff6 fs2 fc0 sc0 ls0"></div>
+                <div class="c x18 y22 wa hd">
+                    <div class="t m0 x15 he y24 ff6 fs2 fc0 sc0 ls0 ws0">Rp{{ i.biaya }}</div>
                 </div>
                 <div class="c x16 y23 w9 h11">
                     <div class="t m0 x17 h8 y24 ff2 fs2 fc1 sc0 ls0 ws0">Subtotal</div>
                 </div>
                 <div class="c x18 y23 wa h11">
-                    <div class="t m0 x6 h8 y24 ff2 fs2 fc1 sc0 ls0 ws0"></div>
+                    <div class="t m0 x15 h8 y24 ff2 fs2 fc1 sc0 ls0 ws0">Rp{{ i.biaya }}</div>
                 </div>
                 <div class="c x16 y25 w9 h11">
                     <div class="t m0 x19 ha y24 ff4 fs2 fc3 sc0 ls0 ws5">Amount Due</div>
                 </div>
                 <div class="c x18 y25 wa h11">
-                    <div class="t m0 x1a ha y24 ff4 fs2 fc3 sc0 ls0 ws2"></div>
+                    <div class="t m0 x15 ha y24 ff4 fs2 fc3 sc0 ls0 ws2">Rp{{ i.biaya }}</div>
                 </div>
                 <div class="c x1 y26 wb h12">
                     <div class="t m0 x7 h13 y27 ff1 fs4 fc0 sc0 ls0 ws5">Terms &amp; Conditions</div>
