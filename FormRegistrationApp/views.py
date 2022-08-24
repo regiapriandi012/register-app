@@ -919,12 +919,21 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
         form = JumlahPeserta(request.POST)
     return render(request, "FormRegistrationApp/jumlah_peserta.html", context)
 
-def get_data(request):
+"""def get_data(request):
     data = RegistrationData.objects.all()
     context={
       'my_data':data,
     }
-    return render(request, 'FormRegistrationApp/get_data.html', context)
+    return render(request, 'FormRegistrationApp/get_data.html', context)"""
+
+def create_pdf_assignment(template_src, context_dict={}):
+    template = get_template(template_src)
+    html  = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
 
 def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice))
@@ -938,7 +947,11 @@ def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_i
         'sesi_tanggal': sesi_tanggal,
         'sesi_jam': sesi_jam
     }
-    return render(request, 'FormRegistrationApp/assignment.html', context)
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="Inv/{}/{}/{}/{}/{}.pdf"'.format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
+    return response
+    #return render(request, 'FormRegistrationApp/template_pdf_assignment.html', context)
 
 def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice))
@@ -952,7 +965,11 @@ def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_i
         'sesi_tanggal': sesi_tanggal,
         'sesi_jam': sesi_jam
     }
-    return render(request, 'FormRegistrationApp/assignment.html', context)
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="Inv/{}/{}/{}/{}/{}.pdf"'.format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+    return response
+    #return render(request, 'FormRegistrationApp/template_pdf_assignment.html', context)
 
 def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
@@ -966,7 +983,11 @@ def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_i
         'sesi_tanggal': sesi_tanggal,
         'sesi_jam': sesi_jam
     }
-    return render(request, 'FormRegistrationApp/assignment.html', context)
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="Inv/{}/{}/{}/{}/{}.pdf"'.format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+    return response
+    #return render(request, 'FormRegistrationApp/template_pdf_assignment.html', context)
 
 def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
@@ -980,7 +1001,11 @@ def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_i
         'sesi_tanggal': sesi_tanggal,
         'sesi_jam': sesi_jam
     }
-    return render(request, 'FormRegistrationApp/assignment.html', context)
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    #response['Content-Disposition'] = 'attachment; filename="Inv/{}/{}/{}/{}/{}.pdf"'.format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
+    return response
+    #return render(request, 'FormRegistrationApp/template_pdf_assignment.html', context)
 
 """def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
@@ -1039,7 +1064,7 @@ def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi, un
         'i': data,
         'sesi_materi': sesi_materi,
     }
-    subject = "Torche Class Registration Form"
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
@@ -1056,7 +1081,7 @@ def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi, un
         'i': data,
         'sesi_materi': sesi_materi,
     }
-    subject = "Torche Class Registration Form"
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
@@ -1073,7 +1098,7 @@ def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi, un
         'i': data,
         'sesi_materi': sesi_materi,
     }
-    subject = "Torche Class Registration Form"
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
@@ -1090,7 +1115,7 @@ def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi, un
         'i': data,
         'sesi_materi': sesi_materi,
     }
-    subject = "Torche Class Registration Form"
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
