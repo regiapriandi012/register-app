@@ -8,6 +8,7 @@ class RegistrationData(models.Model):
     nomor_telefon = models.CharField(max_length=254)
     program_studi = models.CharField(max_length=254)
     universitas = models.CharField(max_length=254)
+    tentang_torche = models.CharField(max_length=254)
     metode_pembelajaran = models.CharField(max_length=254)
     mata_kuliah = models.CharField(max_length=254)
     materi = models.CharField(max_length=5000)
@@ -22,6 +23,7 @@ class RegistrationData(models.Model):
     biaya = models.CharField(max_length=254)
     notes_for_tutor = models.CharField(max_length=5000)
     referral_code = models.CharField(max_length=254)
+    file_upload = models.FileField(upload_to='documents/%Y/%m/%d')
 
 class ReferralCode(models.Model):
     referral_code = models.CharField(max_length=254)

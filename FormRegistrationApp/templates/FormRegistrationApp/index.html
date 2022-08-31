@@ -34,10 +34,16 @@
       Teknologi Sepuluh Nopember</label><br>
     <input type="radio" onclick="RadioButton2()" name="universitas" id=11 value="Other"><label for="11">Yang Lain: </label><input type="text" id="b"
       name="universitas_other" /><br>
-    <p>Metode Pembelajaran: </p>
-    {{ form.metode_pembelajaran }}
-    <p>Mata Kuliah: </p>
-    {{ form.mata_kuliah }}
+
+    <p>Darimana anda mengetahui tentang Torche: </p>
+    <input type="checkbox" name="tentang_torche" id=21 value="Instagram"><label for="21">Instagram</label><br>
+    <input type="checkbox" name="tentang_torche" id=22 value="Facebook"><label for="22">Facebook</label><br>
+    <input type="checkbox" name="tentang_torche" id=23 value="Tiktok"><label for="23">Tiktok</label><br>
+    <input type="checkbox" name="tentang_torche" id=24 value="Linkedin"><label for="24">Linkedin</label><br>
+    <input type="checkbox" name="tentang_torche" id=25 value="Line"><label for="25">Line</label><br>
+    <input type="checkbox" name="tentang_torche" id=26 value="Teman atau Keluarga"><label for="26">Teman atau Keluarga</label><br>
+    <input type="checkbox" name="tentang_torche" id=27 value="Other" ><label for="27">Yang Lain: </label><input type="text" id="c" name="tentang_torche_other"/><br>
+
     <br><input type="submit" />
   </form>
   {% endblock %}

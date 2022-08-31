@@ -3,10 +3,8 @@
 <body>
   <h1>Anggota Kelompok & Jadwal Belajar</h1>
   {% block content %}
-  <form action="" method="POST">
+  <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>Jumlah sesi yang ingin diikuti: </p>
-    {{ form.jumlah_sesi_yang_ingin_diikuti }}
     <p>Jumlah Peserta: </p>
       <input type="radio" onclick="RadioButton()" name="jumlah_peserta" id=1 value="1" required><label
       for="1">1</label><br>
@@ -40,6 +38,8 @@
     {{ form.notes_for_tutor }}
     <p>Referral Code: </p>
     {{ form.referral_code }}
+    <p>dsfsfs: </p>
+    {{ form.mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas }}
     <br><br><input type="submit" />
   </form>
   {% endblock %}

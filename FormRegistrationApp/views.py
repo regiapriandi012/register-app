@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
-from .forms import CourseRegistrationForm, SessionCSEForm, SessionCEMForm, SessionCETForm, SessionCPSForm, SessionCREForm, SessionEECForm, SessionFACForm, SessionFCAForm, SessionFCHForm, SessionFHTForm, SessionFMTForm, SessionFPMForm, SessionFP1Form, SessionFP2Form, SessionMEBForm, SessionNCEForm, SessionOCEForm, SessionPCDForm, SessionPDDForm, SessionPEDForm, SessionPPDForm, SessionTPHForm, JumlahPeserta
+from .forms import CourseRegistrationForm, SessionCSEForm, SessionCEMForm, SessionCETForm, SessionCPSForm, SessionCREForm, SessionEECForm, SessionFACForm, SessionFCAForm, SessionFCHForm, SessionFHTForm, SessionFMTForm, SessionFPMForm, SessionFP1Form, SessionFP2Form, SessionMEBForm, SessionNCEForm, SessionOCEForm, SessionPCDForm, SessionPDDForm, SessionPEDForm, SessionPPDForm, SessionTPHForm, JumlahPeserta, MetodePembelajaranForm, AnggotaKelompokForm
 from django.http import HttpResponseRedirect
 from .models import RegistrationData, ReferralCode
 from django.views import generic
@@ -16,7 +16,6 @@ from django.template.loader import get_template
 from django.views import View
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
-
 
 NAMA_MATA_KULIAH = (
         ("Cell Culture for Engineers", "Cell Culture for Engineers"),
@@ -66,8 +65,7 @@ def home_view(request):
             #universitas = form.cleaned_data['universitas']
             program_studi = request.POST.get('program_studi')
             universitas = request.POST.get('universitas')
-            metode_pembelajaran = form.cleaned_data['metode_pembelajaran']
-            mata_kuliah = form.cleaned_data['mata_kuliah']
+            tentang_torche = str(request.POST.getlist('tentang_torche')).replace("Other", request.POST.get('tentang_torche_other'))
 
             if program_studi == "Other":
                 program_studi = request.POST.get('program_studi_other')
@@ -79,301 +77,327 @@ def home_view(request):
             else:
                 universitas = request.POST.get('universitas')
 
-            if mata_kuliah == NAMA_MATA_KULIAH[0][0]:
-                return redirect("session_cse", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[1][0]:
-                return redirect("session_cem", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[2][0]:
-                return redirect("session_cet", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[3][0]:
-                return redirect("session_cps", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[4][0]:
-                return redirect("session_cre", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[5][0]:
-                return redirect("session_eec", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[6][0]:
-                return redirect("session_fac", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[7][0]:
-                return redirect("session_fca", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[8][0]:
-                return redirect("session_fch", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[9][0]:
-                return redirect("session_fht", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[10][0]:
-                return redirect("session_fmt", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[11][0]:
-                return redirect("session_fpm", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[12][0]:
-                return redirect("session_fp1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[13][0]:
-                return redirect("session_fp2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[14][0]:
-                return redirect("session_meb", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[15][0]:
-                return redirect("session_nce", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[16][0]:
-                return redirect("session_oce", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[17][0]:
-                return redirect("session_pcd", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[18][0]:
-                return redirect("session_pdd", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[19][0]:
-                return redirect("session_ped", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
-            elif mata_kuliah == NAMA_MATA_KULIAH[20][0]:
-                return redirect("session_ppd", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)  
-            elif mata_kuliah == NAMA_MATA_KULIAH[21][0]:
-                return redirect("session_tph", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah)
+            return redirect("metode_pembelajaran", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche)
     else:
         form = CourseRegistrationForm(request.POST)
     return render(request, "FormRegistrationApp/index.html", context)
 
-def session_cse(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def metode_pembelajaran(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche):
+    context = {'form': MetodePembelajaranForm()}
+    if request.method == 'POST':
+        form = MetodePembelajaranForm(request.POST)
+        if form.is_valid():
+            metode_pembelajaran = form.cleaned_data['metode_pembelajaran']
+            mata_kuliah = form.cleaned_data['mata_kuliah']
+            jumlah_sesi_yang_ingin_diikuti = form.cleaned_data['jumlah_sesi_yang_ingin_diikuti']
+
+            if mata_kuliah == NAMA_MATA_KULIAH[0][0]:
+                return redirect("session_cse", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[1][0]:
+                return redirect("session_cem", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[2][0]:
+                return redirect("session_cet", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[3][0]:
+                return redirect("session_cps", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[4][0]:
+                return redirect("session_cre", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[5][0]:
+                return redirect("session_eec", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[6][0]:
+                return redirect("session_fac", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[7][0]:
+                return redirect("session_fca", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[8][0]:
+                return redirect("session_fch", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[9][0]:
+                return redirect("session_fht", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[10][0]:
+                return redirect("session_fmt", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[11][0]:
+                return redirect("session_fpm", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[12][0]:
+                return redirect("session_fp1", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[13][0]:
+                return redirect("session_fp2", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[14][0]:
+                return redirect("session_meb", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[15][0]:
+                return redirect("session_nce", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[16][0]:
+                return redirect("session_oce", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[17][0]:
+                return redirect("session_pcd", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[18][0]:
+                return redirect("session_pdd", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[19][0]:
+                return redirect("session_ped", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+            elif mata_kuliah == NAMA_MATA_KULIAH[20][0]:
+                return redirect("session_ppd", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)  
+            elif mata_kuliah == NAMA_MATA_KULIAH[21][0]:
+                return redirect("session_tph", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti)
+    else:
+        form = MetodePembelajaranForm(request.POST)
+    return render(request, "FormRegistrationApp/metode_pembelajaran.html", context)
+
+def session_cse(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionCSEForm()}
     if request.method == 'POST':
         form = SessionCSEForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_cse", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_cse", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionCSEForm(request.POST)
     return render(request, "FormRegistrationApp/session_cse.html", context)
 
-def session_cem(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_cem(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionCEMForm()}
     if request.method == 'POST':
         form = SessionCEMForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_cem", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_cem", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionCEMForm(request.POST)
     return render(request, "FormRegistrationApp/session_cem.html", context)
 
-def session_cet(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_cet(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionCETForm()}
     if request.method == 'POST':
         form = SessionCETForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_cet", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_cet", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionCETForm(request.POST)
     return render(request, "FormRegistrationApp/session_cet.html", context)
 
-def session_cps(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_cps(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionCPSForm()}
     if request.method == 'POST':
         form = SessionCPSForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
             simulasi = form.cleaned_data['simulasi']
-            return redirect("jumlah_peserta_session_cps", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi)
+            return redirect("jumlah_peserta_session_cps", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi, simulasi)
     else:
         form = SessionCPSForm(request.POST)
     return render(request, "FormRegistrationApp/session_cps.html", context)
 
-def session_cre(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_cre(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionCREForm()}
     if request.method == 'POST':
         form = SessionCREForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_cre", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_cre", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionCREForm(request.POST)
     return render(request, "FormRegistrationApp/session_cre.html", context)
 
-def session_eec(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_eec(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionEECForm()}
     if request.method == 'POST':
         form = SessionEECForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_eec", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_eec", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionEECForm(request.POST)
     return render(request, "FormRegistrationApp/session_eec.html", context)
 
-def session_fac(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fac(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFACForm()}
     if request.method == 'POST':
         form = SessionFACForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fac", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fac", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFACForm(request.POST)
     return render(request, "FormRegistrationApp/session_fac.html", context)
 
-def session_fca(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fca(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFCAForm()}
     if request.method == 'POST':
         form = SessionFCAForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fca", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fca", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFCAForm(request.POST)
     return render(request, "FormRegistrationApp/session_fca.html", context)
 
-def session_fch(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fch(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFCHForm()}
     if request.method == 'POST':
         form = SessionFCHForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fch", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fch", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFCHForm(request.POST)
     return render(request, "FormRegistrationApp/session_fch.html", context)
 
-def session_fht(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fht(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFHTForm()}
     if request.method == 'POST':
         form = SessionFHTForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fht", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fht", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFHTForm(request.POST)
     return render(request, "FormRegistrationApp/session_fht.html", context)
 
-def session_fmt(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fmt(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFMTForm()}
     if request.method == 'POST':
         form = SessionFMTForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fmt", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fmt", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFMTForm(request.POST)
     return render(request, "FormRegistrationApp/session_fmt.html", context)
 
-def session_fpm(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fpm(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFPMForm()}
     if request.method == 'POST':
         form = SessionFPMForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fpm", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fpm", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFPMForm(request.POST)
     return render(request, "FormRegistrationApp/session_fpm.html", context)
 
-def session_fp1(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fp1(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFP1Form()}
     if request.method == 'POST':
         form = SessionFP1Form(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fp1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fp1", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFP1Form(request.POST)
     return render(request, "FormRegistrationApp/session_fp1.html", context)
 
-def session_fp2(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_fp2(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionFP2Form()}
     if request.method == 'POST':
         form = SessionFP2Form(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_fp2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_fp2", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionFP2Form(request.POST)
     return render(request, "FormRegistrationApp/session_fp2.html", context)
 
-def session_meb(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_meb(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionMEBForm()}
     if request.method == 'POST':
         form = SessionMEBForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_meb", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_meb", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionMEBForm(request.POST)
     return render(request, "FormRegistrationApp/session_meb.html", context)
 
-def session_nce(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_nce(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionNCEForm()}
     if request.method == 'POST':
         form = SessionNCEForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_nce", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_nce", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionNCEForm(request.POST)
     return render(request, "FormRegistrationApp/session_nce.html", context)
 
-def session_oce(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_oce(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionOCEForm()}
     if request.method == 'POST':
         form = SessionOCEForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_oce", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_oce", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionOCEForm(request.POST)
     return render(request, "FormRegistrationApp/session_oce.html", context)
 
-def session_pcd(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_pcd(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionPCDForm()}
     if request.method == 'POST':
         form = SessionPCDForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_pcd", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_pcd", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionPCDForm(request.POST)
     return render(request, "FormRegistrationApp/session_pcd.html", context)
 
-def session_pdd(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_pdd(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionPDDForm()}
     if request.method == 'POST':
         form = SessionPDDForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_pdd", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_pdd", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionPDDForm(request.POST)
     return render(request, "FormRegistrationApp/session_pdd.html", context)
 
-def session_ped(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_ped(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionPEDForm()}
     if request.method == 'POST':
         form = SessionPEDForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_ped", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_ped", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionPEDForm(request.POST)
     return render(request, "FormRegistrationApp/session_ped.html", context)
 
-def session_ppd(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_ppd(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionPPDForm()}
     if request.method == 'POST':
         form = SessionPPDForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_ppd", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_ppd", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionPPDForm(request.POST)
     return render(request, "FormRegistrationApp/session_ppd.html", context)
 
-def session_tph(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah):
+def session_tph(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti):
     context = {'form': SessionTPHForm()}
     if request.method == 'POST':
         form = SessionTPHForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
-            return redirect("jumlah_peserta_session_tph", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi)
+            return redirect("jumlah_peserta_session_tph", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
     else:
         form = SessionTPHForm(request.POST)
     return render(request, "FormRegistrationApp/session_tph.html", context)
 
-def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi):
+def anggota_kelompok(request):
+    context = {'form': AnggotaKelompokForm()}
+    if request.method == 'POST':
+        form = AnggotaKelompokForm(request.POST)
+        if form.is_valid():
+            nama_anggota_kelompok_bagi_yang_kelompok = form.cleaned_data['nama_anggota_kelompok_bagi_yang_kelompok']
+            alamat_email_anggota_kelompok = form.cleaned_data['alamat_email_anggota_kelompok']
+            return redirect("jumlah_peserta_session_tph", nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi)
+    else:
+        form = AnggotaKelompokForm(request.POST)
+    return render(request, "FormRegistrationApp/session_tph.html", context)
+
+def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi):
     context = {'form': JumlahPeserta()}
     if request.method == 'POST':
-        form = JumlahPeserta(request.POST)
+        form = JumlahPeserta(request.POST, request.FILES)
         if form.is_valid():
             new_data = RegistrationData()
 
@@ -552,7 +576,8 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             new_data.metode_pembelajaran = metode_pembelajaran
             new_data.mata_kuliah = mata_kuliah
             new_data.materi = materi
-            new_data.jumlah_sesi_yang_ingin_diikuti = form.cleaned_data['jumlah_sesi_yang_ingin_diikuti']
+            new_data.jumlah_sesi_yang_ingin_diikuti = jumlah_sesi_yang_ingin_diikuti
+            new_data.tentang_torche = tentang_torche
             
             jumlah_peserta = request.POST.get('jumlah_peserta')
             if jumlah_peserta == "Other":
@@ -627,27 +652,30 @@ def jumlah_peserta(request, nama_lengkap, email, nomor_telefon, program_studi, u
             tanggal = str(datetime.datetime.now().day) + " " + bulan + " " + str(datetime.datetime.now().year)
             new_data.tanggal = tanggal
 
+            file_upload = request.FILES['mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas']
+            new_data.file_upload = file_upload
+
             try:
                 new_data.save()
+
+                if month_number >= 1 and month_number <= 3:
+                    return redirect("send_email_q1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
+                elif month_number >= 4 and month_number <= 6:
+                    return redirect("send_email_q2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+                elif month_number >= 7 and month_number <= 9:
+                    return redirect("send_email_q3", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+                elif month_number >= 10 and month_number <= 12:
+                    return redirect("send_email_q4", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
             except:
                 return redirect("pendaftaran_gagal")
-
-        if month_number >= 1 and month_number <= 3:
-            return redirect("send_email_q1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
-        elif month_number >= 4 and month_number <= 6:
-            return redirect("send_email_q2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
-        elif month_number >= 7 and month_number <= 9:
-            return redirect("send_email_q3", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
-        elif month_number >= 10 and month_number <= 12:
-            return redirect("send_email_q4", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     else:
         form = JumlahPeserta(request.POST)
     return render(request, "FormRegistrationApp/jumlah_peserta.html", context)
 
-def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi):
+def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, tentang_torche, metode_pembelajaran, mata_kuliah, jumlah_sesi_yang_ingin_diikuti, materi, simulasi):
     context = {'form': JumlahPeserta()}
     if request.method == 'POST':
-        form = JumlahPeserta(request.POST)
+        form = JumlahPeserta(request.POST, request.FILES)
         if form.is_valid():
             new_data = RegistrationData()
 
@@ -827,15 +855,16 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             new_data.mata_kuliah = mata_kuliah
             new_data.materi = materi
             new_data.aplikasi_simulasi = simulasi
-            new_data.jumlah_sesi_yang_ingin_diikuti = form.cleaned_data['jumlah_sesi_yang_ingin_diikuti']
+            new_data.jumlah_sesi_yang_ingin_diikuti = jumlah_sesi_yang_ingin_diikuti
+            new_data.tentang_torche = tentang_torche
             
             jumlah_peserta = request.POST.get('jumlah_peserta')
             if jumlah_peserta == "Other":
                 jumlah_peserta = request.POST.get('jumlah_peserta_lain')
             else:
                 jumlah_peserta = request.POST.get('jumlah_peserta')
-                
             new_data.jumlah_peserta = jumlah_peserta
+
             new_data.nama_anggota_kelompok_bagi_yang_kelompok = form.cleaned_data['nama_anggota_kelompok_bagi_yang_kelompok']
             new_data.alamat_email_anggota_kelompok = form.cleaned_data['alamat_email_anggota_kelompok']
             sesi_dan_jadwal = form.cleaned_data['sesi_dan_jadwal']
@@ -902,29 +931,32 @@ def jumlah_peserta_simulasi(request, nama_lengkap, email, nomor_telefon, program
             tanggal = str(datetime.datetime.now().day) + " " + bulan + " " + str(datetime.datetime.now().year)
             new_data.tanggal = tanggal
 
+            file_upload = request.FILES['mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas']
+            new_data.file_upload = file_upload
+
             try:
                 new_data.save()
+
+                if month_number >= 1 and month_number <= 3:
+                    return redirect("send_email_q1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
+                elif month_number >= 4 and month_number <= 6:
+                    return redirect("send_email_q2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+                elif month_number >= 7 and month_number <= 9:
+                    return redirect("send_email_q3", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+                elif month_number >= 10 and month_number <= 12:
+                    return redirect("send_email_q4", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
             except:
                 return redirect("pendaftaran_gagal")
-
-            if month_number >= 1 and month_number <= 3:
-                return redirect("send_email_q1", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
-            elif month_number >= 4 and month_number <= 6:
-                return redirect("send_email_q2", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
-            elif month_number >= 7 and month_number <= 9:
-                return redirect("send_email_q3", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
-            elif month_number >= 10 and month_number <= 12:
-                return redirect("send_email_q4", nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran, mata_kuliah, materi, simulasi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     else:
         form = JumlahPeserta(request.POST)
     return render(request, "FormRegistrationApp/jumlah_peserta.html", context)
 
-"""def get_data(request):
+def get_data(request):
     data = RegistrationData.objects.all()
     context={
       'my_data':data,
     }
-    return render(request, 'FormRegistrationApp/get_data.html', context)"""
+    return render(request, 'FormRegistrationApp/get_data.html', context)
 
 def create_pdf_assignment(template_src, context_dict={}):
     template = get_template(template_src)

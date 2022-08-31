@@ -4,6 +4,37 @@ from .models import RegistrationData
 from django.core.validators import RegexValidator
 
 class CourseRegistrationForm(forms.Form):
+    """PROGRAM_STUDI = (
+        ("S1 Teknik Kimia", "S1 Teknik Kimia"),
+        ("S1 Teknologi Bioproses", "S1 Teknologi Bioproses"),
+        ("S2 Teknik Kimia", "S2 Teknik Kimia"),
+        ("S3 Teknik Kimia", "S3 Teknik Kimia"),
+        ("Other", "Other")
+    )"""
+
+    """UNIVERSITAS = (
+        ("Universitas Indonesia", "Universitas Indonesia"),
+        ("Universitas Muhammadiyah Surakarta", "Universitas Muhammadiyah Surakarta"),
+        ("Universitas Sriwijaya", "Universitas Sriwijaya"),
+        ("Institut Teknologi Bandung", "Institut Teknologi Bandung"),
+        ("Institut Teknologi Sepuluh Nopember", "Institut Teknologi Sepuluh Nopember")
+    )"""
+
+    email = forms.EmailField(max_length=254)
+    nama_lengkap = forms.CharField(max_length=254)
+    nomor_telefon = forms.CharField(max_length=254)
+    #program_studi = forms.ChoiceField(widget=forms.RadioSelect, choices=PROGRAM_STUDI)
+    #universitas = forms.ChoiceField(widget=forms.RadioSelect, choices=UNIVERSITAS)
+
+class MetodePembelajaranForm(forms.Form):
+    METODE_PEMBELAJARAN = (
+        ("Kelas Konsultasi", "Kelas Konsultasi"),
+        ("Kelas Materi", "Kelas Materi"),
+        ("Persiapan Ujian", "Persiapan Ujian"),
+        ("Konsultasi Perlombaan", "Konsultasi Perlombaan"),
+        ("Konsultasi Skripsi atau Tesis", "Konsultasi Skripsi atau Tesis"),
+    )
+
     NAMA_MATA_KULIAH = (
         ("Cell Culture for Engineers", "Cell Culture for Engineers"),
         ("Chemical Engineering Mathematics", "Chemical Engineering Mathematics"),
@@ -29,37 +60,9 @@ class CourseRegistrationForm(forms.Form):
         ("Transport Phenomena", "Transport Phenomena")
     )
 
-    """PROGRAM_STUDI = (
-        ("S1 Teknik Kimia", "S1 Teknik Kimia"),
-        ("S1 Teknologi Bioproses", "S1 Teknologi Bioproses"),
-        ("S2 Teknik Kimia", "S2 Teknik Kimia"),
-        ("S3 Teknik Kimia", "S3 Teknik Kimia"),
-        ("Other", "Other")
-    )"""
-
-    """UNIVERSITAS = (
-        ("Universitas Indonesia", "Universitas Indonesia"),
-        ("Universitas Muhammadiyah Surakarta", "Universitas Muhammadiyah Surakarta"),
-        ("Universitas Sriwijaya", "Universitas Sriwijaya"),
-        ("Institut Teknologi Bandung", "Institut Teknologi Bandung"),
-        ("Institut Teknologi Sepuluh Nopember", "Institut Teknologi Sepuluh Nopember")
-    )"""
-
-    METODE_PEMBELAJARAN = (
-        ("Kelas Konsultasi", "Kelas Konsultasi"),
-        ("Kelas Materi", "Kelas Materi"),
-        ("Persiapan Ujian", "Persiapan Ujian"),
-        ("Konsultasi Perlombaan", "Konsultasi Perlombaan"),
-        ("Konsultasi Skripsi atau Tesis", "Konsultasi Skripsi atau Tesis"),
-    )
-
-    email = forms.EmailField(max_length=254)
-    nama_lengkap = forms.CharField(max_length=254)
-    nomor_telefon = forms.CharField(max_length=254)
-    #program_studi = forms.ChoiceField(widget=forms.RadioSelect, choices=PROGRAM_STUDI)
-    #universitas = forms.ChoiceField(widget=forms.RadioSelect, choices=UNIVERSITAS)
     metode_pembelajaran = forms.ChoiceField(widget=forms.RadioSelect, choices=METODE_PEMBELAJARAN)
     mata_kuliah = forms.ChoiceField(widget=forms.RadioSelect, choices=NAMA_MATA_KULIAH)
+    jumlah_sesi_yang_ingin_diikuti = forms.CharField(max_length=254)
 
 # Cell Culture for Engineers
 class SessionCSEForm(forms.Form):
@@ -462,10 +465,14 @@ class JumlahPeserta(forms.Form):
         ("Lebih dari 10", "Lebih dari 10")
     )
 
-    jumlah_sesi_yang_ingin_diikuti = forms.CharField(max_length=254)
     #jumlah_peserta = forms.ChoiceField(choices=JUMLAH_PESERTA)
     nama_anggota_kelompok_bagi_yang_kelompok = forms.CharField(max_length=1000)
     alamat_email_anggota_kelompok = forms.CharField(max_length=1000)
     sesi_dan_jadwal = forms.CharField(widget=forms.Textarea())
     notes_for_tutor = forms.CharField(max_length=2000, required=False)
     referral_code = forms.CharField(max_length=254, required=False)
+    mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas = forms.FileField()
+
+class AnggotaKelompokForm(forms.Form):
+    nama_anggota_kelompok_bagi_yang_kelompok = forms.CharField(max_length=1000)
+    alamat_email_anggota_kelompok = forms.CharField(max_length=1000)
