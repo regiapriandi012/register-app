@@ -22,7 +22,12 @@ class CourseRegistrationForm(forms.Form):
 
     email = forms.EmailField(max_length=254)
     nama_lengkap = forms.CharField(max_length=254)
-    nomor_telefon = forms.CharField(max_length=254)
+    nomor_telefon = forms.CharField(max_length=254, validators=[
+            RegexValidator(
+                '^(\w+\d+|\d+\w+)+$',
+                message="Input nomor telefon yang sesuai"
+            )
+        ])
     #program_studi = forms.ChoiceField(widget=forms.RadioSelect, choices=PROGRAM_STUDI)
     #universitas = forms.ChoiceField(widget=forms.RadioSelect, choices=UNIVERSITAS)
 
@@ -461,17 +466,16 @@ class JumlahPeserta(forms.Form):
         ("7", "7"),
         ("8", "8"),
         ("9", "9"),
-        ("10", "10"),
-        ("Lebih dari 10", "Lebih dari 10")
+        ("10", "10")
     )
 
-    #jumlah_peserta = forms.ChoiceField(choices=JUMLAH_PESERTA)
+    jumlah_peserta = forms.ChoiceField(choices=JUMLAH_PESERTA)
     nama_anggota_kelompok_bagi_yang_kelompok = forms.CharField(max_length=1000)
     alamat_email_anggota_kelompok = forms.CharField(max_length=1000)
     sesi_dan_jadwal = forms.CharField(widget=forms.Textarea())
     notes_for_tutor = forms.CharField(max_length=2000, required=False)
     referral_code = forms.CharField(max_length=254, required=False)
-    mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas = forms.FileField()
+    mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas = forms.FileField(required=False)
 
 class AnggotaKelompokForm(forms.Form):
     nama_anggota_kelompok_bagi_yang_kelompok = forms.CharField(max_length=1000)

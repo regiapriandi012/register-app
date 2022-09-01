@@ -75,13 +75,25 @@ WSGI_APPLICATION = 'FormRegistration.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}"""
+
+DATABASES = {
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'registrationdatabase',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority'
+            }  
+        }
 }
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -129,3 +141,9 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "regiapriandi024@gmail.com"
 EMAIL_HOST_PASSWORD = "iupefqiacjmpmrqc"
+
+import mongoengine
+mongoengine.connect(db='registrationdatabase',
+    username='regiapriandi',
+    password='Sinheul24.',
+    host='mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority')
