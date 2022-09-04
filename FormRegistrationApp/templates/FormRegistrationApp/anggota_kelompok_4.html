@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>Anggota Kelompok Belajar</h1>
+  {% block content %}
+  <form action="" method="POST">
+    {% csrf_token %}
+          <p>Email Anggota 4: </p>
+        <input type="email" name="email_4" required>
+    <p>Nama Lengkap Anggota 4: </p>
+        <input type="text" name="nama_lengkap_4" required>
+    <p>Nomor Whatsapp Anggota 4: </p>
+        <input type="tel" name="nomor_telefon_4" placeholder="Contoh. 087798542290" pattern="^\d{12}$" required>
+    <p>Akun Discord Anggota 4: </p>
+        <input type="text" name="akun_discord_4" required><br>
+    <br><input type="submit" />
+  </form>
+  {% endblock %}
+</body>
+
+</html>

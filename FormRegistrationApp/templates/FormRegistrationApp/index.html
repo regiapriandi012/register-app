@@ -7,11 +7,11 @@
   <form action="" method="POST">
     {% csrf_token %}
     <p>Email: </p>
-    {{ form.email }}
+    <input type="email" name="email" required>
     <p>Nama Lengkap: </p>
-    {{ form.nama_lengkap }}
-    <p>Nomer Telefon: </p>
-    {{ form.nomor_telefon }}
+    <input type="text" name="nama_lengkap" required>
+    <p>Nomor Telefon: </p>
+    <input type="tel" name="nomor_telefon" placeholder="Contoh. 087798532290" pattern="^\d{12}$" required>
     <p>Program Studi: </p>
     <input type="radio" onclick="RadioButton()" name="program_studi" id=1 value="S1 Teknik Kimia" required><label
       for="1">S1 Teknik Kimia</label><br>
@@ -21,17 +21,19 @@
     <input type="radio" onclick="RadioButton()" name="program_studi" id=4 value="S3 Teknik Kimia"><label for="4">S3 Teknik Kimia</label><br>
     <input type="radio" onclick="RadioButton()" name="program_studi" id=5 value="Other" ><label for="5">Yang Lain: </label><input type="text" id="a"
       name="program_studi_other" /><br>
+    <p>Angkatan: </p>
+    <input type="text" name="angkatan" placeholder="Contoh. 2015" required>
     <p>Universitas: </p>
     <input type="radio" onclick="RadioButton2()" name="universitas" id=6 value="Universitas Indonesia" required><label for="6">Universitas
       Indonesia</label><br>
+      <input type="radio" onclick="RadioButton2()" name="universitas" id=9 value="Institut Teknologi Bandung"><label for="9">Institut Teknologi
+      Bandung</label><br>
+      <input type="radio" onclick="RadioButton2()" name="universitas" id=10 value="Institut Teknologi Sepuluh Nopember"><label for="10">Institut
+      Teknologi Sepuluh Nopember</label><br>
     <input type="radio" onclick="RadioButton2()" name="universitas" id=7 value="Universitas Muhammadiyah Surakarta"><label for="7">Universitas
       Muhammadiyah Surakarta</label><br>
     <input type="radio" onclick="RadioButton2()" name="universitas" id=8 value="Universitas Sriwijaya"><label for="8">Universitas
-      Indonesia</label><br>
-    <input type="radio" onclick="RadioButton2()" name="universitas" id=9 value="Institut Teknologi Bandung"><label for="9">Institut Teknologi
-      Bandung</label><br>
-    <input type="radio" onclick="RadioButton2()" name="universitas" id=10 value="Institut Teknologi Sepuluh Nopember"><label for="10">Institut
-      Teknologi Sepuluh Nopember</label><br>
+      Sriwijaya</label><br>
     <input type="radio" onclick="RadioButton2()" name="universitas" id=11 value="Other"><label for="11">Yang Lain: </label><input type="text" id="b"
       name="universitas_other" /><br>
 

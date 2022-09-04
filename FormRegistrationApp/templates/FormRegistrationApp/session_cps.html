@@ -1,13 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <body>
-  <h1>Chemical Process Simulation</h1>
-  {% block content %}
-  <form action="" method="POST">
+<h1>Course Register</h1>
+{% block content %}
+<form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" />
-  </form>
-  {% endblock %}
+    <p>Materi: </p>
+    <input type="checkbox" name="materi" id=1 value="HYSYS Thermodynamics and Streams"><label for="1">HYSYS Thermodynamics and Streams</label><br>
+    <input type="checkbox" name="materi" id=2 value="Heat Tranfer Operations"><label for="2">Heat Tranfer Operations</label><br>
+    <input type="checkbox" name="materi" id=3 value="Piping Operations"><label for="3">Piping Operations</label><br>
+    <input type="checkbox" name="materi" id=5 value="Rotating Equipment"><label for="5">Rotating Equipment</label><br>
+    <input type="checkbox" name="materi" id=6 value="Separation Operations"><label for="6">Separation Operations</label><br>
+    <input type="checkbox" name="materi" id=7 value="Column Operations"><label for="7">Column Operations</label><br>
+    <input type="checkbox" name="materi" id=8 value="Solid Separation Operations"><label for="8">Solid Separation Operations</label><br>
+    <input type="checkbox" name="materi" id=9 value="Reactor Operations"><label for="9">Reactor Operations</label><br>
+    <input type="checkbox" name="materi" id=10 value="Logical Operations"><label for="10">Logical Operations</label><br>
+    <input type="checkbox" name="materi" id=11 value="Case Study 01: Synthesis Gas Production Plant"><label for="11">Case Study 01: Synthesis Gas Production Plant</label><br>
+    <input type="checkbox" name="materi" id=12 value="Case Study 02: Acid Gas Sweetening with DEA Plant"><label for="12">Case Study 02: Acid Gas Sweetening with DEA Plant</label><br>
+    <input type="checkbox" name="materi" id=13 value="Case Study 03: Gas Processing Plant"><label for="13">Case Study 03: Gas Processing Plant</label><br>
+    <input type="checkbox" name="materi" id=14 value="Case Study 04: Dynamic Gas Processing Plant"><label for="14">Case Study 04: Dynamic Gas Processing Plant</label><br>
+    <input type="checkbox" name="materi" id=15 value="Case Study 05: NGL Fractination Train"><label for="15">Case Study 05: NGL Fractination Train</label><br>
+
+    <p>Aplikasi Simulasi: </p>
+    <input type="radio" name="simulasi" onclick="RadioButton()" id=16 value="UniSim Design"><label for="16">UniSim Design</label><br>
+    <input type="radio" name="simulasi" onclick="RadioButton()" id=17 value="Aspen HYSYS"><label for="17">Aspen HYSYS</label><br>
+    <input type="radio" name="simulasi" onclick="RadioButton()" id=18 value="Aspen Plus"><label for="18">Aspen Plus</label><br>
+    <input type="radio" name="simulasi" onclick="RadioButton()" id=19 value="SuperPro Designer"><label for="19">SuperPro Designer</label><br>
+    <input type="radio" name="simulasi" onclick="RadioButton()" id=20 value="Other"><label for="20">Other: </label><input type="text" id="a" name="simulasi_other" /><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
+<script>
+    function RadioButton() {
+        if (document.getElementById('16').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('17').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('18').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('19').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('20').checked) {
+            document.getElementById('a').disabled = false;
+        }
+    }
+</script>
 </body>
 </html>
