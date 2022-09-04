@@ -1,73 +1,25 @@
 from django import forms
-from django.db.models import fields
-from .models import RegistrationData
-from django.core.validators import RegexValidator
-
-class CourseRegistrationForm(forms.Form):
-    """PROGRAM_STUDI = (
-        ("S1 Teknik Kimia", "S1 Teknik Kimia"),
-        ("S1 Teknologi Bioproses", "S1 Teknologi Bioproses"),
-        ("S2 Teknik Kimia", "S2 Teknik Kimia"),
-        ("S3 Teknik Kimia", "S3 Teknik Kimia"),
-        ("Other", "Other")
-    )"""
-
-    """UNIVERSITAS = (
-        ("Universitas Indonesia", "Universitas Indonesia"),
-        ("Universitas Muhammadiyah Surakarta", "Universitas Muhammadiyah Surakarta"),
-        ("Universitas Sriwijaya", "Universitas Sriwijaya"),
-        ("Institut Teknologi Bandung", "Institut Teknologi Bandung"),
-        ("Institut Teknologi Sepuluh Nopember", "Institut Teknologi Sepuluh Nopember")
-    )"""
-
-    email = forms.EmailField(max_length=254)
-    nama_lengkap = forms.CharField(max_length=254)
-    nomor_telefon = forms.CharField(max_length=254, validators=[
-            RegexValidator(
-                '^(\w+\d+|\d+\w+)+$',
-                message="Input nomor telefon yang sesuai"
-            )
-        ])
-    #program_studi = forms.ChoiceField(widget=forms.RadioSelect, choices=PROGRAM_STUDI)
-    #universitas = forms.ChoiceField(widget=forms.RadioSelect, choices=UNIVERSITAS)
 
 class MetodePembelajaranForm(forms.Form):
     METODE_PEMBELAJARAN = (
-        ("Kelas Konsultasi", "Kelas Konsultasi"),
-        ("Kelas Materi", "Kelas Materi"),
-        ("Persiapan Ujian", "Persiapan Ujian"),
-        ("Konsultasi Perlombaan", "Konsultasi Perlombaan"),
-        ("Konsultasi Skripsi atau Tesis", "Konsultasi Skripsi atau Tesis"),
+        ("Lecturing Class", "Lecturing Class"),
+        ("Consultation Class", "Consultation Class"),
+        ("Exam Preparation Class", "Exam Preparation Class"),
     )
 
-    NAMA_MATA_KULIAH = (
-        ("Cell Culture for Engineers", "Cell Culture for Engineers"),
-        ("Chemical Engineering Mathematics", "Chemical Engineering Mathematics"),
-        ("Chemical Engineering Thermodynamics", "Chemical Engineering Thermodynamics"),
-        ("Chemical Process Simulation", "Chemical Process Simulation"),
-        ("Chemical Reaction Engineering", "Chemical Reaction Engineering"),
-        ("Engineering Economy", "Engineering Economy"),
-        ("Fundamentals of Analytical Chemistry", "Fundamentals of Analytical Chemistry"),
-        ("Fundamentals of Calculus", "Fundamentals of Calculus"),
-        ("Fundamentals of Chemistry", "Fundamentals of Chemistry"),
-        ("Fundamentals of Heat Transfer", "Fundamentals of Heat Transfer"),
-        ("Fundamentals of Mass Transfer", "Fundamentals of Mass Transfer"),
-        ("Fluid and Particles Mechanics", "Fluid and Particles Mechanics"),
-        ("Fundamentals of Physics 1", "Fundamentals of Physics 1"),
-        ("Fundamentals of Physics 2", "Fundamentals of Physics 2"),
-        ("Mass and Energy Balances", "Mass and Energy Balances"),
-        ("Numerical Computation for Engineers", "Numerical Computation for Engineers"),
-        ("Organic Chemistry for Engineers", "Organic Chemistry for Engineers"),
-        ("Process Control and Dynamics", "Process Control and Dynamics"),
-        ("Product Design and Development", "Product Design and Development"),
-        ("Process Equipment Design", "Process Equipment Design"),
-        ("Process Plant Design", "Process Plant Design"),
-        ("Transport Phenomena", "Transport Phenomena")
+    JUMLAH_SESI = (
+        ("1", "1"),
+        ("2", "2"),
+        ("4", "4"),
+        ("6", "6"),
+        ("8", "8"),
+        ("10", "10")
     )
 
     metode_pembelajaran = forms.ChoiceField(widget=forms.RadioSelect, choices=METODE_PEMBELAJARAN)
-    mata_kuliah = forms.ChoiceField(widget=forms.RadioSelect, choices=NAMA_MATA_KULIAH)
-    jumlah_sesi_yang_ingin_diikuti = forms.CharField(max_length=254)
+    jumlah_sesi_yang_diikuti = forms.ChoiceField(widget=forms.RadioSelect, choices=JUMLAH_SESI)
+
+#--------------------------------------------------------------------------------------------
 
 # Cell Culture for Engineers
 class SessionCSEForm(forms.Form):
@@ -389,6 +341,17 @@ class SessionPCDForm(forms.Form):
 
     materi = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESSION_PCD)
 
+# Physical Chemistry
+class SessionPCHForm(forms.Form):
+    SESSION_PCH = (
+        ("Physical and Chemical Properties of Solutions", "Physical and Chemical Properties of Solutions"),
+        ("Kinetics Theorem of Gases", "Kinetics Theorem of Gases"),
+        ("Electrochemistry", "Electrochemistry"),
+        ("Interfacial Sciences", "Interfacial Sciences")
+    )
+
+    materi = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESSION_PCH)
+
 # Product Design and Development
 class SessionPDDForm(forms.Form):
     SESSION_PDD = (
@@ -436,6 +399,19 @@ class SessionPPDForm(forms.Form):
 
     materi = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESSION_PPD)
 
+# Statistics and Probability
+class SessionSPRForm(forms.Form):
+    SESSION_SPR = (
+        ("Introduction to Statistics", "Introduction to Statistics"),
+        ("Descriptive Statistics", "Descriptive Statistics"),
+        ("Probability Distribution and Random Variables", "Probability Distribution and Random Variables"),
+        ("Sampling Distribution and Point Estimation", "Sampling Distribution and Point Estimation"),
+        ("One-Sample Inferential Statistics", "One-Sample Inferential Statistics"),
+        ("Two-Sample Inferential Statistics", "Two-Sample Inferential Statistics")
+    )
+
+    materi = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESSION_SPR)
+
 # Transport Phenomena
 class SessionTPHForm(forms.Form):
     SESSION_TPH = (
@@ -455,28 +431,29 @@ class SessionTPHForm(forms.Form):
 
     materi = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESSION_TPH)
 
-class JumlahPeserta(forms.Form):
-    JUMLAH_PESERTA = (
-        ("1", "1"),
-        ("2", "2"),
-        ("3", "3"),
-        ("4", "4"),
-        ("5", "5"),
-        ("6", "6"),
-        ("7", "7"),
-        ("8", "8"),
-        ("9", "9"),
-        ("10", "10")
+class JadwalBelajarForm(forms.Form):
+    SESI_HARI = (
+        ("Senin", "Senin"),
+        ("Selasa", "Selasa"),
+        ("Rabu", "Rabu"),
+        ("Kamis", "Kamis"),
+        ("Jumat", "Jumat"),
+        ("Sabtu", "Sabtu"),
+        ("Minggu", "Minggu")
     )
 
-    jumlah_peserta = forms.ChoiceField(choices=JUMLAH_PESERTA)
-    nama_anggota_kelompok_bagi_yang_kelompok = forms.CharField(max_length=1000)
-    alamat_email_anggota_kelompok = forms.CharField(max_length=1000)
-    sesi_dan_jadwal = forms.CharField(widget=forms.Textarea())
+    SESI_JAM = (
+        ("Session 1 (08:00 - 10:00)", "Session 1 (08:00 - 10:00)"),
+        ("Session 2 (10:00 - 12:00)", "Session 2 (10:00 - 12:00)"),
+        ("Session 3 (14:00 - 16:00)", "Session 3 (14:00 - 16:00)"),
+        ("Session 4 (16:00 - 18:00)", "Session 4 (16:00 - 18:00)"),
+        ("Session 5 (19:00 - 21:00)", "Session 5 (19:00 - 21:00)"),
+        ("Session 6 (21:00 - 23:00)", "Session 6 (21:00 - 23:00)")
+    )
+    sesi_hari = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESI_HARI)
+    sesi_jam = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESI_JAM)
     notes_for_tutor = forms.CharField(max_length=2000, required=False)
     referral_code = forms.CharField(max_length=254, required=False)
-    mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas = forms.FileField(required=False)
 
-class AnggotaKelompokForm(forms.Form):
-    nama_anggota_kelompok_bagi_yang_kelompok = forms.CharField(max_length=1000)
-    alamat_email_anggota_kelompok = forms.CharField(max_length=1000)
+class LampiranFileForm(forms.Form):
+    lampiran = forms.FileField()

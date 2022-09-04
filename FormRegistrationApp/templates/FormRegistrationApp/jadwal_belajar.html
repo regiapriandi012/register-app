@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Anggota Kelompok & Jadwal Belajar</h1>
+  {% block content %}
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>Silahkan pilih hari di mana sesi ingin dilaksanakan (bisa lebih dari 1 sebagai opsi tambahan) </p>
+    {{ form.sesi_hari }}
+    <p>Silahkan pilih hari di mana sesi ingin dilaksanakan (bisa lebih dari 1 sebagai opsi tambahan) </p>
+    {{ form.sesi_jam }}
+    <p>Notes for Tutor: </p>
+    {{ form.notes_for_tutor }}
+    <p>Referral Code: </p>
+    {{ form.referral_code }}
+    <br><br><input type="submit" />
+  </form>
+  {% endblock %}
+</body>
+</html>

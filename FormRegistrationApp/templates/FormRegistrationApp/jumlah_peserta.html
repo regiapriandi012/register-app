@@ -1,63 +1,25 @@
 <!DOCTYPE html>
 <html>
+
 <body>
-  <h1>Anggota Kelompok & Jadwal Belajar</h1>
+  <h1>Anggota Kelompok Belajar</h1>
   {% block content %}
-  <form action="" method="POST" enctype="multipart/form-data">
+  <form action="" method="POST">
     {% csrf_token %}
-    <p>Jumlah Peserta: </p>
-    {{ form.jumlah_peserta }}
-    <p>Nama anggota kelompok bagi yang berkelompok: </p>
-    {{ form.nama_anggota_kelompok_bagi_yang_kelompok }}
-    <p>Alamat email anggota kelompok: </p>
-    {{ form.alamat_email_anggota_kelompok }}
-    <p>Sesi dan Jadwal: </p>
-    {{ form.sesi_dan_jadwal }}
-    <p>Notes for Tutor: </p>
-    {{ form.notes_for_tutor }}
-    <p>Referral Code: </p>
-    {{ form.referral_code }}
-    <p>dsfsfs: </p>
-    {{ form.mohon_lampirkan_file_terkait_project_atau_tugas_yang_akan_dibahas }}
-    <br><br><input type="submit" />
+<p>Jumlah Peserta: </p>
+    <input type="radio" name="jumlah_peserta" id=1 value="1" required><label for="1">1</label><br>
+    <input type="radio" name="jumlah_peserta" id=2 value="2"><label for="2">2</label><br>
+    <input type="radio" name="jumlah_peserta" id=3 value="3"><label for="3">3</label><br>
+    <input type="radio" name="jumlah_peserta" id=4 value="4"><label for="4">4</label><br>
+      <input type="radio" name="jumlah_peserta" id=5 value="5"><label for="5">5</label><br>
+    <input type="radio" name="jumlah_peserta" id=6 value="6"><label for="6">6</label><br>
+    <input type="radio" name="jumlah_peserta" id=7 value="7"><label for="7">7</label><br>
+    <input type="radio" name="jumlah_peserta" id=8 value="8"><label for="8">8</label><br>
+      <input type="radio" name="jumlah_peserta" id=9 value="9"><label for="9">9</label><br>
+    <input type="radio" name="jumlah_peserta" id=10 value="10"><label for="10">10</label><br>
+    <br><input type="submit" />
   </form>
   {% endblock %}
-  <script>
-    function RadioButton() {
-      if (document.getElementById('1').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('2').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('3').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('4').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('5').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('6').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('7').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('8').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('9').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('10').checked) {
-        document.getElementById('lain').disabled = true;
-      }
-      else if (document.getElementById('11').checked) {
-        document.getElementById('lain').disabled = false;
-      }
-    }
-  </script>
 </body>
+
 </html>

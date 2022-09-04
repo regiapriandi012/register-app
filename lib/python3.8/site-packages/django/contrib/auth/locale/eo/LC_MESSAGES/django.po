@@ -1,17 +1,16 @@
 # This file is distributed under the same license as the Django package.
 #
 # Translators:
-# Batist D 🐍 <baptiste+transifex@darthenay.fr>, 2012-2013
-# Batist D 🐍 <baptiste+transifex@darthenay.fr>, 2013-2019
-# Matthieu Desplantes <matmututu@gmail.com>, 2021
+# Baptiste Darthenay <baptiste+transifex@darthenay.fr>, 2012-2013
+# Baptiste Darthenay <baptiste+transifex@darthenay.fr>, 2013-2019
 # Robin van der Vliet <info@robinvandervliet.nl>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: django\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-08 17:27+0200\n"
-"PO-Revision-Date: 2021-04-13 08:08+0000\n"
-"Last-Translator: Matthieu Desplantes <matmututu@gmail.com>\n"
+"POT-Creation-Date: 2017-09-24 13:46+0200\n"
+"PO-Revision-Date: 2019-02-13 19:03+0000\n"
+"Last-Translator: Baptiste Darthenay <baptiste+transifex@darthenay.fr>\n"
 "Language-Team: Esperanto (http://www.transifex.com/django/django/language/"
 "eo/)\n"
 "MIME-Version: 1.0\n"
@@ -55,8 +54,8 @@ msgstr "Neniu pasvorto agordita."
 msgid "Invalid password format or unknown hashing algorithm."
 msgstr "Nevalida pasvorta formato, aŭ nekonata haketa algoritmo."
 
-msgid "The two password fields didn’t match."
-msgstr "La du pasvortaj kampoj ne kongruas."
+msgid "The two password fields didn't match."
+msgstr "La du pasvotaj kampoj ne kongruas."
 
 msgid "Password"
 msgstr "Pasvorto"
@@ -68,12 +67,12 @@ msgid "Enter the same password as before, for verification."
 msgstr "Entajpu la saman pasvorton kiel supre, por konfirmo."
 
 msgid ""
-"Raw passwords are not stored, so there is no way to see this user’s "
+"Raw passwords are not stored, so there is no way to see this user's "
 "password, but you can change the password using <a href=\"{}\">this form</a>."
 msgstr ""
-"La pasvortoj ne estas konservitaj en klara formo, do ne eblas vidi la "
-"pasvorton de ĉi tiu uzanto, sed vi povas ŝanĝi la pasvorton per <a href="
-"\"{}\">ĉi tiu formularo</a>."
+"Krudaj pasvortoj ne estas entenitaj, do ne eblas vidi la pasvorton de tiu "
+"uzanto, sed vi povas ŝanĝi la pasvorton uzante <a href=\"{}\">tiun "
+"formalaron</a>."
 
 #, python-format
 msgid ""
@@ -84,7 +83,7 @@ msgstr ""
 "povas esti usklecodistingaj."
 
 msgid "This account is inactive."
-msgstr "Ĉi tiu konto ne estas aktiva."
+msgstr "Ĉi-tiu konto ne estas aktiva."
 
 msgid "Email"
 msgstr "Retpoŝto"
@@ -248,20 +247,21 @@ msgstr[1] "Via pasvorto devas enhavi almenaŭ %(min_length)d signojn."
 msgid "The password is too similar to the %(verbose_name)s."
 msgstr "La pasvorto estas tro simila al la %(verbose_name)s."
 
-msgid "Your password can’t be too similar to your other personal information."
-msgstr "Via pasvorto ne povas esti tro simila al viaj aliaj personaj informoj."
+msgid "Your password can't be too similar to your other personal information."
+msgstr ""
+"Via pasvorto ne povas esti tro similaj al viaj aliaj personaj informoj."
 
 msgid "This password is too common."
 msgstr "Tiu pasvorto estas tro kutima."
 
-msgid "Your password can’t be a commonly used password."
-msgstr "Via pasvorto ne povas esti ofte uzata pasvorto."
+msgid "Your password can't be a commonly used password."
+msgstr "Via pasvorto ne povas esti kutime uzata pasvorto."
 
 msgid "This password is entirely numeric."
 msgstr "Tiu pasvorto estas tute cefera."
 
-msgid "Your password can’t be entirely numeric."
-msgstr "Via pasvorto ne povas konsisti nur el ciferoj."
+msgid "Your password can't be entirely numeric."
+msgstr "Via pasvorto ne povas esti tute cifera."
 
 #, python-format
 msgid "Password reset on %(site_name)s"
@@ -285,19 +285,19 @@ msgid "Logged out"
 msgstr "Adiaŭita"
 
 msgid "Password reset"
-msgstr "Restarigo de pasvorto"
+msgstr "Pasvorta rekomencigo"
 
 msgid "Password reset sent"
-msgstr "Restarigo de pasvorto sendita"
+msgstr "Pasvorta rekomencigo sendita"
 
 msgid "Enter new password"
 msgstr "Enigu novan pasvorton"
 
 msgid "Password reset unsuccessful"
-msgstr "Restarigo de pasvorto malsukcesa"
+msgstr "Pasvorta rekomencigo malsuksesis"
 
 msgid "Password reset complete"
-msgstr "Restarigo de pasvorto plenumita"
+msgstr "Pasvorta rekomencigo plenumita"
 
 msgid "Password change"
 msgstr "Pasvorta ŝanĝo"

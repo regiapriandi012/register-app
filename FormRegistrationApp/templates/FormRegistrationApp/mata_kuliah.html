@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<h1>Course Register</h1>
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <p>Mata Kuliah: </p>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=1 value="Cell Culture for Engineers"><label for="1">Cell Culture for Engineers</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=2 value="Chemical Engineering Mathematics"><label for="2">Chemical Engineering Mathematics</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=3 value="Chemical Engineering Thermodynamics"><label for="3">Chemical Engineering Thermodynamics</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=4 value="Chemical Process Simulation"><label for="4">Chemical Process Simulation</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=5 value="Chemical Reaction Engineering"><label for="5">Chemical Reaction Engineering</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=6 value="Engineering Economy"><label for="6">Engineering Economy</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=7 value="Fundamentals of Analytical Chemistry"><label for="7">Fundamentals of Analytical Chemistry</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=8 value="Fundamentals of Calculus"><label for="8">Fundamentals of Calculus</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=9 value="Fundamentals of Chemistry"><label for="9">Fundamentals of Chemistry</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=10 value="Fundamentals of Heat Transfer"><label for="10">Fundamentals of Heat Transfer</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=11 value="Fundamentals of Mass Transfer"><label for="11">Fundamentals of Mass Transfer</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=12 value="Fluid and Particles Mechanics"><label for="12">Fluid and Particles Mechanics</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=13 value="Fundamentals of Physics 1"><label for="13">Fundamentals of Physics 1</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=14 value="Fundamentals of Physics 2"><label for="14">Fundamentals of Physics 2</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=15 value="Mass and Energy Balances"><label for="15">Mass and Energy Balances</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=16 value="Numerical Computation for Engineers"><label for="16">Numerical Computation for Engineers</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=17 value="Organic Chemistry for Engineers"><label for="17">Organic Chemistry for Engineers</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=18 value="Process Control and Dynamics"><label for="18">Process Control and Dynamics</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=19 value="Physical Chemistry"><label for="19">Physical Chemistry</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=20 value="Product Design and Development"><label for="20">Product Design and Development</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=21 value="Process Equipment Design"><label for="21">Process Equipment Design</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=22 value="Process Plant Design"><label for="22">Process Plant Design</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=23 value="Statistics and Probability"><label for="23">Statistics and Probability</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=24 value="Transport Phenomena"><label for="24">Transport Phenomena</label><br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=25 value="Fundamentals of Analytical Chemistry"><label for="25">Fundamentals of Analytical Chemistry</label></br>
+    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=26 value="Other"><label for="26">Other: </label><input type="text" id="a" name="mata_kuliah_other" /><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
+<script>
+    function RadioButton() {
+        if (document.getElementById('1').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('2').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('3').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('4').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('5').checked) {
+            document.getElementById('a').disabled = true;
+        }
+        else if (document.getElementById('6').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('7').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('8').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('9').checked) {
+            document.getElementById('a').disabled = true;
+        }
+        else if (document.getElementById('10').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('11').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('12').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('13').checked) {
+            document.getElementById('a').disabled = true;
+        }
+        else if (document.getElementById('14').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('15').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('16').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('17').checked) {
+            document.getElementById('a').disabled = true;
+        }
+        else if (document.getElementById('18').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('19').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('20').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('21').checked) {
+            document.getElementById('a').disabled = true;
+        }
+        else if (document.getElementById('22').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('23').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('24').checked) {
+            document.getElementById('a').disabled = true;
+        } else if (document.getElementById('25').checked) {
+            document.getElementById('a').disabled = true;
+        }
+        else if (document.getElementById('26').checked) {
+            document.getElementById('a').disabled = false;
+        }
+    }
+</script>
+</body>
+</html>

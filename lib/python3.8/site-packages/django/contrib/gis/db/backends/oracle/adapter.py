@@ -16,30 +16,17 @@ class OracleSpatialAdapter(WKTAdapter):
          * Inner ring(s) - clockwise
         """
         if isinstance(geom, Polygon):
-            if self._polygon_must_be_fixed(geom):
-                geom = self._fix_polygon(geom)
+            self._fix_polygon(geom)
         elif isinstance(geom, GeometryCollection):
-            if any(
-                isinstance(g, Polygon) and self._polygon_must_be_fixed(g) for g in geom
-            ):
-                geom = self._fix_geometry_collection(geom)
+            self._fix_geometry_collection(geom)
 
         self.wkt = geom.wkt
         self.srid = geom.srid
 
-    @staticmethod
-    def _polygon_must_be_fixed(poly):
-        return not poly.empty and (
-            not poly.exterior_ring.is_counterclockwise
-            or any(x.is_counterclockwise for x in poly)
-        )
-
-    @classmethod
-    def _fix_polygon(cls, poly, clone=True):
+    def _fix_polygon(self, poly):
         """Fix single polygon orientation as described in __init__()."""
-        if clone:
-            poly = poly.clone()
-
+        if poly.empty:
+            return poly
         if not poly.exterior_ring.is_counterclockwise:
             poly.exterior_ring = list(reversed(poly.exterior_ring))
 
@@ -49,14 +36,11 @@ class OracleSpatialAdapter(WKTAdapter):
 
         return poly
 
-    @classmethod
-    def _fix_geometry_collection(cls, coll):
+    def _fix_geometry_collection(self, coll):
         """
         Fix polygon orientations in geometry collections as described in
         __init__().
         """
-        coll = coll.clone()
         for i, geom in enumerate(coll):
             if isinstance(geom, Polygon):
-                coll[i] = cls._fix_polygon(geom, clone=False)
-        return coll
+                coll[i] = self._fix_polygon(geom)

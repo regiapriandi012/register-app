@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <p>Mohon lampirkan File terkait Project atau Tugas yang akan dibahas.<br>
+*Bagi yang memilih Lecturing Class, bagian ini tidak perlu diisi.<br>
+Consultation Class<br>
+Untuk memudahkan kami dalam mencarikan Tutor yang sesuai, mohon bantuannya untuk melampirkan File berikut:<br>
+File terkait Project atau Tugas yang akan didiskusikan.<br>
+Daftar pertanyaan atau hal-hal yang akan dibahas.<br>
+Exam Preparation Class<br>
+Jika kalian sudah memiliki soal-soal yang ingin dibahas, mohon pastikan materinya sudah sesuai dengan materi yang kalian pilih di halaman sebelumnya.<br>
+Jika jumlah soal yang ingin dibahas cukup banyak, Tutor berhak untuk menentukan soal mana saja yang akan dibahas mengingat keterbatasan waktu dalam satu sesi.<br>
+Jika kalian belum memiliki soal-soal yang ingin dibahas, Tutor kami akan membantu menyediakan soal-soal untuk latihan bersama di Exam Preparation Class.</p>
+  {% block content %}
+   <form action="" method="POST" enctype="multipart/form-data">
+       {% csrf_token %}
+            {{ form.as_p }}
+     <input type="submit" />
+   </form>
+    {% endblock %}
+</body>
+</html>
