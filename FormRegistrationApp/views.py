@@ -834,6 +834,7 @@ def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon, program_stud
                             akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3, akun_discord_3)
     return render(request, "FormRegistrationApp/anggota_kelompok_3.html")
 
+
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi, lampiran,
@@ -893,6 +894,7 @@ def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon, program_stud
                             nama_lengkap_4, nomor_telefon_4, akun_discord_4)
     return render(request, "FormRegistrationApp/anggota_kelompok_4.html")
 
+
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi, lampiran,
@@ -949,6 +951,7 @@ def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon, program_stud
                             akun_discord_5)
     return render(request, "FormRegistrationApp/anggota_kelompok_5.html")
 
+
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_6(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi, lampiran,
@@ -1000,6 +1003,7 @@ def anggota_kelompok_6(request, email, nama_lengkap, nomor_telefon, program_stud
                             akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6)
     return render(request, "FormRegistrationApp/anggota_kelompok_6.html")
 
+
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_7(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi, lampiran,
@@ -1050,6 +1054,7 @@ def anggota_kelompok_7(request, email, nama_lengkap, nomor_telefon, program_stud
                             nama_lengkap_7, nomor_telefon_7, akun_discord_7)
     return render(request, "FormRegistrationApp/anggota_kelompok_7.html")
 
+
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_8(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi, lampiran,
@@ -1097,6 +1102,7 @@ def anggota_kelompok_8(request, email, nama_lengkap, nomor_telefon, program_stud
                             akun_discord_8)
     return render(request, "FormRegistrationApp/anggota_kelompok_8.html")
 
+
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_9(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi, lampiran,
@@ -1140,6 +1146,7 @@ def anggota_kelompok_9(request, email, nama_lengkap, nomor_telefon, program_stud
                             akun_discord_8, email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9)
     return render(request, "FormRegistrationApp/anggota_kelompok_9.html")
 
+
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_10(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                         metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi, lampiran,
@@ -1157,16 +1164,18 @@ def anggota_kelompok_10(request, email, nama_lengkap, nomor_telefon, program_stu
         akun_discord_10 = request.POST.get('akun_discord_10')
         if jumlah_peserta == "10":
             return redirect("jadwal_belajar", email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                        info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                        lampiran, jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                        email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                        nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                        akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                        nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                        akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8, email_9,
-                        nama_lengkap_9, nomor_telefon_9, akun_discord_9, email_10, nama_lengkap_10, nomor_telefon_10,
-                        akun_discord_10)
+                            info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+                            lampiran, jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
+                            email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
+                            nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
+                            akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
+                            nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
+                            akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8, email_9,
+                            nama_lengkap_9, nomor_telefon_9, akun_discord_9, email_10, nama_lengkap_10,
+                            nomor_telefon_10,
+                            akun_discord_10)
     return render(request, "FormRegistrationApp/anggota_kelompok_10.html")
+
 
 # ---------------------------------------------------------------------------------------------------------
 def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
@@ -1188,6 +1197,20 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
         if form.is_valid():
             new_data = RegistrationData()
 
+            # Save the Data
+            new_data.nama_lengkap = nama_lengkap
+            new_data.email = email
+            new_data.angkatan = angkatan
+            new_data.nomor_telefon = nomor_telefon
+            new_data.program_studi = program_studi
+            new_data.universitas = universitas
+            new_data.metode_pembelajaran = metode_pembelajaran
+            new_data.mata_kuliah = mata_kuliah
+            new_data.jumlah_peserta = jumlah_peserta
+            new_data.aplikasi_simulasi = simulasi
+            new_data.jumlah_sesi_yang_diikuti = jumlah_sesi_yang_diikuti
+            new_data.lampiran = lampiran
+
             global registration_number_q1
             global registration_number_q2
             global registration_number_q3
@@ -1200,12 +1223,14 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
 
             month_number = datetime.datetime.now().month
 
+            # Invoice Variable
             invoice = "Inv/"
             jumlah_peserta_invoice = ""
             metode_pembelajaran_invoice = ""
             mata_kuliah_invoice = ""
             quartal_invoice = ""
 
+            # Invoice Jumlah Peserta Algorithm
             if jumlah_peserta <= "3":
                 invoice += "P/"
                 jumlah_peserta_invoice = "P"
@@ -1213,6 +1238,7 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 invoice += "G/"
                 jumlah_peserta_invoice = "G"
 
+            # Invoice Tipe Kelas Algorithm
             if metode_pembelajaran == "Consultation Class":
                 invoice += "C/"
                 metode_pembelajaran_invoice = "C"
@@ -1223,6 +1249,7 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 invoice += "EP/"
                 metode_pembelajaran_invoice = "EP"
 
+            # Invoice Mata Kuliah Algorithm
             if mata_kuliah == NAMA_MATA_KULIAH[0][0]:
                 invoice += "CCE/"
                 mata_kuliah_invoice = "CCE"
@@ -1296,6 +1323,7 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 invoice += "TPH/"
                 mata_kuliah_invoice = "TPH"
 
+            # Invoice Number Registration Algorithm
             if 1 <= month_number <= 3:
                 registration_number_q1 += 1
                 if registration_number_q1 <= 9:
@@ -1329,6 +1357,7 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                     invoice += str(registration_number_q4) + "/"
                     registration_number_q4_invoice = str(registration_number_q4)
 
+            # Invoice Quartal Algorithm
             if 1 <= month_number <= 3:
                 invoice += "1-"
                 quartal_invoice = "1-"
@@ -1345,66 +1374,15 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             year_number = datetime.datetime.now().year
             invoice += "{}".format(str(year_number)[-2:])
             quartal_invoice += "{}".format(str(year_number)[-2:])
-
             new_data.nomor_invoice = invoice
-            new_data.nama_lengkap = nama_lengkap
-            new_data.email = email
-            new_data.angkatan = angkatan
-            new_data.nomor_telefon = nomor_telefon
-            new_data.program_studi = program_studi
-            new_data.universitas = universitas
-            new_data.metode_pembelajaran = metode_pembelajaran
-            new_data.mata_kuliah = mata_kuliah
-            new_data.materi = str(materi).replace("[", "").replace("]", "").replace("'", "")
-            new_data.jumlah_peserta = jumlah_peserta
-            new_data.jumlah_sesi_yang_diikuti = jumlah_sesi_yang_diikuti
-            new_data.informasi_mengenai_torche = str(info_torche).replace("[", "").replace("]", "").replace("'", "")
-            new_data.aplikasi_simulasi = simulasi
-            new_data.lampiran = lampiran
-            new_data.email_1 = email_1
-            new_data.nama_lengkap_1 = nama_lengkap_1
-            new_data.nomor_telefon_1 = nomor_telefon_1
-            new_data.akun_discord_1 = akun_discord_1
-            new_data.email_2 = email_2
-            new_data.nama_lengkap_2 = nama_lengkap_2
-            new_data.nomor_telefon_2 = nomor_telefon_2
-            new_data.akun_discord_2 = akun_discord_2
-            new_data.email_3 = email_3
-            new_data.nama_lengkap_3 = nama_lengkap_3
-            new_data.nomor_telefon_3 = nomor_telefon_3
-            new_data.akun_discord_3 = akun_discord_3
-            new_data.email_4 = email_4
-            new_data.nama_lengkap_4 = nama_lengkap_4
-            new_data.nomor_telefon_4 = nomor_telefon_4
-            new_data.akun_discord_4 = akun_discord_4
-            new_data.email_5 = email_5
-            new_data.nama_lengkap_5 = nama_lengkap_5
-            new_data.nomor_telefon_5 = nomor_telefon_5
-            new_data.akun_discord_5 = akun_discord_5
-            new_data.email_6 = email_6
-            new_data.nama_lengkap_6 = nama_lengkap_6
-            new_data.nomor_telefon_6 = nomor_telefon_6
-            new_data.akun_discord_6 = akun_discord_6
-            new_data.email_7 = email_7
-            new_data.nama_lengkap_7 = nama_lengkap_7
-            new_data.nomor_telefon_7 = nomor_telefon_7
-            new_data.akun_discord_7 = akun_discord_7
-            new_data.email_8 = email_8
-            new_data.nama_lengkap_8 = nama_lengkap_8
-            new_data.nomor_telefon_8 = nomor_telefon_8
-            new_data.akun_discord_8 = akun_discord_8
-            new_data.email_9 = email_9
-            new_data.nama_lengkap_9 = nama_lengkap_9
-            new_data.nomor_telefon_9 = nomor_telefon_9
-            new_data.akun_discord_9 = akun_discord_9
-            new_data.email_10 = email_10
-            new_data.nama_lengkap_10 = nama_lengkap_10
-            new_data.nomor_telefon_10 = nomor_telefon_10
-            new_data.akun_discord_10 = akun_discord_10
 
             new_data.sesi_hari = str(form.cleaned_data['sesi_hari']).replace("[", "").replace("]", "").replace("'", "")
             new_data.sesi_jam = str(form.cleaned_data['sesi_jam']).replace("[", "").replace("]", "").replace("'", "")
-            new_data.notes_for_tutor = form.cleaned_data['notes_for_tutor']
+
+            if form.cleaned_data['notes_for_tutor'] == "":
+                new_data.notes_for_tutor = "-"
+            else:
+                new_data.notes_for_tutor = form.cleaned_data['notes_for_tutor']
 
             biaya = 0
             if int(jumlah_peserta) <= 3:
@@ -1416,14 +1394,6 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             elif int(jumlah_peserta) >= 6:
                 biaya += ((250000 + ((int(jumlah_peserta) - 5) * 40000)) * len(materi.split(",")))
             new_data.biaya = "{:0,.0f}".format(biaya)
-
-            referral_code = form.cleaned_data['referral_code']
-            data_referral_code = ReferralCode.objects.all()
-            data_referral_code_list = []
-            for i in data_referral_code:
-                data_referral_code_list.append(i.referral_code)
-            if referral_code in data_referral_code_list:
-                new_data.referral_code = form.cleaned_data['referral_code']
 
             bulan = ""
             if datetime.datetime.now().month == 1:
@@ -1450,9 +1420,49 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 bulan = "November"
             elif datetime.datetime.now().month == 12:
                 bulan = "Desember"
+            new_data.tanggal = str(datetime.datetime.now().day) + " " + bulan + " " + str(datetime.datetime.now().year)
 
-            tanggal = str(datetime.datetime.now().day) + " " + bulan + " " + str(datetime.datetime.now().year)
-            new_data.tanggal = tanggal
+            new_data.materi = str(materi).replace("[", "").replace("]", "").replace("'", "")
+
+            new_data.informasi_mengenai_torche = str(info_torche).replace("[", "").replace("]", "").replace("'", "")
+
+            if email_1 == "-" and email_2 == "-" and email_3 == "-" and email_4 == "-" and email_5 == "-" and email_6 == "-" and email_7 == "-" and email_8 == "-" and email_9 == "-" and email_10 == "-":
+                new_data.alamat_email_anggota_kelompok = "-"
+            else:
+                new_data.alamat_email_anggota_kelompok = (
+                        email_1 + ", " + email_2 + ", " + email_3 + ", " + email_4 + ", " + email_5 + ", " + email_6 + ", " + email_7 + ", " + email_8 + ", " + email_9 + ", " + email_10).replace(
+                    ", -", "")
+
+            if nama_lengkap_1 == "-" and nama_lengkap_2 == "-" and nama_lengkap_3 == "-" and nama_lengkap_4 == "-" and nama_lengkap_5 == "-" and nama_lengkap_6 == "-" and nama_lengkap_7 == "-" and nama_lengkap_8 == "-" and nama_lengkap_9 == "-" and nama_lengkap_10 == "-":
+                new_data.nama_lengkap_anggota_kelompok = "-"
+            else:
+                new_data.nama_lengkap_anggota_kelompok = (
+                        nama_lengkap_1 + ", " + nama_lengkap_2 + ", " + nama_lengkap_3 + ", " + nama_lengkap_4 + ", " + nama_lengkap_5 + ", " + nama_lengkap_6 + ", " + nama_lengkap_7 + ", " + nama_lengkap_8 + ", " + nama_lengkap_9 + ", " + nama_lengkap_10).replace(
+                    ", -", "")
+
+            if nomor_telefon_1 == "-" and nomor_telefon_2 == "-" and nomor_telefon_3 == "-" and nomor_telefon_4 == "-" and nomor_telefon_5 == "-" and nomor_telefon_6 == "-" and nomor_telefon_7 == "-" and nomor_telefon_8 == "-" and nomor_telefon_9 == "-" and nomor_telefon_10 == "-":
+                new_data.nomor_telefon_anggota_kelompok = "-"
+            else:
+                new_data.nomor_telefon_anggota_kelompok = (
+                        nomor_telefon_1 + ", " + nomor_telefon_2 + ", " + nomor_telefon_3 + ", " + nomor_telefon_4 + ", " + nomor_telefon_5 + ", " + nomor_telefon_6 + ", " + nomor_telefon_7 + ", " + nomor_telefon_8 + ", " + nomor_telefon_9 + ", " + nomor_telefon_10).replace(
+                    ", -", "")
+
+            if akun_discord_1 == "-" and akun_discord_2 == "-" and akun_discord_3 == "-" and akun_discord_4 == "-" and akun_discord_5 == "-" and akun_discord_6 == "-" and akun_discord_7 == "-" and akun_discord_8 == "-" and akun_discord_9 == "-" and akun_discord_10 == "-":
+                new_data.akun_discord_anggota_kelompok = "-"
+            else:
+                new_data.akun_discord_anggota_kelompok = (
+                        akun_discord_1 + ", " + akun_discord_2 + ", " + akun_discord_3 + ", " + akun_discord_4 + ", " + akun_discord_5 + ", " + akun_discord_6 + ", " + akun_discord_7 + ", " + akun_discord_8 + ", " + akun_discord_9 + ", " + akun_discord_10).replace(
+                    ", -", "")
+
+            referral_code = form.cleaned_data['referral_code']
+            data_referral_code = ReferralCode.objects.all()
+            data_referral_code_list = []
+            for i in data_referral_code:
+                data_referral_code_list.append(i.referral_code)
+            if referral_code in data_referral_code_list:
+                new_data.referral_code = form.cleaned_data['referral_code']
+            else:
+                new_data.referral_code = "-"
 
             try:
                 new_data.save()
@@ -1483,12 +1493,14 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
         form = JadwalBelajarForm(request.POST)
     return render(request, "FormRegistrationApp/jadwal_belajar.html", context)
 
+
 def get_data(request):
     data = RegistrationData.objects.all()
     context = {
         'my_data': data,
     }
     return render(request, 'FormRegistrationApp/get_data.html', context)
+
 
 def create_pdf_assignment(template_src, context_dict={}):
     template = get_template(template_src)
@@ -1498,6 +1510,7 @@ def create_pdf_assignment(template_src, context_dict={}):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
+
 
 def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q1_invoice, quartal_invoice):
@@ -1516,6 +1529,7 @@ def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_i
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
 
+
 def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q2_invoice, quartal_invoice):
     data = RegistrationData.objects.get(
@@ -1532,6 +1546,7 @@ def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_i
     }
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
+
 
 def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q3_invoice, quartal_invoice):
@@ -1550,10 +1565,12 @@ def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_i
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
 
+
 def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q4_invoice, quartal_invoice):
-    data = RegistrationData.objects.get(nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                        mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
+    data = RegistrationData.objects.get(
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
+                                                  mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
     sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
     sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
     sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
@@ -1566,6 +1583,7 @@ def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_i
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
 
+
 def create_pdf(context):
     html = render_to_string('FormRegistrationApp/template_pdf.html', context)
     result = BytesIO()
@@ -1573,6 +1591,7 @@ def create_pdf(context):
     if not pdf.err:
         return result.getvalue()
     return None
+
 
 def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
                   mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
@@ -1605,6 +1624,7 @@ def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi, un
     mail.send(fail_silently=False)
     return redirect("pendaftaran_berhasil")
 
+
 def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
                   mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
                   registration_number_q2_invoice, quartal_invoice):
@@ -1635,6 +1655,7 @@ def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi, un
                                         registration_number_q1_invoice, quartal_invoice), pdf, 'application/pdf')
     mail.send(fail_silently=False)
     return redirect("pendaftaran_berhasil")
+
 
 def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
                   mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
@@ -1667,6 +1688,7 @@ def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi, un
     mail.send(fail_silently=False)
     return redirect("pendaftaran_berhasil")
 
+
 def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
                   mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
                   registration_number_q4_invoice, quartal_invoice):
@@ -1698,8 +1720,10 @@ def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi, un
     mail.send(fail_silently=False)
     return redirect("pendaftaran_berhasil")
 
+
 def pendaftaran_berhasil(request):
     return render(request, 'FormRegistrationApp/pendaftaran_berhasil.html')
+
 
 def pendaftaran_gagal(request):
     return render(request, 'FormRegistrationApp/pendaftaran_gagal.html')

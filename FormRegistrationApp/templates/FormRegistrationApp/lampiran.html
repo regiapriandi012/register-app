@@ -12,9 +12,9 @@ Jika kalian sudah memiliki soal-soal yang ingin dibahas, mohon pastikan materiny
 Jika jumlah soal yang ingin dibahas cukup banyak, Tutor berhak untuk menentukan soal mana saja yang akan dibahas mengingat keterbatasan waktu dalam satu sesi.<br>
 Jika kalian belum memiliki soal-soal yang ingin dibahas, Tutor kami akan membantu menyediakan soal-soal untuk latihan bersama di Exam Preparation Class.</p>
   {% block content %}
-   <form action="" method="POST" enctype="multipart/form-data">
+   <form method="POST" enctype="multipart/form-data">
        {% csrf_token %}
-            {{ form.as_p }}
+       {{ form.lampiran }}
      <input type="submit" />
    </form>
     {% endblock %}
