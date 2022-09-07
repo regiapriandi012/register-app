@@ -31,7 +31,6 @@
     <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=22 value="Process Plant Design"><label for="22">Process Plant Design</label><br>
     <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=23 value="Statistics and Probability"><label for="23">Statistics and Probability</label><br>
     <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=24 value="Transport Phenomena"><label for="24">Transport Phenomena</label><br>
-    <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=25 value="Fundamentals of Analytical Chemistry"><label for="25">Fundamentals of Analytical Chemistry</label></br>
     <input type="radio" name="mata_kuliah" onclick="RadioButton()" id=26 value="Other"><label for="26">Other: </label><input type="text" id="a" name="mata_kuliah_other" /><br>
     <input type="submit" value="Submit">
 </form>
@@ -91,10 +90,7 @@
             document.getElementById('a').disabled = true;
         } else if (document.getElementById('24').checked) {
             document.getElementById('a').disabled = true;
-        } else if (document.getElementById('25').checked) {
-            document.getElementById('a').disabled = true;
-        }
-        else if (document.getElementById('26').checked) {
+        } else if (document.getElementById('26').checked) {
             document.getElementById('a').disabled = false;
         }
     }
