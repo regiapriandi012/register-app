@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -28,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,8 +36,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'FormRegistrationApp'
+    'FormRegistrationApp',
+    'gdstorage',
 ]
+
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = os.path.join(BASE_DIR,'client_secrets.json')
+GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = "/TorcheData"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,29 +73,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'FormRegistration.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}"""
-
-DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'registrationdatabase',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': 'mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority'
-            }  
-        }
 }
 
-#DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+"""DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'registrationdatabase',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': 'mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority'
+        }
+    }
+}"""
+
+# DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -113,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -127,7 +127,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -139,11 +138,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_USE_TLS = True
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "regiapriandi024@gmail.com"
-EMAIL_HOST_PASSWORD = "iupefqiacjmpmrqc"
+EMAIL_SENDER = "mailing@torche.app"
+EMAIL_HOST_USER = "mailing.torche@gmail.com"
+EMAIL_HOST_PASSWORD = "qnofkrkwjnsmphnu"
 
 import mongoengine
+
 mongoengine.connect(db='registrationdatabase',
-    username='regiapriandi',
-    password='Sinheul24.',
-    host='mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority')
+                    username='regiapriandi',
+                    password='Sinheul24.',
+                    host='mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority')
