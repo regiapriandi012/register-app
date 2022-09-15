@@ -452,8 +452,9 @@ class JadwalBelajarForm(forms.Form):
     )
     sesi_hari = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESI_HARI)
     sesi_jam = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESI_JAM)
-    notes_for_tutor = forms.CharField(max_length=2000, required=False)
+    notes_for_tutor = forms.CharField(widget=forms.Textarea(), required=False)
     referral_code = forms.CharField(max_length=254, required=False)
+    lampiran = forms.FileField(required=False)
 
 class LampiranFileForm(forms.Form):
     lampiran = forms.FileField()
