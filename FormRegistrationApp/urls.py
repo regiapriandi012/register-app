@@ -11,7 +11,7 @@ urlpatterns = [
 
     path("mata-kuliah/<email>/<nama_lengkap>/<nomor_telefon>/<program_studi>/<angkatan>/<universitas>/<info_torche>/<metode_pembelajaran>/<jumlah_sesi_yang_diikuti>/", views.mata_kuliah, name="mata_kuliah"),
     
-    path("session-cse/<email>/<nama_lengkap>/<nomor_telefon>/<program_studi>/<angkatan>/<universitas>/<info_torche>/<metode_pembelajaran>/<jumlah_sesi_yang_diikuti>/<mata_kuliah>", views.session_cse, name="session_cse"),
+    path("session-cce/<email>/<nama_lengkap>/<nomor_telefon>/<program_studi>/<angkatan>/<universitas>/<info_torche>/<metode_pembelajaran>/<jumlah_sesi_yang_diikuti>/<mata_kuliah>", views.session_cce, name="session_cce"),
     path("session-cem/<email>/<nama_lengkap>/<nomor_telefon>/<program_studi>/<angkatan>/<universitas>/<info_torche>/<metode_pembelajaran>/<jumlah_sesi_yang_diikuti>/<mata_kuliah>", views.session_cem, name="session_cem"),
     path("session-cet/<email>/<nama_lengkap>/<nomor_telefon>/<program_studi>/<angkatan>/<universitas>/<info_torche>/<metode_pembelajaran>/<jumlah_sesi_yang_diikuti>/<mata_kuliah>", views.session_cet, name="session_cet"),
     path("session-cps/<email>/<nama_lengkap>/<nomor_telefon>/<program_studi>/<angkatan>/<universitas>/<info_torche>/<metode_pembelajaran>/<jumlah_sesi_yang_diikuti>/<mata_kuliah>", views.session_cps, name="session_cps"),

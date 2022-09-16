@@ -25,7 +25,7 @@ class RegistrationData(models.Model):
     aplikasi_simulasi = models.CharField(max_length=254)
     jumlah_sesi_yang_diikuti = models.CharField(max_length=254)
     jumlah_peserta = models.CharField(max_length=10)
-    lampiran_file_siswa = models.FileField(upload_to='TorcheData/', storage=gd_storage)
+    lampiran_file_siswa = models.FileField(upload_to='lampiran_siswa/%Y/%m/%d/', storage=gd_storage)
     lampiran_invoice = models.URLField(max_length=1000)
     lampiran_invoice_assignment = models.URLField(max_length=1000)
     sesi_hari = models.TextField()

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 ]
 
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = os.path.join(BASE_DIR,'client_secrets.json')
-GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = "/TorcheData"
+GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = "/media"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -119,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 

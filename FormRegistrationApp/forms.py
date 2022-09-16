@@ -22,14 +22,14 @@ class MetodePembelajaranForm(forms.Form):
 #--------------------------------------------------------------------------------------------
 
 # Cell Culture for Engineers
-class SessionCSEForm(forms.Form):
-    SESSION_CSE = (
+class SessionCCEForm(forms.Form):
+    SESSION_CCE = (
         ("Tissue Culture", "Tissue Culture"),
         ("Animal Cell Culture", "Animal Cell Culture"),
         ("Cell Culture Contamination", "Cell Culture Contamination"),
         ("Bioprocess Cell Culture", "Bioprocess Cell Culture")
     )
-    materi = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESSION_CSE)
+    materi = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SESSION_CCE)
 
 # Chemical Engineering Mathematics
 class SessionCEMForm(forms.Form):

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import SessionCSEForm, SessionCEMForm, \
+from .forms import SessionCCEForm, SessionCEMForm, \
     SessionCETForm, SessionCPSForm, SessionCREForm, SessionEECForm, SessionFACForm, \
     SessionFCAForm, SessionFCHForm, SessionFHTForm, SessionFMTForm, SessionFPMForm, \
     SessionFP1Form, SessionFP2Form, SessionMEBForm, SessionNCEForm, SessionOCEForm, \
@@ -107,7 +107,7 @@ def mata_kuliah(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             mata_kuliah = request.POST.get('mata_kuliah')
         if mata_kuliah == NAMA_MATA_KULIAH[0][0]:
             return HttpResponseRedirect(
-                reverse("session_cse", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
+                reverse("session_cce", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
                                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[1][0]:
             return HttpResponseRedirect(
@@ -205,11 +205,11 @@ def mata_kuliah(request, email, nama_lengkap, nomor_telefon, program_studi, angk
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_cse(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
+def session_cce(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
                 metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
-    context = {'form': SessionCSEForm()}
+    context = {'form': SessionCCEForm()}
     if request.method == 'POST':
-        form = SessionCSEForm(request.POST)
+        form = SessionCCEForm(request.POST)
         if form.is_valid():
             materi = form.cleaned_data['materi']
             simulasi = "-"
@@ -218,8 +218,8 @@ def session_cse(request, email, nama_lengkap, nomor_telefon, program_studi, angk
                                               info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
                                               materi, simulasi)))
     else:
-        form = SessionCSEForm(request.POST)
-    return render(request, "FormRegistrationApp/session_cse.html", context)
+        form = SessionCCEForm(request.POST)
+    return render(request, "FormRegistrationApp/session_cce.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
@@ -1397,8 +1397,8 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 invoice += "CEM/"
                 mata_kuliah_invoice = "CEM"
             elif mata_kuliah == NAMA_MATA_KULIAH[2][0]:
-                invoice += "CTE/"
-                mata_kuliah_invoice = "CTE"
+                invoice += "CET/"
+                mata_kuliah_invoice = "CET"
             elif mata_kuliah == NAMA_MATA_KULIAH[3][0]:
                 invoice += "CPS/"
                 mata_kuliah_invoice = "CPS"
@@ -1657,33 +1657,7 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             else:
                 new_data.referral_code = "-"
 
-            bulan = ""
-            if datetime.datetime.now().month == 1:
-                bulan = "Januari"
-            elif datetime.datetime.now().month == 2:
-                bulan = "Februari"
-            elif datetime.datetime.now().month == 3:
-                bulan = "Maret"
-            elif datetime.datetime.now().month == 4:
-                bulan = "April"
-            elif datetime.datetime.now().month == 5:
-                bulan = "Mei"
-            elif datetime.datetime.now().month == 6:
-                bulan = "Juni"
-            elif datetime.datetime.now().month == 7:
-                bulan = "Juli"
-            elif datetime.datetime.now().month == 8:
-                bulan = "Agustus"
-            elif datetime.datetime.now().month == 9:
-                bulan = "September"
-            elif datetime.datetime.now().month == 10:
-                bulan = "Oktober"
-            elif datetime.datetime.now().month == 11:
-                bulan = "November"
-            elif datetime.datetime.now().month == 12:
-                bulan = "Desember"
-
-            tanggal = str(datetime.datetime.now().day) + " " + bulan + " " + str(datetime.datetime.now().year)
+            tanggal = str(datetime.datetime.now().strftime("%A")[0:3] + " " + datetime.datetime.now().strftime("%B")[:3] + " " + datetime.datetime.now().strftime("%d") + " " + datetime.datetime.now().strftime("%Y") + " " + datetime.datetime.now().strftime("%I:%M:%S GMT+0700 ") + "(Western Indonesia Time)")
             new_data.tanggal = tanggal
 
             try:
@@ -1749,10 +1723,18 @@ def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mat
                                                   mata_kuliah_invoice,
                                                   registration_number_q4_invoice, quartal_invoice))
     sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
-    # sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
+            ", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
+        'kode_referral': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
@@ -1765,10 +1747,19 @@ def invoice_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mat
                                                   mata_kuliah_invoice,
                                                   registration_number_q4_invoice, quartal_invoice))
     sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
-    # sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
+            ", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
+        'kode_referral': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
@@ -1781,10 +1772,19 @@ def invoice_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mat
                                                   mata_kuliah_invoice,
                                                   registration_number_q3_invoice, quartal_invoice))
     sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
-    # sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
+            ", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
+        'referral_code': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
     return HttpResponse(pdf, content_type='application/pdf')
@@ -1797,10 +1797,19 @@ def invoice_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mat
                                                   mata_kuliah_invoice,
                                                   registration_number_q4_invoice, quartal_invoice))
     sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
-    # sesi_materi = list(data.sesi_materi.replace("[", "").replace("]", "").replace("'", "").split(", "))
+    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
+            ", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
+        'kode_referral': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
     pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
     return HttpResponse(pdf, content_type='application/pdf')

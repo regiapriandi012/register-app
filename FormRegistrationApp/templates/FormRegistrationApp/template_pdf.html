@@ -70,6 +70,10 @@
                     <p style='margin:0in;line-height:75%;font-size:15px;font-family:"Arial",sans-serif;border:none;'>
                         <span style="font-family:Cairo;">Course: {{ i.mata_kuliah }}</span>
                     </p>
+                    <br>
+                    <p style='margin:0in;line-height:75%;font-size:15px;font-family:"Arial",sans-serif;border:none;'>
+                        <span style="font-family:Cairo;">Referral Code: {{ referral_code }} </span>
+                    </p>
                     <p style='margin:0in;line-height:75%;font-size:15px;font-family:"Arial",sans-serif;border:none;'>
                         <span style="font-family:Cairo;">Currency: IDR</span>
                     </p>
@@ -88,10 +92,11 @@
                     <p style='margin:0in;line-height:75%;font-size:15px;font-family:"Arial",sans-serif;border:none;'>
                         <span style="font-family:Cairo;color:#434343;"></span>
                     </p>
+                    <br>
                     <p style='margin:0in;line-height:75%;font-size:15px;font-family:"Arial",sans-serif;'><strong><span
                                 style="font-family:Cairo;color:#434343;">Group attendees:</span></strong></p>
                     <p style='margin:0in;line-height:75%;font-size:15px;font-family:"Arial",sans-serif;'><span
-                            style="font-family:Cairo;color:#434343;"></span><span style="font-family:Cairo;">{{i.nama_anggota_kelompok }}</span></p>
+                            style="font-family:Cairo;color:#434343;"></span><span style="font-family:Cairo;">{{ anggota_kelompok }}</span></p>
                 </td>
             </tr>
         </tbody>
@@ -184,20 +189,6 @@
                     <p
                         style='margin:0in;line-height:normal;font-size:15px;font-family:"Arial",sans-serif;text-align:right;border:none;'>
                         <span style="font-family:Cairo;color:#434343;">&nbsp;</span>
-                    </p>
-                </td>
-                <td
-                    style="width: 94.5pt;border-top: 1pt solid white;border-right: 1pt solid white;border-bottom: 1pt solid white;border-image: initial;border-left: none;padding: 5pt;vertical-align: top;">
-                    <p
-                        style='margin:0in;line-height:normal;font-size:15px;font-family:"Arial",sans-serif;text-align:right;border:none;'>
-                        <span style="font-family:Cairo;color:#434343;">Subtotal</span>
-                    </p>
-                </td>
-                <td
-                    style="width: 139.5pt;border-top: 1pt solid white;border-right: 1pt solid white;border-bottom: 1pt solid white;border-image: initial;border-left: none;padding: 5pt;vertical-align: top;">
-                    <p
-                        style='margin:0in;line-height:normal;font-size:15px;font-family:"Arial",sans-serif;text-align:right;border:none;'>
-                        <span style="font-family:Cairo;color:#434343;">{{ i.biaya }}</span>
                     </p>
                 </td>
             </tr>
