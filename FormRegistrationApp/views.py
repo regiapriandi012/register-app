@@ -18,31 +18,42 @@ from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 
 NAMA_MATA_KULIAH = (
-    ("Cell Culture for Engineers", "Cell Culture for Engineers"),
-    ("Chemical Engineering Mathematics", "Chemical Engineering Mathematics"),
-    ("Chemical Engineering Thermodynamics", "Chemical Engineering Thermodynamics"),
-    ("Chemical Process Simulation", "Chemical Process Simulation"),
-    ("Chemical Reaction Engineering", "Chemical Reaction Engineering"),
-    ("Engineering Economy", "Engineering Economy"),
-    ("Fundamentals of Analytical Chemistry", "Fundamentals of Analytical Chemistry"),
-    ("Fundamentals of Calculus", "Fundamentals of Calculus"),
-    ("Fundamentals of Chemistry", "Fundamentals of Chemistry"),
-    ("Fundamentals of Heat Transfer", "Fundamentals of Heat Transfer"),
-    ("Fundamentals of Mass Transfer", "Fundamentals of Mass Transfer"),
-    ("Fluid and Particles Mechanics", "Fluid and Particles Mechanics"),
-    ("Fundamentals of Physics 1", "Fundamentals of Physics 1"),
-    ("Fundamentals of Physics 2", "Fundamentals of Physics 2"),
-    ("Mass and Energy Balances", "Mass and Energy Balances"),
-    ("Numerical Computation for Engineers", "Numerical Computation for Engineers"),
-    ("Organic Chemistry for Engineers", "Organic Chemistry for Engineers"),
-    ("Process Control and Dynamics", "Process Control and Dynamics"),
-    ("Physical Chemistry", "Physical Chemistry"),
-    ("Product Design and Development", "Product Design and Development"),
-    ("Process Equipment Design", "Process Equipment Design"),
-    ("Process Plant Design", "Process Plant Design"),
-    ("Statistics and Probability", "Statistics and Probability"),
-    ("Transport Phenomena", "Transport Phenomena")
-)
+    ("Cell Culture for Engineers",
+     "Cell Culture for Engineers"), ("Chemical Engineering Mathematics",
+                                     "Chemical Engineering Mathematics"),
+    ("Chemical Engineering Thermodynamics",
+     "Chemical Engineering Thermodynamics"), ("Chemical Process Simulation",
+                                              "Chemical Process Simulation"),
+    ("Chemical Reaction Engineering",
+     "Chemical Reaction Engineering"), ("Engineering Economy",
+                                        "Engineering Economy"),
+    ("Fundamentals of Analytical Chemistry",
+     "Fundamentals of Analytical Chemistry"), ("Fundamentals of Calculus",
+                                               "Fundamentals of Calculus"),
+    ("Fundamentals of Chemistry",
+     "Fundamentals of Chemistry"), ("Fundamentals of Heat Transfer",
+                                    "Fundamentals of Heat Transfer"),
+    ("Fundamentals of Mass Transfer",
+     "Fundamentals of Mass Transfer"), ("Fluid and Particles Mechanics",
+                                        "Fluid and Particles Mechanics"),
+    ("Fundamentals of Physics 1",
+     "Fundamentals of Physics 1"), ("Fundamentals of Physics 2",
+                                    "Fundamentals of Physics 2"),
+    ("Mass and Energy Balances",
+     "Mass and Energy Balances"), ("Numerical Computation for Engineers",
+                                   "Numerical Computation for Engineers"),
+    ("Organic Chemistry for Engineers",
+     "Organic Chemistry for Engineers"), ("Process Control and Dynamics",
+                                          "Process Control and Dynamics"),
+    ("Physical Chemistry",
+     "Physical Chemistry"), ("Product Design and Development",
+                             "Product Design and Development"),
+    ("Process Equipment Design",
+     "Process Equipment Design"), ("Process Plant Design",
+                                   "Process Plant Design"),
+    ("Statistics and Probability",
+     "Statistics and Probability"), ("Transport Phenomena",
+                                     "Transport Phenomena"))
 
 registration_number_q1 = 0
 registration_number_q2 = 0
@@ -64,8 +75,8 @@ def home_view(request):
         program_studi = request.POST.get('program_studi')
         angkatan = request.POST.get('angkatan')
         universitas = request.POST.get('universitas')
-        info_torche = str(request.POST.getlist('tentang_torche')).replace("Other",
-                                                                          request.POST.get('tentang_torche_other'))
+        info_torche = str(request.POST.getlist('tentang_torche')).replace(
+            "Other", request.POST.get('tentang_torche_other'))
         if program_studi == "Other":
             program_studi = request.POST.get('program_studi_other')
         else:
@@ -74,31 +85,39 @@ def home_view(request):
             universitas = request.POST.get('universitas_other')
         else:
             universitas = request.POST.get('universitas')
-        return HttpResponseRedirect(reverse("metode_pembelajaran", args=(
-            email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-            info_torche)))
+        return HttpResponseRedirect(
+            reverse("metode_pembelajaran",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche)))
     return render(request, "FormRegistrationApp/index.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def metode_pembelajaran(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche):
+def metode_pembelajaran(request, email, nama_lengkap, nomor_telefon,
+                        program_studi, angkatan, universitas, info_torche):
     context = {'form': MetodePembelajaranForm()}
     if request.method == 'POST':
         form = MetodePembelajaranForm(request.POST)
         if form.is_valid():
             metode_pembelajaran = form.cleaned_data['metode_pembelajaran']
-            jumlah_sesi_yang_diikuti = form.cleaned_data['jumlah_sesi_yang_diikuti']
+            jumlah_sesi_yang_diikuti = form.cleaned_data[
+                'jumlah_sesi_yang_diikuti']
             return HttpResponseRedirect(
-                reverse("mata_kuliah", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti)))
+                reverse("mata_kuliah",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti)))
     else:
         form = MetodePembelajaranForm(request.POST)
-    return render(request, "FormRegistrationApp/metode_pembelajaran.html", context)
+    return render(request, "FormRegistrationApp/metode_pembelajaran.html",
+                  context)
 
 
 # ---------------------------------------------------------------))------------------------------------------
-def mata_kuliah(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti):
+def mata_kuliah(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti):
     if request.method == 'POST':
         mata_kuliah = request.POST.get('mata_kuliah')
         if mata_kuliah == "Other":
@@ -107,106 +126,179 @@ def mata_kuliah(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             mata_kuliah = request.POST.get('mata_kuliah')
         if mata_kuliah == NAMA_MATA_KULIAH[0][0]:
             return HttpResponseRedirect(
-                reverse("session_cce", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_cce",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[1][0]:
             return HttpResponseRedirect(
-                reverse("session_cem", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_cem",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[2][0]:
             return HttpResponseRedirect(
-                reverse("session_cet", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_cet",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[3][0]:
             return HttpResponseRedirect(
-                reverse("session_cps", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_cps",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[4][0]:
             return HttpResponseRedirect(
-                reverse("session_cre", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_cre",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[5][0]:
             return HttpResponseRedirect(
-                reverse("session_eec", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_eec",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[6][0]:
             return HttpResponseRedirect(
-                reverse("session_fac", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fac",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[7][0]:
             return HttpResponseRedirect(
-                reverse("session_fca", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fca",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[8][0]:
             return HttpResponseRedirect(
-                reverse("session_fch", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fch",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[9][0]:
             return HttpResponseRedirect(
-                reverse("session_fht", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fht",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[10][0]:
             return HttpResponseRedirect(
-                reverse("session_fmt", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fmt",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[11][0]:
             return HttpResponseRedirect(
-                reverse("session_fpm", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fpm",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[12][0]:
             return HttpResponseRedirect(
-                reverse("session_fp1", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fp1",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[13][0]:
             return HttpResponseRedirect(
-                reverse("session_fp2", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_fp2",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[14][0]:
             return HttpResponseRedirect(
-                reverse("session_meb", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_meb",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[15][0]:
             return HttpResponseRedirect(
-                reverse("session_nce", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_nce",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[16][0]:
             return HttpResponseRedirect(
-                reverse("session_oce", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_oce",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[17][0]:
             return HttpResponseRedirect(
-                reverse("session_pcd", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_pcd",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[18][0]:
             return HttpResponseRedirect(
-                reverse("session_pch", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_pch",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[19][0]:
             return HttpResponseRedirect(
-                reverse("session_pdd", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_pdd",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[20][0]:
             return HttpResponseRedirect(
-                reverse("session_ped", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_ped",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[21][0]:
             return HttpResponseRedirect(
-                reverse("session_ppd", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_ppd",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[22][0]:
             return HttpResponseRedirect(
-                reverse("session_spr", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_spr",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[23][0]:
             return HttpResponseRedirect(
-                reverse("session_tph", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah)))
+                reverse("session_tph",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah)))
     return render(request, "FormRegistrationApp/mata_kuliah.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_cce(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_cce(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCCEForm()}
     if request.method == 'POST':
         form = SessionCCEForm(request.POST)
@@ -214,17 +306,21 @@ def session_cce(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             materi = form.cleaned_data['materi']
             simulasi = "-"
             return HttpResponseRedirect(
-                reverse(jumlah_peserta, args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                                              materi, simulasi)))
+                reverse(jumlah_peserta,
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionCCEForm(request.POST)
     return render(request, "FormRegistrationApp/session_cce.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_cem(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_cem(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCEMForm()}
     if request.method == 'POST':
         form = SessionCEMForm(request.POST)
@@ -233,17 +329,20 @@ def session_cem(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionCEMForm(request.POST)
     return render(request, "FormRegistrationApp/session_cem.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_cet(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_cet(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCETForm()}
     if request.method == 'POST':
         form = SessionCETForm(request.POST)
@@ -252,17 +351,20 @@ def session_cet(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionCETForm(request.POST)
     return render(request, "FormRegistrationApp/session_cet.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_cps(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_cps(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     if request.method == 'POST':
         materi = request.POST.getlist('materi')
         simulasi = request.POST.get('simulasi')
@@ -271,15 +373,19 @@ def session_cps(request, email, nama_lengkap, nomor_telefon, program_studi, angk
         else:
             simulasi = request.POST.get('simulasi')
             return HttpResponseRedirect(
-                reverse("jumlah_peserta", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                universitas, info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti,
-                                                mata_kuliah, materi, simulasi)))
+                reverse("jumlah_peserta",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     return render(request, "FormRegistrationApp/session_cps.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_cre(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_cre(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCREForm()}
     if request.method == 'POST':
         form = SessionCREForm(request.POST)
@@ -288,17 +394,20 @@ def session_cre(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionCREForm(request.POST)
     return render(request, "FormRegistrationApp/session_cre.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_eec(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_eec(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionEECForm()}
     if request.method == 'POST':
         form = SessionEECForm(request.POST)
@@ -307,17 +416,20 @@ def session_eec(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionEECForm(request.POST)
     return render(request, "FormRegistrationApp/session_eec.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fac(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fac(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFACForm()}
     if request.method == 'POST':
         form = SessionFACForm(request.POST)
@@ -326,17 +438,20 @@ def session_fac(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFACForm(request.POST)
     return render(request, "FormRegistrationApp/session_fac.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fca(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fca(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFCAForm()}
     if request.method == 'POST':
         form = SessionFCAForm(request.POST)
@@ -345,17 +460,20 @@ def session_fca(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFCAForm(request.POST)
     return render(request, "FormRegistrationApp/session_fca.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fch(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fch(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFCHForm()}
     if request.method == 'POST':
         form = SessionFCHForm(request.POST)
@@ -364,17 +482,20 @@ def session_fch(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFCHForm(request.POST)
     return render(request, "FormRegistrationApp/session_fch.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fht(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fht(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFHTForm()}
     if request.method == 'POST':
         form = SessionFHTForm(request.POST)
@@ -383,17 +504,20 @@ def session_fht(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFHTForm(request.POST)
     return render(request, "FormRegistrationApp/session_fht.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fmt(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fmt(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFMTForm()}
     if request.method == 'POST':
         form = SessionFMTForm(request.POST)
@@ -402,17 +526,20 @@ def session_fmt(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFMTForm(request.POST)
     return render(request, "FormRegistrationApp/session_fmt.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fpm(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fpm(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFPMForm()}
     if request.method == 'POST':
         form = SessionFPMForm(request.POST)
@@ -421,17 +548,20 @@ def session_fpm(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFPMForm(request.POST)
     return render(request, "FormRegistrationApp/session_fpm.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fp1(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fp1(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFP1Form()}
     if request.method == 'POST':
         form = SessionFP1Form(request.POST)
@@ -440,17 +570,20 @@ def session_fp1(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFP1Form(request.POST)
     return render(request, "FormRegistrationApp/session_fp1.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_fp2(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_fp2(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFP2Form()}
     if request.method == 'POST':
         form = SessionFP2Form(request.POST)
@@ -459,17 +592,20 @@ def session_fp2(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionFP2Form(request.POST)
     return render(request, "FormRegistrationApp/session_fp2.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_meb(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_meb(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionMEBForm()}
     if request.method == 'POST':
         form = SessionMEBForm(request.POST)
@@ -478,17 +614,20 @@ def session_meb(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionMEBForm(request.POST)
     return render(request, "FormRegistrationApp/session_meb.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_nce(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_nce(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionNCEForm()}
     if request.method == 'POST':
         form = SessionNCEForm(request.POST)
@@ -497,17 +636,20 @@ def session_nce(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionNCEForm(request.POST)
     return render(request, "FormRegistrationApp/session_nce.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_oce(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_oce(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionOCEForm()}
     if request.method == 'POST':
         form = SessionOCEForm(request.POST)
@@ -516,17 +658,20 @@ def session_oce(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionOCEForm(request.POST)
     return render(request, "FormRegistrationApp/session_oce.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_pcd(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_pcd(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPCDForm()}
     if request.method == 'POST':
         form = SessionPCDForm(request.POST)
@@ -535,17 +680,20 @@ def session_pcd(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionPCDForm(request.POST)
     return render(request, "FormRegistrationApp/session_pcd.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_pch(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_pch(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPCHForm()}
     if request.method == 'POST':
         form = SessionPCHForm(request.POST)
@@ -554,17 +702,20 @@ def session_pch(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionPCHForm(request.POST)
     return render(request, "FormRegistrationApp/session_pch.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_pdd(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_pdd(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPDDForm()}
     if request.method == 'POST':
         form = SessionPDDForm(request.POST)
@@ -573,17 +724,20 @@ def session_pdd(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionPDDForm(request.POST)
     return render(request, "FormRegistrationApp/session_pdd.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_ped(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_ped(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPEDForm()}
     if request.method == 'POST':
         form = SessionPEDForm(request.POST)
@@ -592,17 +746,20 @@ def session_ped(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionPEDForm(request.POST)
     return render(request, "FormRegistrationApp/session_ped.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_ppd(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_ppd(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPPDForm()}
     if request.method == 'POST':
         form = SessionPPDForm(request.POST)
@@ -611,17 +768,20 @@ def session_ppd(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionPPDForm(request.POST)
     return render(request, "FormRegistrationApp/session_ppd.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_spr(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_spr(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionSPRForm()}
     if request.method == 'POST':
         form = SessionSPRForm(request.POST)
@@ -630,17 +790,20 @@ def session_spr(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionSPRForm(request.POST)
     return render(request, "FormRegistrationApp/session_spr.html", context)
 
 
 # ---------------------------------------------------------------------------------------------------------
-def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah):
+def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi,
+                angkatan, universitas, info_torche, metode_pembelajaran,
+                jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionTPHForm()}
     if request.method == 'POST':
         form = SessionTPHForm(request.POST)
@@ -649,9 +812,11 @@ def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi, angk
             simulasi = "-"
             return HttpResponseRedirect(
                 reverse("jumlah_peserta",
-                        args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah,
-                              materi, simulasi)))
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi)))
     else:
         form = SessionTPHForm(request.POST)
     return render(request, "FormRegistrationApp/session_tph.html", context)
@@ -674,8 +839,9 @@ def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi, angk
 
 
 # ---------------------------------------------------------------------------------------------------------
-def jumlah_peserta(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                   metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi):
+def jumlah_peserta(request, email, nama_lengkap, nomor_telefon, program_studi,
+                   angkatan, universitas, info_torche, metode_pembelajaran,
+                   jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi):
     if request.method == 'POST':
         jumlah_peserta = request.POST.get('jumlah_peserta')
         email_1 = "-"
@@ -719,32 +885,43 @@ def jumlah_peserta(request, email, nama_lengkap, nomor_telefon, program_studi, a
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "1":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2,
-                email_3, nama_lengkap_3, nomor_telefon_3, akun_discord_3,
-                email_4, nama_lengkap_4, nomor_telefon_4, akun_discord_4,
-                email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5,
-                email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10)))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_1", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta)))
+                reverse("anggota_kelompok_1",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi, jumlah_peserta)))
     return render(request, "FormRegistrationApp/jumlah_peserta.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_1(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta):
+def anggota_kelompok_1(request, email, nama_lengkap, nomor_telefon,
+                       program_studi, angkatan, universitas, info_torche,
+                       metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                       mata_kuliah, materi, simulasi, jumlah_peserta):
     if request.method == 'POST':
         email_1 = request.POST.get('email_1')
         nama_lengkap_1 = request.POST.get('nama_lengkap_1')
@@ -787,35 +964,46 @@ def anggota_kelompok_1(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "1":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2,
-                email_3, nama_lengkap_3, nomor_telefon_3, akun_discord_3,
-                email_4, nama_lengkap_4, nomor_telefon_4, akun_discord_4,
-                email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5,
-                email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_2", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1)))
+                reverse("anggota_kelompok_2",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi, jumlah_peserta, email_1,
+                              nama_lengkap_1, nomor_telefon_1,
+                              akun_discord_1)))
     return render(request, "FormRegistrationApp/anggota_kelompok_1.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_2(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1):
+def anggota_kelompok_2(request, email, nama_lengkap, nomor_telefon,
+                       program_studi, angkatan, universitas, info_torche,
+                       metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                       mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
+                       nama_lengkap_1, nomor_telefon_1, akun_discord_1):
     if request.method == 'POST':
         email_2 = request.POST.get('email_2')
         nama_lengkap_2 = request.POST.get('nama_lengkap_2')
@@ -854,38 +1042,49 @@ def anggota_kelompok_2(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "2":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2,
-                email_3, nama_lengkap_3, nomor_telefon_3, akun_discord_3,
-                email_4, nama_lengkap_4, nomor_telefon_4, akun_discord_4,
-                email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5,
-                email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_3", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1,
-                                                    email_2, nama_lengkap_2, nomor_telefon_2,
-                                                    akun_discord_2)))
+                reverse("anggota_kelompok_3",
+                        args=(email, nama_lengkap, nomor_telefon,
+                              program_studi, angkatan, universitas,
+                              info_torche, metode_pembelajaran,
+                              jumlah_sesi_yang_diikuti, mata_kuliah, materi,
+                              simulasi, jumlah_peserta, email_1,
+                              nama_lengkap_1, nomor_telefon_1, akun_discord_1,
+                              email_2, nama_lengkap_2, nomor_telefon_2,
+                              akun_discord_2)))
     return render(request, "FormRegistrationApp/anggota_kelompok_2.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                       email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2):
+def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon,
+                       program_studi, angkatan, universitas, info_torche,
+                       metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                       mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
+                       nama_lengkap_1, nomor_telefon_1, akun_discord_1,
+                       email_2, nama_lengkap_2, nomor_telefon_2,
+                       akun_discord_2):
     if request.method == 'POST':
         email_3 = request.POST.get('email_3')
         nama_lengkap_3 = request.POST.get('nama_lengkap_3')
@@ -920,40 +1119,51 @@ def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "3":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3,
-                email_4, nama_lengkap_4, nomor_telefon_4, akun_discord_4,
-                email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5,
-                email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_4", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1,
-                                                    email_2, nama_lengkap_2, nomor_telefon_2,
-                                                    akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
-                                                    akun_discord_3)))
+                reverse(
+                    "anggota_kelompok_4",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3)))
     return render(request, "FormRegistrationApp/anggota_kelompok_3.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                       email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                       nama_lengkap_3, nomor_telefon_3, akun_discord_3):
+def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon,
+                       program_studi, angkatan, universitas, info_torche,
+                       metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                       mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
+                       nama_lengkap_1, nomor_telefon_1, akun_discord_1,
+                       email_2, nama_lengkap_2, nomor_telefon_2,
+                       akun_discord_2, email_3, nama_lengkap_3,
+                       nomor_telefon_3, akun_discord_3):
     if request.method == 'POST':
         email_4 = request.POST.get('email_4')
         nama_lengkap_4 = request.POST.get('nama_lengkap_4')
@@ -984,42 +1194,54 @@ def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "4":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                akun_discord_4,
-                email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5,
-                email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_5", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1,
-                                                    email_2, nama_lengkap_2, nomor_telefon_2,
-                                                    akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
-                                                    akun_discord_3, email_4,
-                                                    nama_lengkap_4, nomor_telefon_4, akun_discord_4)))
+                reverse(
+                    "anggota_kelompok_5",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4)))
     return render(request, "FormRegistrationApp/anggota_kelompok_4.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                       email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                       nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                       akun_discord_4):
+def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon,
+                       program_studi, angkatan, universitas, info_torche,
+                       metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                       mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
+                       nama_lengkap_1, nomor_telefon_1, akun_discord_1,
+                       email_2, nama_lengkap_2, nomor_telefon_2,
+                       akun_discord_2, email_3, nama_lengkap_3,
+                       nomor_telefon_3, akun_discord_3, email_4,
+                       nama_lengkap_4, nomor_telefon_4, akun_discord_4):
     if request.method == 'POST':
         email_5 = request.POST.get('email_5')
         nama_lengkap_5 = request.POST.get('nama_lengkap_5')
@@ -1046,43 +1268,56 @@ def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "5":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5,
-                email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_6", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1,
-                                                    email_2, nama_lengkap_2, nomor_telefon_2,
-                                                    akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
-                                                    akun_discord_3, email_4,
-                                                    nama_lengkap_4, nomor_telefon_4, akun_discord_4, email_5,
-                                                    nama_lengkap_5, nomor_telefon_5,
-                                                    akun_discord_5)))
+                reverse(
+                    "anggota_kelompok_6",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5)))
     return render(request, "FormRegistrationApp/anggota_kelompok_5.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_6(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                       email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                       nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                       akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5):
+def anggota_kelompok_6(
+        request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
+        universitas, info_torche, metode_pembelajaran,
+        jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+        jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
+        akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
+        akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
+        akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
+        akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5,
+        akun_discord_5):
     if request.method == 'POST':
         email_6 = request.POST.get('email_6')
         nama_lengkap_6 = request.POST.get('nama_lengkap_6')
@@ -1105,44 +1340,58 @@ def anggota_kelompok_6(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "6":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10)))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_7", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1,
-                                                    email_2, nama_lengkap_2, nomor_telefon_2,
-                                                    akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
-                                                    akun_discord_3, email_4,
-                                                    nama_lengkap_4, nomor_telefon_4, akun_discord_4, email_5,
-                                                    nama_lengkap_5, nomor_telefon_5,
-                                                    akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
-                                                    akun_discord_6)))
+                reverse(
+                    "anggota_kelompok_7",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6)))
     return render(request, "FormRegistrationApp/anggota_kelompok_6.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_7(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                       email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                       nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                       akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                       nama_lengkap_6, nomor_telefon_6, akun_discord_6):
+def anggota_kelompok_7(
+        request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
+        universitas, info_torche, metode_pembelajaran,
+        jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+        jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
+        akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
+        akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
+        akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
+        akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5,
+        akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
+        akun_discord_6):
     if request.method == 'POST':
         email_7 = request.POST.get('email_7')
         nama_lengkap_7 = request.POST.get('nama_lengkap_7')
@@ -1161,47 +1410,61 @@ def anggota_kelompok_7(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "7":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                akun_discord_7,
-                email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_8", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1,
-                                                    email_2, nama_lengkap_2, nomor_telefon_2,
-                                                    akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
-                                                    akun_discord_3, email_4,
-                                                    nama_lengkap_4, nomor_telefon_4, akun_discord_4, email_5,
-                                                    nama_lengkap_5, nomor_telefon_5,
-                                                    akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
-                                                    akun_discord_6, email_7,
-                                                    nama_lengkap_7, nomor_telefon_7, akun_discord_7)))
+                reverse(
+                    "anggota_kelompok_8",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7)))
     return render(request, "FormRegistrationApp/anggota_kelompok_7.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_8(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                       email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                       nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                       akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                       nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                       akun_discord_7):
+def anggota_kelompok_8(
+        request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
+        universitas, info_torche, metode_pembelajaran,
+        jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+        jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
+        akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
+        akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
+        akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
+        akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5,
+        akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
+        akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
+        akun_discord_7):
     if request.method == 'POST':
         email_8 = request.POST.get('email_8')
         nama_lengkap_8 = request.POST.get('nama_lengkap_8')
@@ -1216,48 +1479,63 @@ def anggota_kelompok_8(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "8":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_9", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                    universitas, info_torche, metode_pembelajaran,
-                                                    jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                    materi, simulasi, jumlah_peserta, email_1, nama_lengkap_1,
-                                                    nomor_telefon_1,
-                                                    akun_discord_1,
-                                                    email_2, nama_lengkap_2, nomor_telefon_2,
-                                                    akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
-                                                    akun_discord_3, email_4,
-                                                    nama_lengkap_4, nomor_telefon_4, akun_discord_4, email_5,
-                                                    nama_lengkap_5, nomor_telefon_5,
-                                                    akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
-                                                    akun_discord_6, email_7,
-                                                    nama_lengkap_7, nomor_telefon_7, akun_discord_7, email_8,
-                                                    nama_lengkap_8, nomor_telefon_8,
-                                                    akun_discord_8)))
+                reverse(
+                    "anggota_kelompok_9",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8)))
     return render(request, "FormRegistrationApp/anggota_kelompok_8.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_9(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                       metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                       jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                       email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                       nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                       akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                       nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                       akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8):
+def anggota_kelompok_9(
+        request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
+        universitas, info_torche, metode_pembelajaran,
+        jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+        jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
+        akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
+        akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
+        akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
+        akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5,
+        akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
+        akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
+        akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8,
+        akun_discord_8):
     if request.method == 'POST':
         email_9 = request.POST.get('email_9')
         nama_lengkap_9 = request.POST.get('nama_lengkap_9')
@@ -1268,85 +1546,110 @@ def anggota_kelompok_9(request, email, nama_lengkap, nomor_telefon, program_stud
         nomor_telefon_10 = "-"
         akun_discord_10 = "-"
         if jumlah_peserta == "9":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8, email_9,
-                nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10
-            )))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
         else:
             return HttpResponseRedirect(
-                reverse("anggota_kelompok_10", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                                                     universitas, info_torche, metode_pembelajaran,
-                                                     jumlah_sesi_yang_diikuti, mata_kuliah,
-                                                     materi, simulasi, jumlah_peserta, email_1,
-                                                     nama_lengkap_1, nomor_telefon_1,
-                                                     akun_discord_1,
-                                                     email_2, nama_lengkap_2, nomor_telefon_2,
-                                                     akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
-                                                     akun_discord_3, email_4,
-                                                     nama_lengkap_4, nomor_telefon_4, akun_discord_4, email_5,
-                                                     nama_lengkap_5, nomor_telefon_5,
-                                                     akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
-                                                     akun_discord_6, email_7,
-                                                     nama_lengkap_7, nomor_telefon_7, akun_discord_7, email_8,
-                                                     nama_lengkap_8, nomor_telefon_8,
-                                                     akun_discord_8, email_9, nama_lengkap_9, nomor_telefon_9,
-                                                     akun_discord_9)))
+                reverse(
+                    "anggota_kelompok_10",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9)))
     return render(request, "FormRegistrationApp/anggota_kelompok_9.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def anggota_kelompok_10(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas, info_torche,
-                        metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                        jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                        email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                        nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                        akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                        nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                        akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8, email_9,
-                        nama_lengkap_9, nomor_telefon_9, akun_discord_9):
+def anggota_kelompok_10(
+        request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
+        universitas, info_torche, metode_pembelajaran,
+        jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+        jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
+        akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
+        akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
+        akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
+        akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5,
+        akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
+        akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
+        akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8,
+        akun_discord_8, email_9, nama_lengkap_9, nomor_telefon_9,
+        akun_discord_9):
     if request.method == 'POST':
         email_10 = request.POST.get('email_10')
         nama_lengkap_10 = request.POST.get('nama_lengkap_10')
         nomor_telefon_10 = request.POST.get('nomor_telefon_10')
         akun_discord_10 = request.POST.get('akun_discord_10')
         if jumlah_peserta == "10":
-            return HttpResponseRedirect(reverse("jadwal_belajar", args=(
-                email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
-                jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2, email_3,
-                nama_lengkap_3, nomor_telefon_3, akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
-                akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5, email_6,
-                nama_lengkap_6, nomor_telefon_6, akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
-                akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8, email_9,
-                nama_lengkap_9, nomor_telefon_9, akun_discord_9, email_10, nama_lengkap_10,
-                nomor_telefon_10,
-                akun_discord_10)))
+            return HttpResponseRedirect(
+                reverse(
+                    "jadwal_belajar",
+                    args=(email, nama_lengkap, nomor_telefon, program_studi,
+                          angkatan, universitas, info_torche,
+                          metode_pembelajaran, jumlah_sesi_yang_diikuti,
+                          mata_kuliah, materi, simulasi, jumlah_peserta,
+                          email_1, nama_lengkap_1, nomor_telefon_1,
+                          akun_discord_1, email_2, nama_lengkap_2,
+                          nomor_telefon_2, akun_discord_2, email_3,
+                          nama_lengkap_3, nomor_telefon_3, akun_discord_3,
+                          email_4, nama_lengkap_4, nomor_telefon_4,
+                          akun_discord_4, email_5, nama_lengkap_5,
+                          nomor_telefon_5, akun_discord_5, email_6,
+                          nama_lengkap_6, nomor_telefon_6, akun_discord_6,
+                          email_7, nama_lengkap_7, nomor_telefon_7,
+                          akun_discord_7, email_8, nama_lengkap_8,
+                          nomor_telefon_8, akun_discord_8, email_9,
+                          nama_lengkap_9, nomor_telefon_9, akun_discord_9,
+                          email_10, nama_lengkap_10, nomor_telefon_10,
+                          akun_discord_10)))
     return render(request, "FormRegistrationApp/anggota_kelompok_10.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
-def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-                   universitas, info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti,
-                   mata_kuliah, materi, simulasi, jumlah_peserta,
-                   email_1, nama_lengkap_1, nomor_telefon_1, akun_discord_1,
-                   email_2, nama_lengkap_2, nomor_telefon_2, akun_discord_2,
-                   email_3, nama_lengkap_3, nomor_telefon_3, akun_discord_3,
-                   email_4, nama_lengkap_4, nomor_telefon_4, akun_discord_4,
-                   email_5, nama_lengkap_5, nomor_telefon_5, akun_discord_5,
-                   email_6, nama_lengkap_6, nomor_telefon_6, akun_discord_6,
-                   email_7, nama_lengkap_7, nomor_telefon_7, akun_discord_7,
-                   email_8, nama_lengkap_8, nomor_telefon_8, akun_discord_8,
-                   email_9, nama_lengkap_9, nomor_telefon_9, akun_discord_9,
-                   email_10, nama_lengkap_10, nomor_telefon_10, akun_discord_10):
+def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi,
+                   angkatan, universitas, info_torche, metode_pembelajaran,
+                   jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+                   jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
+                   akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
+                   akun_discord_2, email_3, nama_lengkap_3, nomor_telefon_3,
+                   akun_discord_3, email_4, nama_lengkap_4, nomor_telefon_4,
+                   akun_discord_4, email_5, nama_lengkap_5, nomor_telefon_5,
+                   akun_discord_5, email_6, nama_lengkap_6, nomor_telefon_6,
+                   akun_discord_6, email_7, nama_lengkap_7, nomor_telefon_7,
+                   akun_discord_7, email_8, nama_lengkap_8, nomor_telefon_8,
+                   akun_discord_8, email_9, nama_lengkap_9, nomor_telefon_9,
+                   akun_discord_9, email_10, nama_lengkap_10, nomor_telefon_10,
+                   akun_discord_10):
     context = {'form': JadwalBelajarForm()}
     if request.method == 'POST':
         form = JadwalBelajarForm(request.POST, request.FILES)
@@ -1363,7 +1666,7 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             global registration_number_q3_invoice
             global registration_number_q4_invoice
 
-            domain = "http://localhost:8000"
+            domain = request.META['HTTP_HOST']
 
             month_number = datetime.datetime.now().month
 
@@ -1467,34 +1770,42 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 registration_number_q1 += 1
                 if registration_number_q1 <= 9:
                     invoice += "0" + str(registration_number_q1) + "/"
-                    registration_number_q1_invoice = "0" + str(registration_number_q1)
+                    registration_number_q1_invoice = "0" + str(
+                        registration_number_q1)
                 elif registration_number_q1 >= 10:
                     invoice += str(registration_number_q1) + "/"
-                    registration_number_q1_invoice = str(registration_number_q1)
+                    registration_number_q1_invoice = str(
+                        registration_number_q1)
             elif 4 <= month_number <= 6:
                 registration_number_q2 += 1
                 if registration_number_q2 <= 9:
                     invoice += "0" + str(registration_number_q2) + "/"
-                    registration_number_q2_invoice = "0" + str(registration_number_q2)
+                    registration_number_q2_invoice = "0" + str(
+                        registration_number_q2)
                 elif registration_number_q2 >= 10:
                     invoice += str(registration_number_q2) + "/"
-                    registration_number_q2_invoice = str(registration_number_q2)
+                    registration_number_q2_invoice = str(
+                        registration_number_q2)
             elif 7 <= month_number <= 9:
                 registration_number_q3 += 1
                 if registration_number_q3 <= 9:
                     invoice += "0" + str(registration_number_q3) + "/"
-                    registration_number_q3_invoice = "0" + str(registration_number_q3)
+                    registration_number_q3_invoice = "0" + str(
+                        registration_number_q3)
                 elif registration_number_q3 >= 10:
                     invoice += str(registration_number_q3) + "/"
-                    registration_number_q3_invoice = str(registration_number_q3)
+                    registration_number_q3_invoice = str(
+                        registration_number_q3)
             elif 10 <= month_number <= 12:
                 registration_number_q4 += 1
                 if registration_number_q4 <= 9:
                     invoice += "0" + str(registration_number_q4) + "/"
-                    registration_number_q4_invoice = "0" + str(registration_number_q4)
+                    registration_number_q4_invoice = "0" + str(
+                        registration_number_q4)
                 elif registration_number_q1 >= 10:
                     invoice += str(registration_number_q4) + "/"
-                    registration_number_q4_invoice = str(registration_number_q4)
+                    registration_number_q4_invoice = str(
+                        registration_number_q4)
 
             if 1 <= month_number <= 3:
                 invoice += "1-"
@@ -1502,17 +1813,14 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 year_number = datetime.datetime.now().year
                 invoice += "{}".format(str(year_number)[-2:])
                 quartal_invoice += "{}".format(str(year_number)[-2:])
-                new_data.lampiran_invoice = "{}/invoice-q1/Inv/{}/{}/{}/{}/{}/".format(domain, jumlah_peserta_invoice,
-                                                                                       metode_pembelajaran_invoice,
-                                                                                       mata_kuliah_invoice,
-                                                                                       registration_number_q1_invoice,
-                                                                                       quartal_invoice)
-                new_data.lampiran_invoice_assignment = "{}/invoice-assignment-q1/Inv/{}/{}/{}/{}/{}/".format(domain,
-                                                                                                             jumlah_peserta_invoice,
-                                                                                                             metode_pembelajaran_invoice,
-                                                                                                             mata_kuliah_invoice,
-                                                                                                             registration_number_q1_invoice,
-                                                                                                             quartal_invoice)
+                new_data.lampiran_invoice = "{}/invoice-q1/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q1_invoice, quartal_invoice)
+                new_data.lampiran_surat_tugas = "{}/invoice-assignment-q1/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q1_invoice, quartal_invoice)
 
             elif 4 <= month_number <= 6:
                 invoice += "2-"
@@ -1520,17 +1828,14 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 year_number = datetime.datetime.now().year
                 invoice += "{}".format(str(year_number)[-2:])
                 quartal_invoice += "{}".format(str(year_number)[-2:])
-                new_data.lampiran_invoice = "{}/invoice-q2/Inv/{}/{}/{}/{}/{}/".format(domain, jumlah_peserta_invoice,
-                                                                                       metode_pembelajaran_invoice,
-                                                                                       mata_kuliah_invoice,
-                                                                                       registration_number_q2_invoice,
-                                                                                       quartal_invoice)
-                new_data.lampiran_invoice_assignment = "{}/invoice-assignment-q2/Inv/{}/{}/{}/{}/{}/".format(domain,
-                                                                                                             jumlah_peserta_invoice,
-                                                                                                             metode_pembelajaran_invoice,
-                                                                                                             mata_kuliah_invoice,
-                                                                                                             registration_number_q2_invoice,
-                                                                                                             quartal_invoice)
+                new_data.lampiran_invoice = "{}/invoice-q2/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q2_invoice, quartal_invoice)
+                new_data.lampiran_surat_tugas = "{}/invoice-assignment-q2/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q2_invoice, quartal_invoice)
 
             elif 7 <= month_number <= 9:
                 invoice += "3-"
@@ -1538,17 +1843,14 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 year_number = datetime.datetime.now().year
                 invoice += "{}".format(str(year_number)[-2:])
                 quartal_invoice += "{}".format(str(year_number)[-2:])
-                new_data.lampiran_invoice = "{}/invoice-q3/Inv/{}/{}/{}/{}/{}/".format(domain, jumlah_peserta_invoice,
-                                                                                       metode_pembelajaran_invoice,
-                                                                                       mata_kuliah_invoice,
-                                                                                       registration_number_q3_invoice,
-                                                                                       quartal_invoice)
-                new_data.lampiran_invoice_assignment = "{}/invoice-assignment-q3/Inv/{}/{}/{}/{}/{}/".format(domain,
-                                                                                                             jumlah_peserta_invoice,
-                                                                                                             metode_pembelajaran_invoice,
-                                                                                                             mata_kuliah_invoice,
-                                                                                                             registration_number_q3_invoice,
-                                                                                                             quartal_invoice)
+                new_data.lampiran_invoice = "{}/invoice-q3/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q3_invoice, quartal_invoice)
+                new_data.lampiran_surat_tugas = "{}/invoice-assignment-q3/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q3_invoice, quartal_invoice)
 
             elif 10 <= month_number <= 12:
                 invoice += "4-"
@@ -1556,17 +1858,14 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
                 year_number = datetime.datetime.now().year
                 invoice += "{}".format(str(year_number)[-2:])
                 quartal_invoice += "{}".format(str(year_number)[-2:])
-                new_data.lampiran_invoice = "{}/invoice-q4/Inv/{}/{}/{}/{}/{}/".format(domain, jumlah_peserta_invoice,
-                                                                                       metode_pembelajaran_invoice,
-                                                                                       mata_kuliah_invoice,
-                                                                                       registration_number_q4_invoice,
-                                                                                       quartal_invoice)
-                new_data.lampiran_invoice_assignment = "{}/invoice-assignment-q4/Inv/{}/{}/{}/{}/{}/".format(domain,
-                                                                                                             jumlah_peserta_invoice,
-                                                                                                             metode_pembelajaran_invoice,
-                                                                                                             mata_kuliah_invoice,
-                                                                                                             registration_number_q4_invoice,
-                                                                                                             quartal_invoice)
+                new_data.lampiran_invoice = "{}/invoice-q4/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q4_invoice, quartal_invoice)
+                new_data.lampiran_surat_tugas = "{}/invoice-assignment-q4/Inv/{}/{}/{}/{}/{}/".format(
+                    domain, jumlah_peserta_invoice,
+                    metode_pembelajaran_invoice, mata_kuliah_invoice,
+                    registration_number_q4_invoice, quartal_invoice)
 
             new_data.nomor_invoice = invoice
             new_data.nama_lengkap = nama_lengkap
@@ -1577,10 +1876,13 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             new_data.universitas = universitas
             new_data.metode_pembelajaran = metode_pembelajaran
             new_data.mata_kuliah = mata_kuliah
-            new_data.materi = str(materi).replace("[", "").replace("]", "").replace("'", "")
+            new_data.materi = str(materi).replace("[", "").replace("]",
+                                                                   "").replace(
+                                                                       "'", "")
             new_data.jumlah_peserta = jumlah_peserta
             new_data.jumlah_sesi_yang_diikuti = jumlah_sesi_yang_diikuti
-            new_data.informasi_mengenai_torche = str(info_torche).replace("[", "").replace("]", "").replace("'", "")
+            new_data.informasi_mengenai_torche = str(info_torche).replace(
+                "[", "").replace("]", "").replace("'", "")
             new_data.aplikasi_simulasi = simulasi
 
             try:
@@ -1629,8 +1931,10 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             new_data.nomor_telefon_anggota_10 = "-" if nomor_telefon_10 == "" else nomor_telefon_10
             new_data.akun_discord_anggota_10 = "-" if akun_discord_10 == "" else akun_discord_10
 
-            new_data.sesi_hari = str(form.cleaned_data['sesi_hari']).replace("[", "").replace("]", "").replace("'", "")
-            new_data.sesi_jam = str(form.cleaned_data['sesi_jam']).replace("[", "").replace("]", "").replace("'", "")
+            new_data.sesi_hari = str(form.cleaned_data['sesi_hari']).replace(
+                "[", "").replace("]", "").replace("'", "")
+            new_data.sesi_jam = str(form.cleaned_data['sesi_jam']).replace(
+                "[", "").replace("]", "").replace("'", "")
             if form.cleaned_data['notes_for_tutor'] == "":
                 new_data.notes_for_tutor = "-"
             else:
@@ -1644,7 +1948,8 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             elif int(jumlah_peserta) == 5:
                 biaya += (250000 * len(materi.split(",")))
             elif int(jumlah_peserta) >= 6:
-                biaya += ((250000 + ((int(jumlah_peserta) - 5) * 40000)) * len(materi.split(",")))
+                biaya += ((250000 + ((int(jumlah_peserta) - 5) * 40000)) *
+                          len(materi.split(",")))
             new_data.biaya = "{:0,.0f}".format(biaya)
 
             referral_code = form.cleaned_data['referral_code']
@@ -1657,7 +1962,13 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
             else:
                 new_data.referral_code = "-"
 
-            tanggal = str(datetime.datetime.now().strftime("%A")[0:3] + " " + datetime.datetime.now().strftime("%B")[:3] + " " + datetime.datetime.now().strftime("%d") + " " + datetime.datetime.now().strftime("%Y") + " " + datetime.datetime.now().strftime("%I:%M:%S GMT+0700 ") + "(Western Indonesia Time)")
+            tanggal = str(
+                datetime.datetime.now().strftime("%A")[0:3] + " " +
+                datetime.datetime.now().strftime("%B")[:3] + " " +
+                datetime.datetime.now().strftime("%d") + " " +
+                datetime.datetime.now().strftime("%Y") + " " +
+                datetime.datetime.now().strftime("%H:%M:%S GMT+0700 ") +
+                "(Western Indonesia Time)")
             new_data.tanggal = tanggal
 
             try:
@@ -1665,32 +1976,48 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi, a
 
                 if 1 <= month_number <= 3:
                     return HttpResponseRedirect(
-                        reverse("send_email_q1", args=(nama_lengkap, email, nomor_telefon, program_studi, universitas,
-                                                       metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice,
-                                                       metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                                       registration_number_q1_invoice,
-                                                       quartal_invoice)))
+                        reverse("send_email_q1",
+                                args=(nama_lengkap, email, nomor_telefon,
+                                      program_studi, universitas,
+                                      metode_pembelajaran, mata_kuliah, materi,
+                                      jumlah_peserta_invoice,
+                                      metode_pembelajaran_invoice,
+                                      mata_kuliah_invoice,
+                                      registration_number_q1_invoice,
+                                      quartal_invoice)))
                 elif 4 <= month_number <= 6:
                     return HttpResponseRedirect(
-                        reverse("send_email_q2", args=(nama_lengkap, email, nomor_telefon, program_studi, universitas,
-                                                       metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice,
-                                                       metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                                       registration_number_q2_invoice,
-                                                       quartal_invoice)))
+                        reverse("send_email_q2",
+                                args=(nama_lengkap, email, nomor_telefon,
+                                      program_studi, universitas,
+                                      metode_pembelajaran, mata_kuliah, materi,
+                                      jumlah_peserta_invoice,
+                                      metode_pembelajaran_invoice,
+                                      mata_kuliah_invoice,
+                                      registration_number_q2_invoice,
+                                      quartal_invoice)))
                 elif 7 <= month_number <= 9:
                     return HttpResponseRedirect(
-                        reverse("send_email_q3", args=(nama_lengkap, email, nomor_telefon, program_studi, universitas,
-                                                       metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice,
-                                                       metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                                       registration_number_q3_invoice,
-                                                       quartal_invoice)))
+                        reverse("send_email_q3",
+                                args=(nama_lengkap, email, nomor_telefon,
+                                      program_studi, universitas,
+                                      metode_pembelajaran, mata_kuliah, materi,
+                                      jumlah_peserta_invoice,
+                                      metode_pembelajaran_invoice,
+                                      mata_kuliah_invoice,
+                                      registration_number_q3_invoice,
+                                      quartal_invoice)))
                 elif 10 <= month_number <= 12:
                     return HttpResponseRedirect(
-                        reverse("send_email_q4", args=(nama_lengkap, email, nomor_telefon, program_studi, universitas,
-                                                       metode_pembelajaran, mata_kuliah, materi, jumlah_peserta_invoice,
-                                                       metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                                       registration_number_q4_invoice,
-                                                       quartal_invoice)))
+                        reverse("send_email_q4",
+                                args=(nama_lengkap, email, nomor_telefon,
+                                      program_studi, universitas,
+                                      metode_pembelajaran, mata_kuliah, materi,
+                                      jumlah_peserta_invoice,
+                                      metode_pembelajaran_invoice,
+                                      mata_kuliah_invoice,
+                                      registration_number_q4_invoice,
+                                      quartal_invoice)))
             except:
                 return HttpResponseRedirect(reverse("pendaftaran_gagal"))
     else:
@@ -1716,175 +2043,338 @@ def create_pdf_assignment(template_src, context_dict={}):
     return None
 
 
-def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-               registration_number_q4_invoice, quartal_invoice):
+def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
+               mata_kuliah_invoice, registration_number_q4_invoice,
+               quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice,
-                                                  registration_number_q4_invoice, quartal_invoice))
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q4_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
     daftar_anggota_kelompok = ""
     if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
         daftar_anggota_kelompok += "-"
     else:
         daftar_anggota_kelompok += (
-                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
-            ", -", "")
+            data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+            ", " + data.nama_lengkap_anggota_3 + ", " +
+            data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+            ", " + data.nama_lengkap_anggota_6 + ", " +
+            data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+            ", " + data.nama_lengkap_anggota_9 + ", " +
+            data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
         'kode_referral': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html',
+                                context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
-def invoice_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-               registration_number_q4_invoice, quartal_invoice):
+def invoice_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
+               mata_kuliah_invoice, registration_number_q4_invoice,
+               quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice,
-                                                  registration_number_q4_invoice, quartal_invoice))
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q4_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
     daftar_anggota_kelompok = ""
     if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
         daftar_anggota_kelompok += "-"
     else:
         daftar_anggota_kelompok += (
-                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
-            ", -", "")
+            data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+            ", " + data.nama_lengkap_anggota_3 + ", " +
+            data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+            ", " + data.nama_lengkap_anggota_6 + ", " +
+            data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+            ", " + data.nama_lengkap_anggota_9 + ", " +
+            data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
         'kode_referral': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html',
+                                context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
-def invoice_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-               registration_number_q3_invoice, quartal_invoice):
+def invoice_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
+               mata_kuliah_invoice, registration_number_q3_invoice,
+               quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice,
-                                                  registration_number_q3_invoice, quartal_invoice))
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q3_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
     daftar_anggota_kelompok = ""
     if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
         daftar_anggota_kelompok += "-"
     else:
         daftar_anggota_kelompok += (
-                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
-            ", -", "")
+            data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+            ", " + data.nama_lengkap_anggota_3 + ", " +
+            data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+            ", " + data.nama_lengkap_anggota_6 + ", " +
+            data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+            ", " + data.nama_lengkap_anggota_9 + ", " +
+            data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
         'referral_code': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html',
+                                context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
-def invoice_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-               registration_number_q4_invoice, quartal_invoice):
+def invoice_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
+               mata_kuliah_invoice, registration_number_q4_invoice,
+               quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice,
-                                                  registration_number_q4_invoice, quartal_invoice))
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q4_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
     daftar_anggota_kelompok = ""
     if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
         daftar_anggota_kelompok += "-"
     else:
         daftar_anggota_kelompok += (
-                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 + ", " + data.nama_lengkap_anggota_3 + ", " + data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 + ", " + data.nama_lengkap_anggota_6 + ", " + data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 + ", " + data.nama_lengkap_anggota_9 + ", " + data.nama_lengkap_anggota_10).replace(
-            ", -", "")
+            data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+            ", " + data.nama_lengkap_anggota_3 + ", " +
+            data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+            ", " + data.nama_lengkap_anggota_6 + ", " +
+            data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+            ", " + data.nama_lengkap_anggota_9 + ", " +
+            data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
         'sesi_materi': sesi_materi,
         'kode_referral': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf.html',
+                                context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
-def invoice_assignment_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
+def invoice_assignment_q1(request, jumlah_peserta_invoice,
+                          metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q1_invoice, quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q1_invoice,
+            quartal_invoice))
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
     sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += "-"
+    else:
+        daftar_email_anggota_kelompok += (
+            data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+            data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+            data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+            data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+            data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+                ", -", "")
+
     context = {
         'i': data,
         'sesi_hari': sesi_hari,
         'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment(
+        'FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
-def invoice_assignment_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
+def invoice_assignment_q2(request, jumlah_peserta_invoice,
+                          metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q2_invoice, quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q2_invoice,
+            quartal_invoice))
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
     sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += "-"
+    else:
+        daftar_email_anggota_kelompok += (
+            data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+            data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+            data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+            data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+            data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+                ", -", "")
+
     context = {
         'i': data,
         'sesi_hari': sesi_hari,
         'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment(
+        'FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
-def invoice_assignment_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
+def invoice_assignment_q3(request, jumlah_peserta_invoice,
+                          metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q3_invoice, quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q3_invoice,
+            quartal_invoice))
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
     sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += "-"
+    else:
+        daftar_email_anggota_kelompok += (
+            data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+            data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+            data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+            data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+            data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+                ", -", "")
+
     context = {
         'i': data,
         'sesi_hari': sesi_hari,
         'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment(
+        'FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
-def invoice_assignment_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
+def invoice_assignment_q4(request, jumlah_peserta_invoice,
+                          metode_pembelajaran_invoice, mata_kuliah_invoice,
                           registration_number_q4_invoice, quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q4_invoice,
+            quartal_invoice))
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
     sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += "-"
+    else:
+        daftar_email_anggota_kelompok += (
+            data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+            data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+            data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+            data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+            data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+                ", -", "")
+
     context = {
         'i': data,
         'sesi_hari': sesi_hari,
         'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
     }
-    pdf = create_pdf_assignment('FormRegistrationApp/template_pdf_assignment.html', context)
-    return HttpResponse(pdf, content_type='application/pdf')
+    pdf = create_pdf_assignment(
+        'FormRegistrationApp/template_pdf_assignment.html', context)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+    content = "attachment; filename='%s'" % filename
+    response['Content-Disposition'] = content
+    return response
 
 
 def create_pdf(context):
@@ -1896,130 +2386,198 @@ def create_pdf(context):
     return None
 
 
-def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
-                  mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                  registration_number_q1_invoice, quartal_invoice):
+def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi,
+                  universitas, metode_pembelajaran, mata_kuliah, materi,
+                  jumlah_peserta_invoice, metode_pembelajaran_invoice,
+                  mata_kuliah_invoice, registration_number_q1_invoice,
+                  quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
-    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q1_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+                ", " + data.nama_lengkap_anggota_3 + ", " +
+                data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+                ", " + data.nama_lengkap_anggota_6 + ", " +
+                data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+                ", " + data.nama_lengkap_anggota_9 + ", " +
+                data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
-        'sesi_hari': sesi_hari,
-        'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'kode_referral': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice,
-                                                                           metode_pembelajaran_invoice,
-                                                                           mata_kuliah_invoice,
-                                                                           registration_number_q1_invoice,
-                                                                           quartal_invoice)
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+        jumlah_peserta_invoice, metode_pembelajaran_invoice,
+        mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
-        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                        registration_number_q1_invoice, quartal_invoice), pdf, 'application/pdf')
+        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
+                                        metode_pembelajaran_invoice,
+                                        mata_kuliah_invoice,
+                                        registration_number_q1_invoice,
+                                        quartal_invoice), pdf,
+        'application/pdf')
     mail.send(fail_silently=False)
     return HttpResponseRedirect(reverse("pendaftaran_berhasil"))
 
 
-def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
-                  mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                  registration_number_q2_invoice, quartal_invoice):
+def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi,
+                  universitas, metode_pembelajaran, mata_kuliah, materi,
+                  jumlah_peserta_invoice, metode_pembelajaran_invoice,
+                  mata_kuliah_invoice, registration_number_q2_invoice,
+                  quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
-    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q2_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+                ", " + data.nama_lengkap_anggota_3 + ", " +
+                data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+                ", " + data.nama_lengkap_anggota_6 + ", " +
+                data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+                ", " + data.nama_lengkap_anggota_9 + ", " +
+                data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
-        'sesi_hari': sesi_hari,
-        'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'kode_referral': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice,
-                                                                           metode_pembelajaran_invoice,
-                                                                           mata_kuliah_invoice,
-                                                                           registration_number_q2_invoice,
-                                                                           quartal_invoice)
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+        jumlah_peserta_invoice, metode_pembelajaran_invoice,
+        mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
-        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                        registration_number_q1_invoice, quartal_invoice), pdf, 'application/pdf')
+        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
+                                        metode_pembelajaran_invoice,
+                                        mata_kuliah_invoice,
+                                        registration_number_q1_invoice,
+                                        quartal_invoice), pdf,
+        'application/pdf')
     mail.send(fail_silently=False)
     return HttpResponseRedirect(reverse("pendaftaran_berhasil"))
 
 
-def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
-                  mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                  registration_number_q3_invoice, quartal_invoice):
+def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi,
+                  universitas, metode_pembelajaran, mata_kuliah, materi,
+                  jumlah_peserta_invoice, metode_pembelajaran_invoice,
+                  mata_kuliah_invoice, registration_number_q3_invoice,
+                  quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
-    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q3_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+                ", " + data.nama_lengkap_anggota_3 + ", " +
+                data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+                ", " + data.nama_lengkap_anggota_6 + ", " +
+                data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+                ", " + data.nama_lengkap_anggota_9 + ", " +
+                data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
-        'sesi_hari': sesi_hari,
-        'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'kode_referral': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice,
-                                                                           metode_pembelajaran_invoice,
-                                                                           mata_kuliah_invoice,
-                                                                           registration_number_q3_invoice,
-                                                                           quartal_invoice)
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+        jumlah_peserta_invoice, metode_pembelajaran_invoice,
+        mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
-        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                        registration_number_q3_invoice, quartal_invoice), pdf, 'application/pdf')
+        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
+                                        metode_pembelajaran_invoice,
+                                        mata_kuliah_invoice,
+                                        registration_number_q3_invoice,
+                                        quartal_invoice), pdf,
+        'application/pdf')
     mail.send(fail_silently=False)
     return HttpResponseRedirect(reverse("pendaftaran_berhasil"))
 
 
-def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi, universitas, metode_pembelajaran,
-                  mata_kuliah, materi, jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                  registration_number_q4_invoice, quartal_invoice):
+def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi,
+                  universitas, metode_pembelajaran, mata_kuliah, materi,
+                  jumlah_peserta_invoice, metode_pembelajaran_invoice,
+                  mata_kuliah_invoice, registration_number_q4_invoice,
+                  quartal_invoice):
     data = RegistrationData.objects.get(
-        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice, metode_pembelajaran_invoice,
-                                                  mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice))
-    sesi_hari = data.sesi_hari.replace("[", "").replace("]", "").replace("'", "")
-    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
-    sesi_materi = data.materi.replace("[", "").replace("]", "").replace("'", "")
+        nomor_invoice="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q4_invoice,
+            quartal_invoice))
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_anggota_kelompok = ""
+    if data.nama_lengkap_anggota_1 == "-" and data.nama_lengkap_anggota_2 == "-" and data.nama_lengkap_anggota_3 == "-" and data.nama_lengkap_anggota_4 == "-" and data.nama_lengkap_anggota_5 == "-" and data.nama_lengkap_anggota_6 == "-" and data.nama_lengkap_anggota_7 == "-" and data.nama_lengkap_anggota_8 == "-" and data.nama_lengkap_anggota_9 == "-" and data.nama_lengkap_anggota_10 == "-":
+        daftar_anggota_kelompok += "-"
+    else:
+        daftar_anggota_kelompok += (
+                data.nama_lengkap_anggota_1 + ", " + data.nama_lengkap_anggota_2 +
+                ", " + data.nama_lengkap_anggota_3 + ", " +
+                data.nama_lengkap_anggota_4 + ", " + data.nama_lengkap_anggota_5 +
+                ", " + data.nama_lengkap_anggota_6 + ", " +
+                data.nama_lengkap_anggota_7 + ", " + data.nama_lengkap_anggota_8 +
+                ", " + data.nama_lengkap_anggota_9 + ", " +
+                data.nama_lengkap_anggota_10).replace(", -", "")
     context = {
         'i': data,
-        'sesi_hari': sesi_hari,
-        'sesi_jam': sesi_jam,
-        'sesi_materi': sesi_materi
+        'sesi_materi': sesi_materi,
+        'kode_referral': data.referral_code,
+        'anggota_kelompok': daftar_anggota_kelompok
     }
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(jumlah_peserta_invoice,
-                                                                           metode_pembelajaran_invoice,
-                                                                           mata_kuliah_invoice,
-                                                                           registration_number_q4_invoice,
-                                                                           quartal_invoice)
+    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+        jumlah_peserta_invoice, metode_pembelajaran_invoice,
+        mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
     pdf = create_pdf(context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
-        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice, metode_pembelajaran_invoice, mata_kuliah_invoice,
-                                        registration_number_q1_invoice, quartal_invoice), pdf, 'application/pdf')
+        "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
+                                        metode_pembelajaran_invoice,
+                                        mata_kuliah_invoice,
+                                        registration_number_q1_invoice,
+                                        quartal_invoice), pdf,
+        'application/pdf')
     mail.send(fail_silently=False)
     return HttpResponseRedirect(reverse("pendaftaran_berhasil"))
 
@@ -2030,6 +2588,7 @@ def pendaftaran_berhasil(request):
 
 def pendaftaran_gagal(request):
     return render(request, 'FormRegistrationApp/pendaftaran_gagal.html')
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # -------------------------------------------- END OF REGISTRATION FORM -----------------------------------------------

@@ -75,24 +75,24 @@ WSGI_APPLICATION = 'FormRegistration.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-"""DATABASES = {
+"""
+DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'registrationdatabase',
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': 'mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority'
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
-}"""
+}
 
 # DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
@@ -141,10 +141,3 @@ EMAIL_PORT = 587
 EMAIL_SENDER = "mailing@torche.app"
 EMAIL_HOST_USER = "mailing.torche@gmail.com"
 EMAIL_HOST_PASSWORD = "qnofkrkwjnsmphnu"
-
-import mongoengine
-
-mongoengine.connect(db='registrationdatabase',
-                    username='regiapriandi',
-                    password='Sinheul24.',
-                    host='mongodb+srv://regiapriandi012:Sinheul24.@instance2.jrd6j.mongodb.net/?retryWrites=true&w=majority')
