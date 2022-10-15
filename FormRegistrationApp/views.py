@@ -16,6 +16,10 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
+from discord_webhook import DiscordWebhook, DiscordEmbed
+from django.http import FileResponse
+
+webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1030801134232809524/yf78dqf7SBcSVNlrZ8GPPU76v3y2gm_nHxz7MRS73nUDISSHh5igcYFiGrxByGpeLrbX', username="Torche Registration Class")
 
 NAMA_MATA_KULIAH = (
     ("Cell Culture for Engineers",
@@ -2042,6 +2046,14 @@ def create_pdf_assignment(template_src, context_dict={}):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
+def create_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        return result.getvalue()
+    return None
 
 def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
                mata_kuliah_invoice, registration_number_q4_invoice,
@@ -2077,8 +2089,12 @@ def invoice_q1(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
     filename = "Invoice_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
+
+    with open(filename, "rb") as f:
+        webhook.add_file(file=f.read(), filename=filename)
+    response = webhook.execute()
     return response
 
 
@@ -2118,7 +2134,7 @@ def invoice_q2(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
     filename = "Invoice_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
     return response
 
@@ -2159,7 +2175,7 @@ def invoice_q3(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
     filename = "Invoice_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
     return response
 
@@ -2200,10 +2216,9 @@ def invoice_q4(request, jumlah_peserta_invoice, metode_pembelajaran_invoice,
     filename = "Invoice_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
     return response
-
 
 def invoice_assignment_q1(request, jumlah_peserta_invoice,
                           metode_pembelajaran_invoice, mata_kuliah_invoice,
@@ -2220,7 +2235,7 @@ def invoice_assignment_q1(request, jumlah_peserta_invoice,
                                                        "").replace("'", "")
     daftar_email_anggota_kelompok = ""
     if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
-        daftar_email_anggota_kelompok += "-"
+        daftar_email_anggota_kelompok += data.email
     else:
         daftar_email_anggota_kelompok += (
             data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
@@ -2243,7 +2258,7 @@ def invoice_assignment_q1(request, jumlah_peserta_invoice,
     filename = "SuratTugas_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
     return response
 
@@ -2263,7 +2278,7 @@ def invoice_assignment_q2(request, jumlah_peserta_invoice,
                                                        "").replace("'", "")
     daftar_email_anggota_kelompok = ""
     if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
-        daftar_email_anggota_kelompok += "-"
+        daftar_email_anggota_kelompok += data.email
     else:
         daftar_email_anggota_kelompok += (
             data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
@@ -2286,7 +2301,7 @@ def invoice_assignment_q2(request, jumlah_peserta_invoice,
     filename = "SuratTugas_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
     return response
 
@@ -2306,7 +2321,7 @@ def invoice_assignment_q3(request, jumlah_peserta_invoice,
                                                        "").replace("'", "")
     daftar_email_anggota_kelompok = ""
     if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
-        daftar_email_anggota_kelompok += "-"
+        daftar_email_anggota_kelompok += data.email
     else:
         daftar_email_anggota_kelompok += (
             data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
@@ -2329,7 +2344,7 @@ def invoice_assignment_q3(request, jumlah_peserta_invoice,
     filename = "SuratTugas_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
     return response
 
@@ -2349,7 +2364,7 @@ def invoice_assignment_q4(request, jumlah_peserta_invoice,
                                                        "").replace("'", "")
     daftar_email_anggota_kelompok = ""
     if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
-        daftar_email_anggota_kelompok += "-"
+        daftar_email_anggota_kelompok += data.email
     else:
         daftar_email_anggota_kelompok += (
             data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
@@ -2372,19 +2387,9 @@ def invoice_assignment_q4(request, jumlah_peserta_invoice,
     filename = "SuratTugas_{}_{}.pdf".format(
         "_".join(data.nama_lengkap.split(" ")),
         "_".join(data.mata_kuliah.split(" ")))
-    content = "attachment; filename='%s'" % filename
+    content = "attachment; filename=%s" % filename
     response['Content-Disposition'] = content
     return response
-
-
-def create_pdf(context):
-    html = render_to_string('FormRegistrationApp/template_pdf.html', context)
-    result = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
-    if not pdf.err:
-        return result.getvalue()
-    return None
-
 
 def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi,
                   universitas, metode_pembelajaran, mata_kuliah, materi,
@@ -2416,13 +2421,58 @@ def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi,
         'kode_referral': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
+    pdf = create_pdf(
+        'FormRegistrationApp/template_pdf.html', context)
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
+    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += data.email
+    else:
+        daftar_email_anggota_kelompok += (
+                data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+                data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+                data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+                data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+                data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+            ", -", "")
+
+    context_surat_tugas = {
+        'i': data,
+        'sesi_hari': sesi_hari,
+        'sesi_jam': sesi_jam,
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
+    }
+    pdf_surat_tugas = create_pdf(
+        'FormRegistrationApp/template_pdf_assignment.html', context_surat_tugas)
+    filename_surat_tugas = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    embed = DiscordEmbed(title="Inv/{}/{}/{}/{}/{}".format(
+        jumlah_peserta_invoice, metode_pembelajaran_invoice,
+        mata_kuliah_invoice, registration_number_q4_invoice,
+        quartal_invoice).format(), description='{} - {}'.format(data.nama_lengkap, data.email), color='03b2f8')
+    webhook.add_embed(embed)
+    webhook.add_file(file=pdf, filename=filename)
+    webhook.add_file(file=pdf_surat_tugas, filename=filename_surat_tugas)
+    discord_file = webhook.execute()
+
     subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
         mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
-    pdf = create_pdf(context)
+    pdf = create_pdf('FormRegistrationApp/template_pdf.html', context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
         "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
@@ -2465,19 +2515,64 @@ def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi,
         'kode_referral': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
+    pdf = create_pdf(
+        'FormRegistrationApp/template_pdf.html', context)
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
+    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += data.email
+    else:
+        daftar_email_anggota_kelompok += (
+                data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+                data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+                data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+                data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+                data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+            ", -", "")
+
+    context_surat_tugas = {
+        'i': data,
+        'sesi_hari': sesi_hari,
+        'sesi_jam': sesi_jam,
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
+    }
+    pdf_surat_tugas = create_pdf(
+        'FormRegistrationApp/template_pdf_assignment.html', context_surat_tugas)
+    filename_surat_tugas = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    embed = DiscordEmbed(title="Inv/{}/{}/{}/{}/{}".format(
+        jumlah_peserta_invoice, metode_pembelajaran_invoice,
+        mata_kuliah_invoice, registration_number_q4_invoice,
+        quartal_invoice).format(), description='{} - {}'.format(data.nama_lengkap, data.email), color='03b2f8')
+    webhook.add_embed(embed)
+    webhook.add_file(file=pdf, filename=filename)
+    webhook.add_file(file=pdf_surat_tugas, filename=filename_surat_tugas)
+    discord_file = webhook.execute()
+
     subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
-        mata_kuliah_invoice, registration_number_q2_invoice, quartal_invoice)
+        mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
-    pdf = create_pdf(context)
+    pdf = create_pdf('FormRegistrationApp/template_pdf.html', context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
         "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
                                         metode_pembelajaran_invoice,
                                         mata_kuliah_invoice,
-                                        registration_number_q1_invoice,
+                                        registration_number_q2_invoice,
                                         quartal_invoice), pdf,
         'application/pdf')
     mail.send(fail_silently=False)
@@ -2514,13 +2609,58 @@ def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi,
         'kode_referral': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
+    pdf = create_pdf(
+        'FormRegistrationApp/template_pdf.html', context)
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
+    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += data.email
+    else:
+        daftar_email_anggota_kelompok += (
+                data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+                data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+                data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+                data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+                data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+            ", -", "")
+
+    context_surat_tugas = {
+        'i': data,
+        'sesi_hari': sesi_hari,
+        'sesi_jam': sesi_jam,
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
+    }
+    pdf_surat_tugas = create_pdf(
+        'FormRegistrationApp/template_pdf_assignment.html', context_surat_tugas)
+    filename_surat_tugas = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    embed = DiscordEmbed(title="Inv/{}/{}/{}/{}/{}".format(
+        jumlah_peserta_invoice, metode_pembelajaran_invoice,
+        mata_kuliah_invoice, registration_number_q4_invoice,
+        quartal_invoice).format(), description='{} - {}'.format(data.nama_lengkap, data.email), color='03b2f8')
+    webhook.add_embed(embed)
+    webhook.add_file(file=pdf, filename=filename)
+    webhook.add_file(file=pdf_surat_tugas, filename=filename_surat_tugas)
+    discord_file = webhook.execute()
+
     subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
-        mata_kuliah_invoice, registration_number_q3_invoice, quartal_invoice)
+        mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
-    pdf = create_pdf(context)
+    pdf = create_pdf('FormRegistrationApp/template_pdf.html', context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
         "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
@@ -2563,19 +2703,64 @@ def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi,
         'kode_referral': data.referral_code,
         'anggota_kelompok': daftar_anggota_kelompok
     }
+    pdf = create_pdf(
+        'FormRegistrationApp/template_pdf.html', context)
+    filename = "Invoice_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    sesi_hari = data.sesi_hari.replace("[", "").replace("]",
+                                                        "").replace("'", "")
+    sesi_jam = data.sesi_jam.replace("[", "").replace("]", "").replace("'", "")
+    sesi_materi = data.materi.replace("[", "").replace("]",
+                                                       "").replace("'", "")
+    daftar_email_anggota_kelompok = ""
+    if data.email_anggota_1 == "-" and data.email_anggota_2 == "-" and data.email_anggota_3 == "-" and data.email_anggota_4 == "-" and data.email_anggota_5 == "-" and data.email_anggota_6 == "-" and data.email_anggota_7 == "-" and data.email_anggota_8 == "-" and data.email_anggota_9 == "-" and data.email_anggota_10 == "-":
+        daftar_email_anggota_kelompok += data.email
+    else:
+        daftar_email_anggota_kelompok += (
+                data.email_anggota_1 + ", " + data.email_anggota_2 + ", " +
+                data.email_anggota_3 + ", " + data.email_anggota_4 + ", " +
+                data.email_anggota_5 + ", " + data.email_anggota_6 + ", " +
+                data.email_anggota_7 + ", " + data.email_anggota_8 + ", " +
+                data.email_anggota_9 + ", " + data.email_anggota_10).replace(
+            ", -", "")
+
+    context_surat_tugas = {
+        'i': data,
+        'sesi_hari': sesi_hari,
+        'sesi_jam': sesi_jam,
+        'sesi_materi': sesi_materi,
+        'daftar_email_anggota_kelompok': daftar_email_anggota_kelompok
+    }
+    pdf_surat_tugas = create_pdf(
+        'FormRegistrationApp/template_pdf_assignment.html', context_surat_tugas)
+    filename_surat_tugas = "SuratTugas_{}_{}.pdf".format(
+        "_".join(data.nama_lengkap.split(" ")),
+        "_".join(data.mata_kuliah.split(" ")))
+
+    embed = DiscordEmbed(title="Inv/{}/{}/{}/{}/{}".format(
+            jumlah_peserta_invoice, metode_pembelajaran_invoice,
+            mata_kuliah_invoice, registration_number_q4_invoice,
+            quartal_invoice).format(), description='{} - {}'.format(data.nama_lengkap, data.email), color='03b2f8')
+    webhook.add_file(file=pdf, filename=filename)
+    webhook.add_file(file=pdf_surat_tugas, filename=filename_surat_tugas)
+    webhook.add_embed(embed)
+    response = webhook.execute()
+
     subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
-        mata_kuliah_invoice, registration_number_q4_invoice, quartal_invoice)
+        mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
         nama_lengkap, mata_kuliah, sesi_materi)
     emails = [email]
-    pdf = create_pdf(context)
+    pdf = create_pdf('FormRegistrationApp/template_pdf.html', context)
     mail = EmailMessage(subject, message, settings.EMAIL_SENDER, emails)
     mail.attach(
         "Inv/{}/{}/{}/{}/{}.pdf".format(jumlah_peserta_invoice,
                                         metode_pembelajaran_invoice,
                                         mata_kuliah_invoice,
-                                        registration_number_q1_invoice,
+                                        registration_number_q4_invoice,
                                         quartal_invoice), pdf,
         'application/pdf')
     mail.send(fail_silently=False)

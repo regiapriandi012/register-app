@@ -25,7 +25,7 @@ SECRET_KEY = 'za(q_nxr)kh0g5_!luan_0-y&%(%x(*($oh9py7c%^f#@xsir$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -75,15 +75,14 @@ WSGI_APPLICATION = 'FormRegistration.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-"""
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_NAME'),
@@ -92,7 +91,7 @@ DATABASES = {
         'HOST': 'db',
         'PORT': 5432,
     }
-}
+}"""
 
 # DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
