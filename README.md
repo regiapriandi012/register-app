@@ -1,3 +1,7 @@
+![](https://github.com/regiapriandi012/registration-app-django/actions/workflows/codeql.yml/badge.svg)
+![](https://github.com/regiapriandi012/registration-app-django/actions/workflows/dependency-review.yml/badge.svg)
+![](https://github.com/regiapriandi012/registration-app-django/actions/workflows/docker-image.yml/badge.svg)
+
 # Django Registration App
 ### Features
 - ### Integrated with Google Drive
