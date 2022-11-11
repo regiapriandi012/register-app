@@ -19,7 +19,7 @@ from django.template.loader import render_to_string
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from django.http import FileResponse
 
-webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1030801134232809524/yf78dqf7SBcSVNlrZ8GPPU76v3y2gm_nHxz7MRS73nUDISSHh5igcYFiGrxByGpeLrbX', username="Torche Registration Class")
+webhook = DiscordWebhook(url='https://discord.com/api/webhooks/', username="Registration Class")
 
 NAMA_MATA_KULIAH = (
     ("Cell Culture for Engineers",
@@ -79,8 +79,8 @@ def home_view(request):
         program_studi = request.POST.get('program_studi')
         angkatan = request.POST.get('angkatan')
         universitas = request.POST.get('universitas')
-        info_torche = str(request.POST.getlist('tentang_torche')).replace(
-            "Other", request.POST.get('tentang_torche_other'))
+        info = str(request.POST.getlist('tentang')).replace(
+            "Other", request.POST.get('tentang_other'))
         if program_studi == "Other":
             program_studi = request.POST.get('program_studi_other')
         else:
@@ -92,13 +92,13 @@ def home_view(request):
         return HttpResponseRedirect(
             reverse("metode_pembelajaran",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche)))
+                          angkatan, universitas, info)))
     return render(request, "FormRegistrationApp/index.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
 def metode_pembelajaran(request, email, nama_lengkap, nomor_telefon,
-                        program_studi, angkatan, universitas, info_torche):
+                        program_studi, angkatan, universitas, info):
     context = {'form': MetodePembelajaranForm()}
     if request.method == 'POST':
         form = MetodePembelajaranForm(request.POST)
@@ -110,7 +110,7 @@ def metode_pembelajaran(request, email, nama_lengkap, nomor_telefon,
                 reverse("mata_kuliah",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti)))
     else:
         form = MetodePembelajaranForm(request.POST)
@@ -120,7 +120,7 @@ def metode_pembelajaran(request, email, nama_lengkap, nomor_telefon,
 
 # ---------------------------------------------------------------))------------------------------------------
 def mata_kuliah(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti):
     if request.method == 'POST':
         mata_kuliah = request.POST.get('mata_kuliah')
@@ -133,175 +133,175 @@ def mata_kuliah(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("session_cce",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[1][0]:
             return HttpResponseRedirect(
                 reverse("session_cem",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[2][0]:
             return HttpResponseRedirect(
                 reverse("session_cet",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[3][0]:
             return HttpResponseRedirect(
                 reverse("session_cps",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[4][0]:
             return HttpResponseRedirect(
                 reverse("session_cre",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[5][0]:
             return HttpResponseRedirect(
                 reverse("session_eec",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[6][0]:
             return HttpResponseRedirect(
                 reverse("session_fac",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[7][0]:
             return HttpResponseRedirect(
                 reverse("session_fca",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[8][0]:
             return HttpResponseRedirect(
                 reverse("session_fch",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[9][0]:
             return HttpResponseRedirect(
                 reverse("session_fht",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[10][0]:
             return HttpResponseRedirect(
                 reverse("session_fmt",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[11][0]:
             return HttpResponseRedirect(
                 reverse("session_fpm",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[12][0]:
             return HttpResponseRedirect(
                 reverse("session_fp1",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[13][0]:
             return HttpResponseRedirect(
                 reverse("session_fp2",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[14][0]:
             return HttpResponseRedirect(
                 reverse("session_meb",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[15][0]:
             return HttpResponseRedirect(
                 reverse("session_nce",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[16][0]:
             return HttpResponseRedirect(
                 reverse("session_oce",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[17][0]:
             return HttpResponseRedirect(
                 reverse("session_pcd",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[18][0]:
             return HttpResponseRedirect(
                 reverse("session_pch",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[19][0]:
             return HttpResponseRedirect(
                 reverse("session_pdd",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[20][0]:
             return HttpResponseRedirect(
                 reverse("session_ped",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[21][0]:
             return HttpResponseRedirect(
                 reverse("session_ppd",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[22][0]:
             return HttpResponseRedirect(
                 reverse("session_spr",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
         elif mata_kuliah == NAMA_MATA_KULIAH[23][0]:
             return HttpResponseRedirect(
                 reverse("session_tph",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah)))
     return render(request, "FormRegistrationApp/mata_kuliah.html")
 
 
 # ---------------------------------------------------------------------------------------------------------
 def session_cce(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCCEForm()}
     if request.method == 'POST':
@@ -313,7 +313,7 @@ def session_cce(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse(jumlah_peserta,
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -323,7 +323,7 @@ def session_cce(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_cem(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCEMForm()}
     if request.method == 'POST':
@@ -335,7 +335,7 @@ def session_cem(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -345,7 +345,7 @@ def session_cem(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_cet(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCETForm()}
     if request.method == 'POST':
@@ -357,7 +357,7 @@ def session_cet(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -367,7 +367,7 @@ def session_cet(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_cps(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     if request.method == 'POST':
         materi = request.POST.getlist('materi')
@@ -380,7 +380,7 @@ def session_cps(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     return render(request, "FormRegistrationApp/session_cps.html")
@@ -388,7 +388,7 @@ def session_cps(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_cre(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionCREForm()}
     if request.method == 'POST':
@@ -400,7 +400,7 @@ def session_cre(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -410,7 +410,7 @@ def session_cre(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_eec(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionEECForm()}
     if request.method == 'POST':
@@ -422,7 +422,7 @@ def session_eec(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -432,7 +432,7 @@ def session_eec(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fac(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFACForm()}
     if request.method == 'POST':
@@ -444,7 +444,7 @@ def session_fac(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -454,7 +454,7 @@ def session_fac(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fca(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFCAForm()}
     if request.method == 'POST':
@@ -466,7 +466,7 @@ def session_fca(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -476,7 +476,7 @@ def session_fca(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fch(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFCHForm()}
     if request.method == 'POST':
@@ -488,7 +488,7 @@ def session_fch(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -498,7 +498,7 @@ def session_fch(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fht(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFHTForm()}
     if request.method == 'POST':
@@ -510,7 +510,7 @@ def session_fht(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -520,7 +520,7 @@ def session_fht(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fmt(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFMTForm()}
     if request.method == 'POST':
@@ -532,7 +532,7 @@ def session_fmt(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -542,7 +542,7 @@ def session_fmt(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fpm(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFPMForm()}
     if request.method == 'POST':
@@ -554,7 +554,7 @@ def session_fpm(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -564,7 +564,7 @@ def session_fpm(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fp1(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFP1Form()}
     if request.method == 'POST':
@@ -576,7 +576,7 @@ def session_fp1(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -586,7 +586,7 @@ def session_fp1(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_fp2(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionFP2Form()}
     if request.method == 'POST':
@@ -598,7 +598,7 @@ def session_fp2(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -608,7 +608,7 @@ def session_fp2(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_meb(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionMEBForm()}
     if request.method == 'POST':
@@ -620,7 +620,7 @@ def session_meb(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -630,7 +630,7 @@ def session_meb(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_nce(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionNCEForm()}
     if request.method == 'POST':
@@ -642,7 +642,7 @@ def session_nce(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -652,7 +652,7 @@ def session_nce(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_oce(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionOCEForm()}
     if request.method == 'POST':
@@ -664,7 +664,7 @@ def session_oce(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -674,7 +674,7 @@ def session_oce(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_pcd(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPCDForm()}
     if request.method == 'POST':
@@ -686,7 +686,7 @@ def session_pcd(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -696,7 +696,7 @@ def session_pcd(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_pch(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPCHForm()}
     if request.method == 'POST':
@@ -708,7 +708,7 @@ def session_pch(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -718,7 +718,7 @@ def session_pch(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_pdd(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPDDForm()}
     if request.method == 'POST':
@@ -730,7 +730,7 @@ def session_pdd(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -740,7 +740,7 @@ def session_pdd(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_ped(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPEDForm()}
     if request.method == 'POST':
@@ -752,7 +752,7 @@ def session_ped(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -762,7 +762,7 @@ def session_ped(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_ppd(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionPPDForm()}
     if request.method == 'POST':
@@ -774,7 +774,7 @@ def session_ppd(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -784,7 +784,7 @@ def session_ppd(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_spr(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionSPRForm()}
     if request.method == 'POST':
@@ -796,7 +796,7 @@ def session_spr(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -806,7 +806,7 @@ def session_spr(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi,
-                angkatan, universitas, info_torche, metode_pembelajaran,
+                angkatan, universitas, info, metode_pembelajaran,
                 jumlah_sesi_yang_diikuti, mata_kuliah):
     context = {'form': SessionTPHForm()}
     if request.method == 'POST':
@@ -818,7 +818,7 @@ def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("jumlah_peserta",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi)))
     else:
@@ -828,14 +828,14 @@ def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 """def lampiran(request, email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-             info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi):
+             info, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi):
     context = {'form': LampiranFileForm()}
     if request.method == 'POST':
         form = LampiranFileForm(request.POST, request.FILES)
         if form.is_valid():
             lampiran = request.FILES['lampiran']
             return HttpResponseRedirect(reverse("jumlah_peserta", args=(email, nama_lengkap, nomor_telefon, program_studi, angkatan, universitas,
-                            info_torche, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
+                            info, metode_pembelajaran, jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
                             lampiran)))
     else:
         form = LampiranFileForm(request.POST, request.FILES)
@@ -844,7 +844,7 @@ def session_tph(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def jumlah_peserta(request, email, nama_lengkap, nomor_telefon, program_studi,
-                   angkatan, universitas, info_torche, metode_pembelajaran,
+                   angkatan, universitas, info, metode_pembelajaran,
                    jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi):
     if request.method == 'POST':
         jumlah_peserta = request.POST.get('jumlah_peserta')
@@ -893,7 +893,7 @@ def jumlah_peserta(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -915,7 +915,7 @@ def jumlah_peserta(request, email, nama_lengkap, nomor_telefon, program_studi,
                 reverse("anggota_kelompok_1",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi, jumlah_peserta)))
     return render(request, "FormRegistrationApp/jumlah_peserta.html")
@@ -923,7 +923,7 @@ def jumlah_peserta(request, email, nama_lengkap, nomor_telefon, program_studi,
 
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_1(request, email, nama_lengkap, nomor_telefon,
-                       program_studi, angkatan, universitas, info_torche,
+                       program_studi, angkatan, universitas, info,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti,
                        mata_kuliah, materi, simulasi, jumlah_peserta):
     if request.method == 'POST':
@@ -972,7 +972,7 @@ def anggota_kelompok_1(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -994,7 +994,7 @@ def anggota_kelompok_1(request, email, nama_lengkap, nomor_telefon,
                 reverse("anggota_kelompok_2",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi, jumlah_peserta, email_1,
                               nama_lengkap_1, nomor_telefon_1,
@@ -1004,7 +1004,7 @@ def anggota_kelompok_1(request, email, nama_lengkap, nomor_telefon,
 
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_2(request, email, nama_lengkap, nomor_telefon,
-                       program_studi, angkatan, universitas, info_torche,
+                       program_studi, angkatan, universitas, info,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti,
                        mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
                        nama_lengkap_1, nomor_telefon_1, akun_discord_1):
@@ -1050,7 +1050,7 @@ def anggota_kelompok_2(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1072,7 +1072,7 @@ def anggota_kelompok_2(request, email, nama_lengkap, nomor_telefon,
                 reverse("anggota_kelompok_3",
                         args=(email, nama_lengkap, nomor_telefon,
                               program_studi, angkatan, universitas,
-                              info_torche, metode_pembelajaran,
+                              info, metode_pembelajaran,
                               jumlah_sesi_yang_diikuti, mata_kuliah, materi,
                               simulasi, jumlah_peserta, email_1,
                               nama_lengkap_1, nomor_telefon_1, akun_discord_1,
@@ -1083,7 +1083,7 @@ def anggota_kelompok_2(request, email, nama_lengkap, nomor_telefon,
 
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon,
-                       program_studi, angkatan, universitas, info_torche,
+                       program_studi, angkatan, universitas, info,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti,
                        mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
                        nama_lengkap_1, nomor_telefon_1, akun_discord_1,
@@ -1127,7 +1127,7 @@ def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1149,7 +1149,7 @@ def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "anggota_kelompok_4",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1161,7 +1161,7 @@ def anggota_kelompok_3(request, email, nama_lengkap, nomor_telefon,
 
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon,
-                       program_studi, angkatan, universitas, info_torche,
+                       program_studi, angkatan, universitas, info,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti,
                        mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
                        nama_lengkap_1, nomor_telefon_1, akun_discord_1,
@@ -1202,7 +1202,7 @@ def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1224,7 +1224,7 @@ def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "anggota_kelompok_5",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1238,7 +1238,7 @@ def anggota_kelompok_4(request, email, nama_lengkap, nomor_telefon,
 
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon,
-                       program_studi, angkatan, universitas, info_torche,
+                       program_studi, angkatan, universitas, info,
                        metode_pembelajaran, jumlah_sesi_yang_diikuti,
                        mata_kuliah, materi, simulasi, jumlah_peserta, email_1,
                        nama_lengkap_1, nomor_telefon_1, akun_discord_1,
@@ -1276,7 +1276,7 @@ def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1298,7 +1298,7 @@ def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon,
                 reverse(
                     "anggota_kelompok_6",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1314,7 +1314,7 @@ def anggota_kelompok_5(request, email, nama_lengkap, nomor_telefon,
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_6(
         request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-        universitas, info_torche, metode_pembelajaran,
+        universitas, info, metode_pembelajaran,
         jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
         jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
         akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
@@ -1348,7 +1348,7 @@ def anggota_kelompok_6(
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1370,7 +1370,7 @@ def anggota_kelompok_6(
                 reverse(
                     "anggota_kelompok_7",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1387,7 +1387,7 @@ def anggota_kelompok_6(
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_7(
         request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-        universitas, info_torche, metode_pembelajaran,
+        universitas, info, metode_pembelajaran,
         jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
         jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
         akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
@@ -1418,7 +1418,7 @@ def anggota_kelompok_7(
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1440,7 +1440,7 @@ def anggota_kelompok_7(
                 reverse(
                     "anggota_kelompok_8",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1459,7 +1459,7 @@ def anggota_kelompok_7(
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_8(
         request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-        universitas, info_torche, metode_pembelajaran,
+        universitas, info, metode_pembelajaran,
         jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
         jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
         akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
@@ -1487,7 +1487,7 @@ def anggota_kelompok_8(
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1509,7 +1509,7 @@ def anggota_kelompok_8(
                 reverse(
                     "anggota_kelompok_9",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1529,7 +1529,7 @@ def anggota_kelompok_8(
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_9(
         request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-        universitas, info_torche, metode_pembelajaran,
+        universitas, info, metode_pembelajaran,
         jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
         jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
         akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
@@ -1554,7 +1554,7 @@ def anggota_kelompok_9(
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1576,7 +1576,7 @@ def anggota_kelompok_9(
                 reverse(
                     "anggota_kelompok_10",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1597,7 +1597,7 @@ def anggota_kelompok_9(
 # ---------------------------------------------------------------------------------------------------------
 def anggota_kelompok_10(
         request, email, nama_lengkap, nomor_telefon, program_studi, angkatan,
-        universitas, info_torche, metode_pembelajaran,
+        universitas, info, metode_pembelajaran,
         jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
         jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
         akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
@@ -1619,7 +1619,7 @@ def anggota_kelompok_10(
                 reverse(
                     "jadwal_belajar",
                     args=(email, nama_lengkap, nomor_telefon, program_studi,
-                          angkatan, universitas, info_torche,
+                          angkatan, universitas, info,
                           metode_pembelajaran, jumlah_sesi_yang_diikuti,
                           mata_kuliah, materi, simulasi, jumlah_peserta,
                           email_1, nama_lengkap_1, nomor_telefon_1,
@@ -1641,7 +1641,7 @@ def anggota_kelompok_10(
 
 # ---------------------------------------------------------------------------------------------------------
 def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi,
-                   angkatan, universitas, info_torche, metode_pembelajaran,
+                   angkatan, universitas, info, metode_pembelajaran,
                    jumlah_sesi_yang_diikuti, mata_kuliah, materi, simulasi,
                    jumlah_peserta, email_1, nama_lengkap_1, nomor_telefon_1,
                    akun_discord_1, email_2, nama_lengkap_2, nomor_telefon_2,
@@ -1885,7 +1885,7 @@ def jadwal_belajar(request, email, nama_lengkap, nomor_telefon, program_studi,
                                                                        "'", "")
             new_data.jumlah_peserta = jumlah_peserta
             new_data.jumlah_sesi_yang_diikuti = jumlah_sesi_yang_diikuti
-            new_data.informasi_mengenai_torche = str(info_torche).replace(
+            new_data.informasi_mengenai = str(info).replace(
                 "[", "").replace("]", "").replace("'", "")
             new_data.aplikasi_simulasi = simulasi
 
@@ -2466,7 +2466,7 @@ def send_email_q1(request, nama_lengkap, email, nomor_telefon, program_studi,
     webhook.add_file(file=pdf_surat_tugas, filename=filename_surat_tugas)
     discord_file = webhook.execute()
 
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+    subject = "Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
         mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
@@ -2560,7 +2560,7 @@ def send_email_q2(request, nama_lengkap, email, nomor_telefon, program_studi,
     webhook.add_file(file=pdf_surat_tugas, filename=filename_surat_tugas)
     discord_file = webhook.execute()
 
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+    subject = "Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
         mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
@@ -2654,7 +2654,7 @@ def send_email_q3(request, nama_lengkap, email, nomor_telefon, program_studi,
     webhook.add_file(file=pdf_surat_tugas, filename=filename_surat_tugas)
     discord_file = webhook.execute()
 
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+    subject = "Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
         mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(
@@ -2748,7 +2748,7 @@ def send_email_q4(request, nama_lengkap, email, nomor_telefon, program_studi,
     webhook.add_embed(embed)
     response = webhook.execute()
 
-    subject = "Torche Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
+    subject = "Class Registration Form - Inv/{}/{}/{}/{}/{}".format(
         jumlah_peserta_invoice, metode_pembelajaran_invoice,
         mata_kuliah_invoice, registration_number_q1_invoice, quartal_invoice)
     message = "Terimakasih {}, anda telah memilih kelas {} dengan materi {}, untuk invoice dapat dilihat pada file berikut".format(

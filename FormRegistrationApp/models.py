@@ -5,7 +5,7 @@ from gdstorage.storage import GoogleDriveStorage, GoogleDrivePermissionType, Goo
 permission = GoogleDriveFilePermission(
    GoogleDrivePermissionRole.READER,
    GoogleDrivePermissionType.USER,
-   "mailing.torche@gmail.com",
+   "mailing@gmail.com",
 )
 # Define Google Drive Storage
 gd_storage = GoogleDriveStorage(permissions=(permission, ))
