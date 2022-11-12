@@ -1,6 +1,8 @@
+![](https://img.shields.io/github/license/regiapriandi012/registration-app-django)
 ![](https://github.com/regiapriandi012/registration-app-django/actions/workflows/codeql.yml/badge.svg)
 ![](https://github.com/regiapriandi012/registration-app-django/actions/workflows/dependency-review.yml/badge.svg)
 ![](https://github.com/regiapriandi012/registration-app-django/actions/workflows/docker-image.yml/badge.svg)
+![](https://github.com/regiapriandi012/registration-app-django/actions/workflows/docker-publish.yml/badge.svg)
 
 # Django Registration App
 ### Features
