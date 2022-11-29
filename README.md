@@ -13,7 +13,8 @@
 - ### Integrated with Discord Bot
   Can send notification and file while user registered in app.
 ### Flowchart
-![image](https://user-images.githubusercontent.com/69528812/196679538-8793bccf-c861-4c15-b991-19b4f1c2c9c1.png)
+![image](https://user-images.githubusercontent.com/69528812/204430519-7b4362c4-214c-42b1-a444-4f0a2231005d.png)
+
 
 ### Requirement Packages
 ````
